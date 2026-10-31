@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="pine">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas of SHAring 2026 | จองรอบการแสดง โรงพยาบาลกรุงเทพคริสเตียน</title>
+
+    <!-- ตั้งค่าโทนสีเริ่มต้นเป็นสีเขียว (pine) ทันทีที่เปิดหน้าเว็บ -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('sha2026-theme') || 'pine';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- PDF & Canvas Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Prompt', 'Kanit', 'Noto Sans SC', 'Tahoma', 'sans-serif'] },
+                    colors: {
+                        th: {
+                            panel: 'var(--th-panel)', border: 'var(--th-border)', text: 'var(--th-text)',
+                            muted: 'var(--th-muted)', accent: 'var(--th-accent)', 'accent-light': 'var(--th-accent-light)',
+                            danger: 'var(--th-danger)', 'danger-bg': 'var(--th-danger-bg)',
+                            success: 'var(--th-success)', 'success-bg': 'var(--th-success-bg)',
+                            input: 'var(--th-input)', 'input-border': 'var(--th-input-border)',
+                            card: 'var(--th-card)', 'card-border': 'var(--th-card-border)', 'card-hover': 'var(--th-card-hover)',
+                            modal: 'var(--th-modal)',
+                        }
+                    },
+                    backgroundImage: {
+                        'grad-body': 'var(--th-grad-body)', 'grad-btn': 'var(--th-grad-btn)', 'grad-ticket': 'var(--th-grad-ticket)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        /* โทนสีเขียวคริสต์มาส (Default: Pine) */
+        :root,
+        :root[data-theme="pine"] {
+            --th-grad-body: radial-gradient(circle at 50% 0%, #1b5c45 0%, #09281f 52%, #03100c 100%);
+            --th-panel: rgba(11, 43, 33, 0.93);
+            --th-border: rgba(245, 203, 120, 0.35);
+            --th-text: #fff8e9;
+            --th-muted: rgba(169, 227, 184, 0.85);
+            --th-accent: #f5cb78;
+            --th-accent-light: rgba(245, 203, 120, 0.15);
+            --th-danger: #ef4444;
+            --th-danger-bg: rgba(220, 38, 38, 0.2);
+            --th-success: #4ade80;
+            --th-success-bg: rgba(74, 222, 128, 0.15);
+            --th-input: rgba(4, 20, 15, 0.75);
+            --th-input-border: rgba(5, 150, 105, 0.5);
+            --th-card: rgba(4, 20, 15, 0.65);
+            --th-card-border: rgba(5, 150, 105, 0.45);
+            --th-card-hover: rgba(4, 20, 15, 0.95);
+            --th-grad-btn: linear-gradient(to right, #f5cb78, #d4a346);
+            --th-grad-ticket: linear-gradient(135deg, #1d1508 0%, #33230c 45%, #171005 100%);
+            --th-modal: rgba(3, 16, 12, 0.92);
+            --th-snow: rgba(255, 255, 255, 0.8);
+            --th-snow-shadow: transparent;
+            --glow-1: radial-gradient(circle, rgba(217, 56, 58, 0.25) 0%, transparent 70%);
+            --glow-2: radial-gradient(circle, rgba(245, 203, 120, 0.2) 0%, transparent 70%);
+        }
+
+        /* โทนสีขาวทอง (Light) */
+        :root[data-theme="light"] {
+            --th-grad-body: radial-gradient(circle at 50% 0%, #ffffff 0%, #fef3c7 45%, #fde68a 100%);
+            --th-panel: rgba(255, 255, 255, 0.88);
+            --th-border: #fbbf24;
+            --th-text: #451a03;
+            --th-muted: #92400e;
+            --th-accent: #f59e0b;
+            --th-accent-light: rgba(251, 191, 36, 0.15);
+            --th-danger: #dc2626;
+            --th-danger-bg: #fee2e2;
+            --th-success: #16a34a;
+            --th-success-bg: #dcfce7;
+            --th-input: #ffffff;
+            --th-input-border: #fcd34d;
+            --th-card: #ffffff;
+            --th-card-border: #fde047;
+            --th-card-hover: #fffbeb;
+            --th-grad-btn: linear-gradient(to right, #fbbf24, #f59e0b);
+            --th-grad-ticket: linear-gradient(135deg, #fef3c7 0%, #fde68a 45%, #fcd34d 100%);
+            --th-modal: rgba(254, 243, 199, 0.94);
+            --th-snow: rgba(255, 255, 255, 0.9);
+            --th-snow-shadow: rgba(251, 191, 36, 0.5);
+            --glow-1: radial-gradient(circle, rgba(220, 38, 38, 0.15) 0%, transparent 70%);
+            --glow-2: radial-gradient(circle, rgba(251, 191, 36, 0.25) 0%, transparent 70%);
+        }
+
+        /* โทนสีน้ำเงินหิมะ (Midnight) */
+        :root[data-theme="midnight"] {
+            --th-grad-body: radial-gradient(circle at 50% 0%, #1e3a8a 0%, #0f172a 50%, #020617 100%);
+            --th-panel: rgba(15, 23, 42, 0.88);
+            --th-border: rgba(56, 189, 248, 0.4);
+            --th-text: #f8fafc;
+            --th-muted: #cbd5e1;
+            --th-accent: #38bdf8;
+            --th-accent-light: rgba(56, 189, 248, 0.15);
+            --th-danger: #f87171;
+            --th-danger-bg: rgba(248, 113, 113, 0.2);
+            --th-success: #34d399;
+            --th-success-bg: rgba(52, 211, 153, 0.15);
+            --th-input: rgba(2, 6, 23, 0.7);
+            --th-input-border: rgba(56, 189, 248, 0.4);
+            --th-card: rgba(2, 6, 23, 0.6);
+            --th-card-border: rgba(51, 65, 85, 0.8);
+            --th-card-hover: rgba(15, 23, 42, 0.9);
+            --th-grad-btn: linear-gradient(to right, #38bdf8, #0284c7);
+            --th-grad-ticket: linear-gradient(135deg, #0f172a 0%, #1e293b 45%, #020617 100%);
+            --th-modal: rgba(2, 6, 23, 0.92);
+            --th-snow: rgba(255, 255, 255, 0.9);
+            --th-snow-shadow: rgba(56, 189, 248, 0.4);
+            --glow-1: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, transparent 70%);
+            --glow-2: radial-gradient(circle, rgba(226, 232, 240, 0.15) 0%, transparent 70%);
+        }
+
+        body {
+            background: var(--th-grad-body);
+            color: var(--th-text);
+            transition: background 0.5s ease;
+        }
+
+        .bg-glow-1,
+        .bg-glow-2 {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow-1 {
+            top: -120px;
+            left: -120px;
+            background: var(--glow-1);
+        }
+
+        .bg-glow-2 {
+            bottom: -150px;
+            right: -120px;
+            width: 480px;
+            height: 480px;
+            background: var(--glow-2);
+        }
+
+        #snow-canvas,
+        #sparkle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #snow-canvas {
+            z-index: 1;
+        }
+
+        #sparkle-canvas {
+            z-index: 60;
+        }
+
+        .festive-panel {
+            background: var(--th-panel);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--th-border);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s;
+        }
+
+        .step-section {
+            display: none;
+            opacity: 0;
+            transform: translateX(38px) scale(0.98);
+            transition: opacity 0.45s, transform 0.45s;
+        }
+
+        .step-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+
+        .golden-ticket {
+            background: var(--th-grad-ticket);
+            border: 2px solid var(--th-accent);
+            color: var(--th-text);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s;
+        }
+
+        .golden-ticket::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.4) 50%, transparent 60%);
+            animation: ticketShine 4.5s infinite linear;
+            pointer-events: none;
+        }
+
+        .golden-ticket.no-anim::before {
+            display: none !important;
+        }
+
+        @keyframes ticketShine {
+            0% {
+                transform: translateX(-40%) translateY(-40%);
+            }
+
+            100% {
+                transform: translateX(40%) translateY(40%);
+            }
+        }
+
+        .modal-bg {
+            background: var(--th-modal);
+        }
+
+        .slot-card {
+            transition: all 0.25s;
+        }
+
+        .slot-card:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        .lang-btn {
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background: var(--th-accent);
+            color: #1a1205;
+            font-weight: 800;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+
+<body class="py-6 px-3 sm:py-10 sm:px-6">
+
+    <!-- แถบควบคุมมุมขวาบน: ปุ่มแอดมิน + ปุ่มเปลี่ยนภาษา (TH/EN/ZH) + ปุ่มเปลี่ยนสีธีม -->
+    <div class="fixed top-3 right-3 sm:top-5 sm:right-5 z-50 flex flex-col items-end gap-2">
+        <div class="flex items-center gap-2">
+            <!-- Language Switcher (TH / EN / ZH) -->
+            <div class="flex bg-black/30 backdrop-blur-md p-1 rounded-full border border-white/20 shadow-lg text-xs">
+                <button type="button" id="lang-btn-th" onclick="setLanguage('th')"
+                    class="lang-btn px-2.5 py-1 rounded-full text-white">TH</button>
+                <button type="button" id="lang-btn-en" onclick="setLanguage('en')"
+                    class="lang-btn px-2.5 py-1 rounded-full text-white">EN</button>
+                <button type="button" id="lang-btn-zh" onclick="setLanguage('zh')"
+                    class="lang-btn px-2.5 py-1 rounded-full text-white">中文</button>
+            </div>
+
+            <!-- Admin Button -->
+            <button onclick="openAdminModal()"
+                class="bg-th-danger text-white px-3.5 py-2 rounded-full text-xs font-bold shadow-lg hover:brightness-110 border border-white/20 flex items-center gap-1.5 transition-all hover:scale-105">
+                <i class="fa-solid fa-user-shield"></i> <span data-i18n="adminBtn">ผู้ดูแลระบบ</span>
+            </button>
+        </div>
+
+        <!-- Theme Switcher -->
+        <div class="flex gap-2 bg-black/20 backdrop-blur-md p-1.5 rounded-full border border-white/20 shadow-lg">
+            <button onclick="setTheme('pine')"
+                class="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-white shadow-md bg-[#09281f]"
+                title="Classic Pine"></button>
+            <button onclick="setTheme('light')"
+                class="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-white shadow-md bg-[#fef3c7]"
+                title="White & Gold"></button>
+            <button onclick="setTheme('midnight')"
+                class="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-white shadow-md bg-[#0f172a]"
+                title="Midnight Blue"></button>
+        </div>
+    </div>
+
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+    <canvas id="snow-canvas"></canvas><canvas id="sparkle-canvas"></canvas>
+
+    <main class="relative z-10 max-w-4xl mx-auto mt-10 sm:mt-6">
+        <!-- Header -->
+        <header class="text-center mb-7">
+            <div
+                class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-th-accent-light border border-th-border text-th-text text-xs sm:text-sm font-bold tracking-wider mb-3 shadow-md">
+                <i class="fa-solid fa-star text-th-accent"></i>
+                <span>BANGKOK CHRISTIAN HOSPITAL PRESENTS</span>
+                <i class="fa-solid fa-star text-th-accent"></i>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-th-text drop-shadow-sm mb-2">
+                🎄 Christmas of <span class="text-th-danger">SHA</span>ring 2026 🎁
+            </h1>
+            <p class="text-th-muted text-sm sm:text-base max-w-2xl mx-auto font-medium">
+                <span data-i18n="headerSubtitle">ระบบลงทะเบียนจองรอบการแสดงคริสต์มาส โรงพยาบาลกรุงเทพคริสเตียน</span>
+                <span class="block text-xs sm:text-sm mt-1 text-th-accent font-bold" data-i18n="headerDateRange">📅
+                    จัดแสดงระหว่างวันที่ 20–25 ธันวาคม 2026</span>
+            </p>
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-2.5">
+                <button type="button" onclick="openScheduleModal()"
+                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-th-input hover:bg-th-accent-light border border-th-border text-sm text-th-text font-bold transition shadow-md">
+                    <i class="fa-solid fa-calendar-days text-th-accent"></i>
+                    <span data-i18n="checkScheduleBtn">ตรวจสอบตารางคิว / แก้ไขข้อมูลการจอง</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Panel -->
+        <section class="festive-panel rounded-3xl overflow-hidden">
+            <div class="p-5 sm:p-8 md:p-10">
+
+                <!-- Stepper -->
+                <div class="mb-8">
+                    <div class="relative flex items-center justify-between max-w-3xl mx-auto">
+                        <div
+                            class="absolute left-0 top-5 transform -translate-y-1/2 w-full h-1.5 bg-th-input-border opacity-30 rounded-full z-0">
+                        </div>
+                        <div id="stepper-fill"
+                            class="absolute left-0 top-5 transform -translate-y-1/2 h-1.5 bg-grad-btn rounded-full z-0 transition-all duration-500"
+                            style="width: 0%;"></div>
+
+                        <button type="button" class="relative z-10 flex flex-col items-center">
+                            <div id="step-circle-1"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all">
+                                <i class="fa-solid fa-user-pen"></i>
+                            </div>
+                            <span id="step-label-1" data-i18n="step1Short"
+                                class="mt-2 text-[11px] sm:text-xs font-semibold text-center">1. ผู้จอง</span>
+                        </button>
+                        <button type="button" class="relative z-10 flex flex-col items-center">
+                            <div id="step-circle-2"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all">
+                                <i class="fa-solid fa-calendar-days"></i>
+                            </div>
+                            <span id="step-label-2" data-i18n="step2Short"
+                                class="mt-2 text-[11px] sm:text-xs font-medium text-center">2. วัน & เวลา</span>
+                        </button>
+                        <button type="button" class="relative z-10 flex flex-col items-center">
+                            <div id="step-circle-3"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all">
+                                <i class="fa-solid fa-masks-theater"></i>
+                            </div>
+                            <span id="step-label-3" data-i18n="step3Short"
+                                class="mt-2 text-[11px] sm:text-xs font-medium text-center">3. รูปแบบ</span>
+                        </button>
+                        <button type="button" class="relative z-10 flex flex-col items-center">
+                            <div id="step-circle-4"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <span id="step-label-4" data-i18n="step4Short"
+                                class="mt-2 text-[11px] sm:text-xs font-medium text-center">4. จำนวนคน</span>
+                        </button>
+                        <button type="button" class="relative z-10 flex flex-col items-center">
+                            <div id="step-circle-5"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all">
+                                <i class="fa-solid fa-ticket"></i>
+                            </div>
+                            <span id="step-label-5" data-i18n="step5Short"
+                                class="mt-2 text-[11px] sm:text-xs font-medium text-center">5. ยืนยัน</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Alert -->
+                <div id="alert-box"
+                    class="hidden mb-6 p-4 rounded-2xl border shadow-sm flex items-center justify-between gap-3 transition-all">
+                    <div class="flex items-center gap-3">
+                        <i id="alert-icon" class="text-lg"></i>
+                        <span id="alert-text" class="text-sm font-medium"></span>
+                    </div>
+                    <button type="button" onclick="hideAlert()" class="opacity-70 hover:opacity-100 text-sm px-2"><i
+                            class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <!-- STEP 1 -->
+                <div id="step-1" class="step-section active">
+                    <div class="max-w-xl mx-auto">
+                        <div class="text-center mb-6">
+                            <span data-i18n="step1Badge"
+                                class="inline-block px-3.5 py-1 rounded-full bg-th-accent-light text-th-text text-xs font-bold mb-2 border border-th-border">ขั้นตอนที่
+                                1 จาก 5</span>
+                            <h2
+                                class="text-xl sm:text-2xl font-bold text-th-text flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-address-card text-th-accent"></i> <span
+                                    data-i18n="step1Title">ข้อมูลผู้จองและคริสตจักร</span>
+                            </h2>
+                        </div>
+                        <form id="step1-form" class="space-y-5" novalidate>
+                            <div>
+                                <label class="block text-sm font-bold text-th-text mb-1.5"><span
+                                        data-i18n="labelName">1. ชื่อ-นามสกุล ผู้จอง</span> <span
+                                        class="text-th-danger">*</span></label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute inset-y-0 left-0 pl-4 flex items-center text-th-muted opacity-50"><i
+                                            class="fa-solid fa-user"></i></span>
+                                    <input id="guest-name" type="text" maxlength="60" required
+                                        data-i18n-placeholder="phName" placeholder="เช่น คุณสมชาย ใจดี"
+                                        class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-th-input border border-th-input-border focus:outline-none focus:border-th-accent focus:ring-2 focus:ring-th-accent/30 text-th-text font-medium placeholder-th-muted">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-th-text mb-1.5"><span
+                                        data-i18n="labelChurch">2. คริสตจักร / หน่วยงาน</span> <span
+                                        class="text-th-danger">*</span></label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute inset-y-0 left-0 pl-4 flex items-center text-th-muted opacity-50"><i
+                                            class="fa-solid fa-church"></i></span>
+                                    <input id="guest-church" type="text" maxlength="80" required
+                                        data-i18n-placeholder="phChurch" placeholder="ระบุชื่อคริสตจักร หรือ หน่วยงาน"
+                                        class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-th-input border border-th-input-border focus:outline-none focus:border-th-accent focus:ring-2 focus:ring-th-accent/30 text-th-text font-medium placeholder-th-muted">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-th-text mb-1.5"><span
+                                        data-i18n="labelPhone">3. เบอร์โทรศัพท์ติดต่อ</span> <span
+                                        class="text-th-danger">*</span></label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute inset-y-0 left-0 pl-4 flex items-center text-th-muted opacity-50"><i
+                                            class="fa-solid fa-phone-volume"></i></span>
+                                    <input id="guest-phone" type="tel" maxlength="12" required
+                                        data-i18n-placeholder="phPhone" placeholder="เช่น 081-234-5678"
+                                        class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-th-input border border-th-input-border focus:outline-none focus:border-th-accent focus:ring-2 focus:ring-th-accent/30 text-th-text font-medium placeholder-th-muted">
+                                </div>
+                                <p class="text-xs text-th-muted mt-1.5 opacity-85"><i
+                                        class="fa-solid fa-key mr-1 text-th-accent"></i><span
+                                        data-i18n="phoneHint">เบอร์โทรศัพท์จะใช้เป็นรหัสยืนยันหากท่านต้องการแก้ไขข้อมูลในภายหลัง</span>
+                                </p>
+                            </div>
+                            <div class="pt-4">
+                                <button type="submit"
+                                    class="w-full py-4 px-6 rounded-xl bg-grad-btn font-bold text-base shadow-lg hover:brightness-110 active:scale-[0.99] transition flex items-center justify-center gap-2 text-amber-950">
+                                    <span data-i18n="btnNextStep2">ถัดไป: เลือกวันที่ สถานที่ และเวลา</span><i
+                                        class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div id="step-2" class="step-section">
+                    <div class="text-center mb-6">
+                        <span data-i18n="step2Badge"
+                            class="inline-block px-3.5 py-1 rounded-full bg-th-accent-light text-th-text text-xs font-bold mb-2 border border-th-border">ขั้นตอนที่
+                            2 จาก 5</span>
+                        <h2 data-i18n="step2Title" class="text-xl sm:text-2xl font-bold text-th-text">เลือกวันที่
+                            สถานที่ และรอบเวลา</h2>
+                        <p data-i18n="step2MultiHint" class="text-sm text-th-accent font-bold mt-1">
+                            (ท่านสามารถคลิกเลือกได้หลายรอบเวลาพร้อมกัน)</p>
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="block text-sm font-bold text-th-text mb-2"><i
+                                class="fa-regular fa-calendar-days text-th-accent mr-1"></i> <span
+                                data-i18n="labelSelectDate">1. เลือกวันที่ต้องการแสดง (20 - 25 ธ.ค. 2026)</span> <span
+                                class="text-th-danger">*</span></label>
+                        <select id="booking-date" onchange="onDateChange()"
+                            class="w-full p-3.5 rounded-xl bg-th-input border border-th-input-border text-th-text font-bold text-base focus:outline-none focus:border-th-accent">
+                            <option value="20 ธ.ค. 2026">20 Dec 2026 (20 ธ.ค. 2026)</option>
+                            <option value="21 ธ.ค. 2026">21 Dec 2026 (21 ธ.ค. 2026)</option>
+                            <option value="22 ธ.ค. 2026">22 Dec 2026 (22 ธ.ค. 2026)</option>
+                            <option value="23 ธ.ค. 2026">23 Dec 2026 (23 ธ.ค. 2026)</option>
+                            <option value="24 ธ.ค. 2026">24 Dec 2026 (24 ธ.ค. 2026 · Christmas Eve)</option>
+                            <option value="25 ธ.ค. 2026" selected>25 Dec 2026 (25 ธ.ค. 2026 · Christmas Day)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold text-th-text mb-2"><i
+                                class="fa-solid fa-location-dot text-th-accent mr-1"></i> <span
+                                data-i18n="labelSelectVenue">2. เลือกสถานที่จัดการแสดง</span> <span
+                                class="text-th-danger">*</span></label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <button type="button" id="zone-btn-indoor" onclick="selectZone('indoor')"
+                                class="text-left p-4 rounded-2xl border transition-all relative group bg-th-card border-th-card-border hover:border-th-accent">
+                                <div class="flex items-center gap-3">
+                                    <div id="zone-icon-indoor"
+                                        class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 border border-th-border bg-th-input text-th-accent">
+                                        🏥</div>
+                                    <div class="flex-1">
+                                        <h4 data-i18n="venueIndoorTitle" class="font-bold text-sm text-th-text">
+                                            อาคารหมอแวลล์ (ภายในอาคาร)</h4>
+                                        <p data-i18n="venueIndoorSub" class="text-xs text-th-muted">รพ.กรุงเทพคริสเตียน
+                                        </p>
+                                    </div>
+                                    <span id="zone-avail-indoor" class="text-xs font-bold px-2 py-0.5 rounded"></span>
+                                </div>
+                            </button>
+                            <button type="button" id="zone-btn-outdoor" onclick="selectZone('outdoor')"
+                                class="text-left p-4 rounded-2xl border transition-all relative group bg-th-card border-th-card-border hover:border-th-accent">
+                                <div class="flex items-center gap-3">
+                                    <div id="zone-icon-outdoor"
+                                        class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 border border-th-border bg-th-input text-th-accent">
+                                        🎄</div>
+                                    <div class="flex-1">
+                                        <h4 data-i18n="venueOutdoorTitle" class="font-bold text-sm text-th-text">หน้า
+                                            รพ. (ภายนอกอาคาร)</h4>
+                                        <p data-i18n="venueOutdoorSub" class="text-xs text-th-muted">
+                                            ลานด้านหน้าติดถนนสีลม</p>
+                                    </div>
+                                    <span id="zone-avail-outdoor" class="text-xs font-bold px-2 py-0.5 rounded"></span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                            <h3 class="text-base font-bold text-th-text flex items-center gap-2"><span
+                                    data-i18n="labelSelectSlot">3. คลิกเลือกรอบเวลา</span> <span id="slot-zone-pill"
+                                    class="text-xs px-2.5 py-0.5 rounded-full bg-th-accent-light text-th-text border border-th-border"></span>
+                            </h3>
+                            <span id="selected-slots-count" class="text-xs font-bold text-th-accent">เลือกแล้ว 0
+                                รอบ</span>
+                        </div>
+                        <div id="slots-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5"></div>
+                    </div>
+
+                    <div
+                        class="pt-4 border-t border-th-border flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <button type="button" onclick="goToStep(1)"
+                            class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-th-input hover:bg-th-accent-light text-th-text border border-th-border font-bold text-sm transition flex items-center justify-center gap-2"><i
+                                class="fa-solid fa-arrow-left"></i> <span data-i18n="btnBack">ย้อนกลับ</span></button>
+                        <button type="button" onclick="handleStep2Next()"
+                            class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-grad-btn text-amber-950 font-bold text-sm shadow-lg hover:brightness-110 transition flex items-center justify-center gap-2"><span
+                                data-i18n="btnNextStep3">ถัดไป: รูปแบบการแสดง</span> <i
+                                class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div id="step-3" class="step-section">
+                    <div class="max-w-2xl mx-auto">
+                        <div class="text-center mb-6">
+                            <span data-i18n="step3Badge"
+                                class="inline-block px-3.5 py-1 rounded-full bg-th-accent-light text-th-text text-xs font-bold mb-2 border border-th-border">ขั้นตอนที่
+                                3 จาก 5</span>
+                            <h2 class="text-xl sm:text-2xl font-bold text-th-text"><i
+                                    class="fa-solid fa-masks-theater text-th-accent"></i> <span
+                                    data-i18n="step3Title">รูปแบบการแสดง</span></h2>
+                        </div>
+                        <div class="mb-4">
+                            <label data-i18n="labelQuickTags"
+                                class="block text-xs sm:text-sm font-bold text-th-muted mb-2">ตัวอย่าง
+                                (คลิกเพื่อเพิ่มข้อความ):</label>
+                            <div id="performance-tags-container" class="flex flex-wrap gap-2"></div>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-th-text mb-2"><span
+                                    data-i18n="labelPerfDesc">รายละเอียดรูปแบบการแสดงคร่าวๆ</span> <span
+                                    class="text-th-danger">*</span></label>
+                            <textarea id="performance-desc" rows="5" maxlength="500" data-i18n-placeholder="phPerfDesc"
+                                placeholder="เช่น ร้องเพลงประสานเสียง 5 เพลง, ดนตรีอะคูสติก..."
+                                class="w-full p-4 rounded-2xl bg-th-input border border-th-input-border text-th-text placeholder-th-muted focus:outline-none focus:border-th-accent focus:ring-2 focus:ring-th-accent/30"></textarea>
+                        </div>
+                        <div
+                            class="pt-4 border-t border-th-border flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <button type="button" onclick="goToStep(2)"
+                                class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-th-input hover:bg-th-accent-light text-th-text border border-th-border font-bold text-sm transition"><i
+                                    class="fa-solid fa-arrow-left mr-2"></i><span
+                                    data-i18n="btnBack">ย้อนกลับ</span></button>
+                            <button type="button" onclick="handleStep3Next()"
+                                class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-grad-btn text-amber-950 font-bold text-sm shadow-lg hover:brightness-110 transition"><span
+                                    data-i18n="btnNextStep4">ถัดไป: จำนวนคน</span> <i
+                                    class="fa-solid fa-arrow-right ml-2"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4 -->
+                <div id="step-4" class="step-section">
+                    <div class="max-w-2xl mx-auto">
+                        <div class="text-center mb-6">
+                            <span data-i18n="step4Badge"
+                                class="inline-block px-3.5 py-1 rounded-full bg-th-accent-light text-th-text text-xs font-bold mb-2 border border-th-border">ขั้นตอนที่
+                                4 จาก 5</span>
+                            <h2 class="text-xl sm:text-2xl font-bold text-th-text"><i
+                                    class="fa-solid fa-users text-th-accent"></i> <span
+                                    data-i18n="step4Title">จำนวนผู้แสดงและอุปกรณ์</span></h2>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="block text-sm font-bold text-th-text mb-2"><span
+                                    data-i18n="labelPeopleCount">1. จำนวนผู้เข้าร่วมแสดง (คน)</span> <span
+                                    class="text-th-danger">*</span></label>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <button type="button" onclick="setPerfCount(5)"
+                                    class="px-4 py-2 rounded-lg border border-th-border bg-th-card text-th-text text-sm font-medium hover:bg-th-accent-light">1-5</button>
+                                <button type="button" onclick="setPerfCount(10)"
+                                    class="px-4 py-2 rounded-lg border border-th-border bg-th-card text-th-text text-sm font-medium hover:bg-th-accent-light">6-10</button>
+                                <button type="button" onclick="setPerfCount(20)"
+                                    class="px-4 py-2 rounded-lg border border-th-border bg-th-card text-th-text text-sm font-medium hover:bg-th-accent-light">11-20</button>
+                            </div>
+                            <input id="perf-count" type="number" min="1" max="200" required
+                                data-i18n-placeholder="phPeopleCount" placeholder="พิมพ์จำนวนคน (เช่น 12)"
+                                class="w-full p-3.5 rounded-xl bg-th-input border border-th-input-border focus:outline-none focus:border-th-accent text-th-text font-bold">
+                        </div>
+
+                        <div class="mb-6">
+                            <label data-i18n="labelEquipment" class="block text-sm font-bold text-th-text mb-2">2.
+                                เลือกอุปกรณ์ที่ต้องการใช้ (ถ้ามี):</label>
+                            <div id="equipment-chips-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-3">
+                            </div>
+                            <textarea id="equipment-notes" rows="2" maxlength="200" data-i18n-placeholder="phEqNotes"
+                                placeholder="หมายเหตุเพิ่มเติม..."
+                                class="w-full p-3.5 rounded-xl bg-th-input border border-th-input-border text-th-text placeholder-th-muted focus:outline-none focus:border-th-accent focus:ring-2 focus:ring-th-accent/30 text-sm"></textarea>
+                        </div>
+
+                        <!-- สรุป -->
+                        <div
+                            class="mb-6 p-4 rounded-2xl bg-th-card border border-th-border shadow-sm text-sm text-th-text">
+                            <h3 class="font-bold text-th-text mb-2 border-b border-th-border pb-2"><i
+                                    class="fa-solid fa-clipboard-check mr-2 text-th-accent"></i><span
+                                    data-i18n="reviewHeading">ตรวจสอบข้อมูลก่อนยืนยัน</span></h3>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div><span data-i18n="reviewBookerLabel"
+                                        class="text-th-muted block text-xs">ผู้จอง:</span> <strong
+                                        id="review-booker"></strong></div>
+                                <div><span data-i18n="reviewPeopleLabel"
+                                        class="text-th-muted block text-xs">จำนวนผู้แสดง:</span> <strong
+                                        id="review-people" class="text-th-text"></strong></div>
+                                <div class="col-span-2 mt-1">
+                                    <span data-i18n="reviewTimeLabel"
+                                        class="text-th-muted block text-xs">วันที่และรอบเวลาที่เลือกทั้งหมด:</span>
+                                    <div id="review-time"
+                                        class="text-th-accent font-bold bg-th-accent-light p-2 rounded border border-th-border mt-1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <button type="button" onclick="goToStep(3)"
+                                class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-th-input hover:bg-th-accent-light text-th-text border border-th-border font-bold text-sm transition"><i
+                                    class="fa-solid fa-arrow-left mr-2"></i><span
+                                    data-i18n="btnBack">ย้อนกลับ</span></button>
+                            <button type="button" onclick="submitFinalBooking()"
+                                class="w-full sm:w-auto px-8 py-4 rounded-xl bg-th-danger text-white font-bold text-base shadow-xl hover:brightness-110 transition border border-white/20"><i
+                                    class="fa-solid fa-check-double text-white mr-2"></i><span
+                                    data-i18n="btnConfirmBooking">ยืนยันการจองทั้งหมด</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 5 -->
+                <div id="step-5" class="step-section">
+                    <div class="max-w-2xl mx-auto">
+                        <div class="text-center mb-6">
+                            <div
+                                class="w-16 h-16 rounded-full bg-th-success text-white text-3xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <h2 data-i18n="step5Title" class="text-2xl sm:text-3xl font-bold text-th-text">
+                                จองรอบเวลาสำเร็จ!</h2>
+                            <p id="auto-dl-msg" class="text-sm text-th-success mt-2 font-bold"><i
+                                    class="fa-solid fa-spinner fa-spin mr-1"></i>
+                                ระบบกำลังดาวน์โหลดรูปภาพบัตรคิวลงมือถือของท่าน...</p>
+                        </div>
+
+                        <!-- บัตรคิวรวม Golden Pass -->
+                        <div id="ticket-capture-area"
+                            class="golden-ticket rounded-3xl p-6 sm:p-8 shadow-2xl mb-6 mx-auto">
+                            <div
+                                class="flex flex-wrap justify-between items-center border-b border-th-text/20 pb-4 mb-4 gap-3">
+                                <div>
+                                    <div
+                                        class="text-xs font-bold text-th-text uppercase tracking-widest opacity-80 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-star text-th-accent"></i> <span>GOLDEN PASS · CHRISTMAS OF
+                                            SHARING 2026</span>
+                                    </div>
+                                    <h3 class="text-base sm:text-lg font-extrabold mt-1" id="ticket-date-display"
+                                        style="color: var(--th-accent);">📅 วันที่แสดง: 25 ธ.ค. 2026</h3>
+                                </div>
+                                <div
+                                    class="bg-th-accent text-amber-950 px-4 py-2 rounded-xl text-xs font-extrabold shadow-md text-right">
+                                    <span id="ticket-time-summary" class="text-sm sm:text-base">⏰ 09.00–10.00 น.</span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="col-span-2">
+                                    <div data-i18n="ticketChurchLabel" class="text-xs text-th-text opacity-75">หน่วยงาน
+                                        / คริสตจักร</div>
+                                    <div id="ticket-church" class="text-lg font-bold"></div>
+                                </div>
+                                <div class="col-span-2 sm:col-span-1">
+                                    <div data-i18n="ticketBookerLabel" class="text-xs text-th-text opacity-70">ผู้จอง /
+                                        เบอร์โทร</div>
+                                    <div id="ticket-name-phone" class="font-semibold text-sm"></div>
+                                </div>
+                                <div class="col-span-2 sm:col-span-1">
+                                    <div data-i18n="ticketPeopleRefLabel" class="text-xs text-th-text opacity-70">
+                                        จำนวนผู้แสดง / รหัสอ้างอิง</div>
+                                    <div><span id="ticket-people" class="font-bold"></span> · <span id="ticket-ref"
+                                            class="text-xs opacity-80"></span></div>
+                                </div>
+                                <div class="col-span-2">
+                                    <div data-i18n="ticketTimeListLabel" class="text-xs text-th-text opacity-70 mb-1">
+                                        รายละเอียดสถานที่และเวลาแสดง</div>
+                                    <div id="ticket-time-list"
+                                        class="text-sm font-bold text-th-accent bg-black/25 p-3 rounded-xl border border-th-border">
+                                    </div>
+                                </div>
+                                <div class="col-span-2">
+                                    <div data-i18n="ticketPerfLabel" class="text-xs text-th-text opacity-70">
+                                        รูปแบบการแสดง & อุปกรณ์</div>
+                                    <div id="ticket-performance" class="text-sm"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-col sm:flex-row justify-center gap-3">
+                            <button type="button" onclick="downloadTicketImage(false)"
+                                class="px-5 py-3.5 rounded-xl bg-th-input border border-th-border text-th-text font-bold shadow hover:bg-th-accent-light flex items-center justify-center transition text-sm">
+                                <i class="fa-solid fa-download mr-2 text-th-accent"></i> <span id="dl-btn-text"
+                                    data-i18n="btnDownloadAgain">โหลดรูปอีกครั้ง</span>
+                            </button>
+                            <button type="button" onclick="resetForNewPerson()"
+                                class="px-6 py-3.5 rounded-xl bg-grad-btn text-amber-950 font-bold shadow-lg hover:brightness-110 flex items-center justify-center transition text-base w-full sm:w-auto">
+                                <i class="fa-solid fa-house mr-2"></i> <span data-i18n="btnFinishHome">เสร็จสิ้น ·
+                                    กลับหน้าแรก (เริ่มจองใหม่)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <footer class="mt-6 pb-10 text-center text-th-muted font-medium text-xs sm:text-sm">✦ Christmas of SHAring 2026
+            · Bangkok Christian Hospital ✦</footer>
+    </main>
+
+    <!-- MODAL ตรวจสอบคิวการแสดง (สำหรับผู้จอง & แก้ไขข้อมูลย้อนหลัง) -->
+    <div id="schedule-modal"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm">
+        <div
+            class="w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
+            <div class="flex items-center justify-between p-4 sm:p-5 border-b border-th-border bg-th-panel">
+                <div>
+                    <h3 class="font-bold text-th-text text-lg"><i
+                            class="fa-solid fa-calendar-check text-th-accent mr-2"></i><span
+                            data-i18n="modalScheduleTitle">ตรวจสอบตารางคิวการแสดง (20–25 ธ.ค. 2026)</span></h3>
+                    <p data-i18n="modalScheduleSub" class="text-xs text-th-muted mt-0.5">ผู้จองสามารถกดปุ่ม
+                        "แก้ไขข้อมูล" ในรอบของตนเองโดยใช้เบอร์โทรศัพท์ที่ลงทะเบียนไว้เพื่อยืนยันตัวตน</p>
+                </div>
+                <button onclick="closeScheduleModal()"
+                    class="w-8 h-8 rounded-full bg-th-input border border-th-border text-th-text hover:bg-th-danger hover:text-white transition"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 bg-th-panel/80">
+                <div id="user-results" class="space-y-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ให้ผู้จองยืนยันตัวตนด้วยเบอร์โทรศัพท์ และแก้ไขข้อมูลย้อนหลัง -->
+    <div id="user-self-edit-modal"
+        class="fixed inset-0 z-[65] hidden flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm">
+        <div
+            class="w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
+            <div class="p-4 border-b border-th-border flex justify-between items-center bg-th-input">
+                <h3 class="font-bold text-th-text"><i class="fa-solid fa-user-check text-th-accent mr-2"></i><span
+                        data-i18n="userEditModalTitle">แก้ไขข้อมูลการจองของคุณ</span></h3>
+                <button type="button" onclick="closeUserSelfEditModal()"
+                    class="text-th-text hover:text-th-danger transition"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <!-- ขั้นตอนที่ 1: ยืนยันเบอร์โทรศัพท์ -->
+            <div id="user-verify-step" class="p-5 space-y-4">
+                <div class="p-3.5 rounded-xl bg-th-accent-light border border-th-border text-xs">
+                    <div id="user-verify-slot-info" class="font-bold text-th-accent text-sm mb-1"></div>
+                    <div id="user-verify-booker-hint" class="text-th-text opacity-90"></div>
+                </div>
+                <div>
+                    <label data-i18n="userVerifyLabel"
+                        class="block text-xs sm:text-sm font-bold text-th-text mb-1.5">กรุณากรอกเบอร์โทรศัพท์เต็มที่ใช้จองรอบนี้เพื่อยืนยันตัวตน:</label>
+                    <input id="user-verify-phone-input" type="tel" maxlength="12" placeholder="08X-XXX-XXXX"
+                        class="w-full p-3 rounded-xl bg-th-input border border-th-input-border text-th-text font-bold text-center tracking-wider focus:outline-none focus:border-th-accent">
+                    <p id="user-verify-error" data-i18n="userVerifyError"
+                        class="text-th-danger text-xs font-bold mt-2 hidden">เบอร์โทรศัพท์ไม่ตรงกับข้อมูลที่ลงทะเบียนไว้
+                        กรุณาตรวจสอบอีกครั้ง</p>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeUserSelfEditModal()" data-i18n="btnCancel"
+                        class="flex-1 py-2.5 rounded-xl border border-th-border text-th-text font-bold text-sm bg-th-card">ยกเลิก</button>
+                    <button type="button" onclick="confirmUserPhoneVerification()"
+                        class="flex-1 py-2.5 rounded-xl bg-grad-btn text-amber-950 font-bold text-sm shadow"><i
+                            class="fa-solid fa-unlock-keyhole mr-1.5"></i><span
+                            data-i18n="btnVerifyPhone">ยืนยันเบอร์โทรศัพท์</span></button>
+                </div>
+            </div>
+
+            <!-- ขั้นตอนที่ 2: ฟอร์มแก้ไขข้อมูลของผู้จอง (แสดงหลังยืนยันเบอร์ผ่าน) -->
+            <form id="user-self-edit-form" class="p-5 space-y-3 overflow-y-auto max-h-[75vh] hidden">
+                <input type="hidden" id="user-edit-date">
+                <input type="hidden" id="user-edit-zone">
+                <input type="hidden" id="user-edit-idx">
+
+                <div
+                    class="p-2.5 rounded-lg bg-th-success-bg border border-th-success text-th-success text-xs font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-circle-check"></i> <span
+                        data-i18n="verifiedSuccessBadge">ยืนยันเบอร์โทรศัพท์สำเร็จ สามารถแก้ไขข้อมูลด้านล่างได้</span>
+                </div>
+
+                <div>
+                    <label data-i18n="labelName" class="block text-xs font-bold text-th-text mb-1">1. ชื่อ-นามสกุล
+                        ผู้จอง</label>
+                    <input id="user-edit-name" type="text" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                </div>
+                <div>
+                    <label data-i18n="labelChurch" class="block text-xs font-bold text-th-text mb-1">2. คริสตจักร /
+                        หน่วยงาน</label>
+                    <input id="user-edit-church" type="text" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                </div>
+                <div>
+                    <label data-i18n="labelPhone" class="block text-xs font-bold text-th-text mb-1">3.
+                        เบอร์โทรศัพท์ติดต่อ</label>
+                    <input id="user-edit-phone" type="tel" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                </div>
+                <div>
+                    <label data-i18n="labelPeopleCount"
+                        class="block text-xs font-bold text-th-text mb-1">จำนวนผู้เข้าร่วมแสดง (คน)</label>
+                    <input id="user-edit-people" type="number" min="1" max="200" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                </div>
+                <div>
+                    <label data-i18n="labelPerfDesc"
+                        class="block text-xs font-bold text-th-text mb-1">รายละเอียดรูปแบบการแสดงคร่าวๆ</label>
+                    <textarea id="user-edit-desc" rows="2" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
+                </div>
+                <div>
+                    <label data-i18n="labelEquipment"
+                        class="block text-xs font-bold text-th-text mb-1">อุปกรณ์ที่ต้องการใช้ / หมายเหตุ</label>
+                    <textarea id="user-edit-eq" rows="2"
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
+                </div>
+                <div class="pt-3 flex gap-2">
+                    <button type="button" onclick="closeUserSelfEditModal()" data-i18n="btnCancel"
+                        class="flex-1 p-2.5 rounded-lg border border-th-border text-th-text font-bold text-sm bg-th-card">ยกเลิก</button>
+                    <button type="submit" data-i18n="btnSaveChanges"
+                        class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm hover:brightness-110 transition">บันทึกการแก้ไข</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL ผู้ดูแลระบบ (ADMIN) -->
+    <div id="admin-modal"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm">
+        <div
+            class="w-full max-w-5xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
+            <div class="flex items-center justify-between p-4 border-b border-th-border bg-th-panel">
+                <h3 class="font-bold text-th-text text-lg"><i
+                        class="fa-solid fa-user-shield text-th-danger mr-2"></i><span
+                        data-i18n="adminModalTitle">จัดการระบบ (ผู้ดูแลระบบ)</span></h3>
+                <button onclick="closeAdminModal()"
+                    class="w-8 h-8 rounded-full bg-th-input border border-th-border text-th-text hover:bg-th-danger hover:text-white transition"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 bg-th-panel/80">
+                <div id="admin-login-box" class="max-w-sm mx-auto text-center my-10">
+                    <div
+                        class="w-16 h-16 rounded-full bg-th-danger/10 text-th-danger text-3xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <p class="text-sm text-th-text mb-4 font-bold">กรุณาระบุรหัสผ่านผู้ดูแลระบบ</p>
+                    <div class="flex gap-2">
+                        <input id="verify-pwd" type="password" placeholder="พิมพ์รหัสผ่าน"
+                            class="flex-1 p-3 rounded-xl border border-th-input-border bg-th-input text-th-text focus:outline-none focus:border-th-accent text-center">
+                        <button onclick="verifyAdmin()"
+                            class="px-5 rounded-xl bg-th-accent text-amber-950 font-bold hover:opacity-90 transition">เข้าสู่ระบบ</button>
+                    </div>
+                    <p id="admin-error" class="text-th-danger text-xs mt-3 font-bold hidden">รหัสผ่านไม่ถูกต้อง</p>
+                </div>
+
+                <div id="admin-dashboard" class="hidden space-y-5">
+                    <div
+                        class="flex flex-col sm:flex-row justify-between items-center bg-th-accent-light p-3 rounded-xl border border-th-border gap-3">
+                        <span class="font-bold text-th-text">ตารางคิวทั้งหมด (แยกตามวัน 20–25 ธ.ค. 2026)</span>
+                        <div class="flex gap-2 w-full sm:w-auto">
+                            <button onclick="exportToPDF()"
+                                class="flex-1 sm:flex-none px-4 py-2 bg-th-success text-pine-950 rounded-lg text-xs font-bold transition hover:brightness-110 flex items-center justify-center">
+                                <i class="fa-solid fa-file-pdf mr-1.5"></i> <span>Export PDF</span>
+                            </button>
+                            <button onclick="handleResetBookings()"
+                                class="flex-1 sm:flex-none px-4 py-2 bg-th-danger text-white rounded-lg text-xs font-bold transition hover:brightness-110 flex items-center justify-center">
+                                <i class="fa-solid fa-trash-can mr-1.5"></i> ล้างข้อมูลทั้งหมด
+                            </button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                        <div class="p-4 rounded-2xl border border-th-border bg-th-card shadow-sm">
+                            <div class="font-bold text-th-text mb-3 pb-2 border-b border-th-border opacity-90">🏥
+                                ภายในอาคาร (อาคารหมอแวลล์)</div>
+                            <div id="modal-list-indoor" class="space-y-2.5 text-xs"></div>
+                        </div>
+                        <div class="p-4 rounded-2xl border border-th-border bg-th-card shadow-sm">
+                            <div class="font-bold text-th-text mb-3 pb-2 border-b border-th-border opacity-90">🎄
+                                ภายนอกอาคาร (หน้าโรงพยาบาล)</div>
+                            <div id="modal-list-outdoor" class="space-y-2.5 text-xs"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL เพิ่ม/แก้ไขข้อมูลของแอดมิน -->
+    <div id="admin-edit-modal"
+        class="fixed inset-0 z-[60] hidden flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm">
+        <div
+            class="w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
+            <div class="p-4 border-b border-th-border flex justify-between items-center bg-th-input">
+                <h3 class="font-bold text-th-text"><i
+                        class="fa-solid fa-pen-to-square text-th-accent mr-2"></i>จัดการข้อมูลการจอง (Admin)</h3>
+                <button onclick="closeAdminEdit()" class="text-th-text hover:text-th-danger transition"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="admin-edit-form" class="p-4 space-y-3 overflow-y-auto max-h-[70vh]">
+                <input type="hidden" id="edit-zone">
+                <input type="hidden" id="edit-idx">
+                <div>
+                    <label class="block text-xs font-bold text-th-text mb-1">วันที่แสดง</label>
+                    <select id="edit-date-select"
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm font-bold">
+                        <option value="20 ธ.ค. 2026">20 ธ.ค. 2026</option>
+                        <option value="21 ธ.ค. 2026">21 ธ.ค. 2026</option>
+                        <option value="22 ธ.ค. 2026">22 ธ.ค. 2026</option>
+                        <option value="23 ธ.ค. 2026">23 ธ.ค. 2026</option>
+                        <option value="24 ธ.ค. 2026">24 ธ.ค. 2026</option>
+                        <option value="25 ธ.ค. 2026">25 ธ.ค. 2026</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-th-text mb-1">ชื่อ-นามสกุล</label>
+                    <input id="edit-name" type="text" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-th-text mb-1">คริสตจักร/หน่วยงาน</label>
+                    <input id="edit-church" type="text" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-th-text mb-1">เบอร์โทรศัพท์</label>
+                    <input id="edit-phone" type="text" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-th-text mb-1">จำนวนคน</label>
+                    <input id="edit-people" type="number" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-th-text mb-1">รูปแบบการแสดง</label>
+                    <textarea id="edit-desc" rows="2" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-th-text mb-1">อุปกรณ์ที่ใช้/หมายเหตุ</label>
+                    <textarea id="edit-eq" rows="2"
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
+                </div>
+                <div class="pt-3 flex gap-2">
+                    <button type="button" onclick="closeAdminEdit()"
+                        class="flex-1 p-2.5 rounded-lg border border-th-border text-th-text font-bold text-sm bg-th-card hover:bg-th-accent-light transition">ยกเลิก</button>
+                    <button type="submit"
+                        class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm hover:brightness-110 transition">บันทึกข้อมูล</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // 1. MULTI-LANGUAGE DICTIONARY (TH / EN / ZH)
+        // =========================================================================
+        const I18N = {
+            th: {
+                adminBtn: 'ผู้ดูแลระบบ',
+                headerSubtitle: 'ระบบลงทะเบียนจองรอบการแสดงคริสต์มาส โรงพยาบาลกรุงเทพคริสเตียน',
+                headerDateRange: '📅 จัดแสดงระหว่างวันที่ 20–25 ธันวาคม 2026',
+                checkScheduleBtn: 'ตรวจสอบตารางคิว / แก้ไขข้อมูลการจอง',
+                step1Short: '1. ผู้จอง', step2Short: '2. วัน & เวลา', step3Short: '3. รูปแบบ', step4Short: '4. จำนวนคน', step5Short: '5. ยืนยัน',
+                step1Badge: 'ขั้นตอนที่ 1 จาก 5', step1Title: 'ข้อมูลผู้จอง',
+                labelName: '1. ชื่อ-นามสกุล ผู้จอง', phName: 'เช่น คุณสมชาย ใจดี',
+                labelChurch: '2. คริสตจักร / หน่วยงาน', phChurch: 'ระบุชื่อคริสตจักร หรือ หน่วยงาน',
+                labelPhone: '3. เบอร์โทรศัพท์ติดต่อ', phPhone: 'เช่น 081-234-5678',
+                phoneHint: 'เบอร์โทรศัพท์จะใช้เป็นรหัสยืนยันหากท่านต้องการแก้ไขข้อมูลในภายหลัง',
+                btnNextStep2: 'ถัดไป: เลือกวันที่ สถานที่ และเวลา',
+                step2Badge: 'ขั้นตอนที่ 2 จาก 5', step2Title: 'เลือกวันที่ สถานที่ และรอบเวลา',
+                step2MultiHint: '(ท่านสามารถคลิกเลือกได้หลายรอบเวลาพร้อมกัน)',
+                labelSelectDate: '1. เลือกวันที่ต้องการแสดง (20 - 25 ธ.ค. 2026)',
+                labelSelectVenue: '2. เลือกสถานที่จัดการแสดง',
+                venueIndoorTitle: 'อาคารหมอแวลล์ (ภายในอาคาร)', venueIndoorSub: 'รพ.กรุงเทพคริสเตียน',
+                venueOutdoorTitle: 'หน้า รพ. (ภายนอกอาคาร)', venueOutdoorSub: 'ลานด้านหน้าติดถนนสีลม',
+                labelSelectSlot: '3. คลิกเลือกรอบเวลา',
+                btnBack: 'ย้อนกลับ', btnNextStep3: 'ถัดไป: รูปแบบการแสดง',
+                step3Badge: 'ขั้นตอนที่ 3 จาก 5', step3Title: 'รูปแบบการแสดง',
+                labelQuickTags: 'ตัวอย่าง (คลิกเพื่อเพิ่มข้อความ):',
+                labelPerfDesc: 'รายละเอียดรูปแบบการแสดงคร่าวๆ', phPerfDesc: 'เช่น ร้องเพลงประสานเสียง 5 เพลง, ดนตรีอะคูสติก...',
+                btnNextStep4: 'ถัดไป: จำนวนคน',
+                step4Badge: 'ขั้นตอนที่ 4 จาก 5', step4Title: 'จำนวนผู้แสดงและอุปกรณ์',
+                labelPeopleCount: '1. จำนวนผู้เข้าร่วมแสดง (คน)', phPeopleCount: 'พิมพ์จำนวนคน (เช่น 12)',
+                labelEquipment: '2. เลือกอุปกรณ์ที่ต้องการใช้ (ถ้ามี):', phEqNotes: 'หมายเหตุเพิ่มเติม...',
+                reviewHeading: 'ตรวจสอบข้อมูลก่อนยืนยัน', reviewBookerLabel: 'ผู้จอง:', reviewPeopleLabel: 'จำนวนผู้แสดง:', reviewTimeLabel: 'วันที่และรอบเวลาที่เลือกทั้งหมด:',
+                btnConfirmBooking: 'ยืนยันการจองทั้งหมด',
+                step5Title: 'จองรอบเวลาสำเร็จ!',
+                ticketChurchLabel: 'หน่วยงาน / คริสตจักร', ticketBookerLabel: 'ผู้จอง / เบอร์โทร',
+                ticketPeopleRefLabel: 'จำนวนผู้แสดง / รหัสอ้างอิง', ticketTimeListLabel: 'รายละเอียดสถานที่และเวลาแสดง', ticketPerfLabel: 'รูปแบบการแสดง & อุปกรณ์',
+                btnDownloadAgain: 'โหลดรูปอีกครั้ง', btnFinishHome: 'เสร็จสิ้น · กลับหน้าแรก (เริ่มจองใหม่)',
+                modalScheduleTitle: 'ตรวจสอบตารางคิวการแสดง (20–25 ธ.ค. 2026)',
+                modalScheduleSub: 'แสดงชื่อผู้จองและเบอร์โทรศัพท์ 4 หลักท้าย · กดปุ่ม "แก้ไขข้อมูล" และกรอกเบอร์เต็มเพื่อแก้ไขข้อมูลของท่าน',
+                userEditModalTitle: 'แก้ไขข้อมูลการจองของคุณ',
+                userVerifyLabel: 'กรุณากรอกเบอร์โทรศัพท์เต็มที่ใช้จองรอบนี้เพื่อยืนยันตัวตน:',
+                userVerifyError: 'เบอร์โทรศัพท์ไม่ตรงกับข้อมูลที่ลงทะเบียนไว้ กรุณาตรวจสอบอีกครั้ง',
+                btnCancel: 'ยกเลิก', btnVerifyPhone: 'ยืนยันเบอร์โทรศัพท์',
+                verifiedSuccessBadge: 'ยืนยันเบอร์โทรศัพท์สำเร็จ สามารถแก้ไขข้อมูลด้านล่างได้',
+                btnSaveChanges: 'บันทึกการแก้ไข',
+                adminModalTitle: 'จัดการระบบ (ผู้ดูแลระบบ)',
+                statusFree: 'ว่าง', statusFull: 'เต็ม', statusBooked: 'จองแล้ว', statusSelected: '✓ เลือกแล้ว',
+                selectedCountPrefix: 'เลือกแล้ว', selectedCountSuffix: 'รอบ',
+                editOwnBtn: 'แก้ไขข้อมูล', bookerPrefix: 'ผู้จอง:', phoneLast4Prefix: 'เบอร์:',
+                peopleUnit: 'คน', showDatePrefix: '📅 วันที่แสดง:',
+                quickTags: ['ร้องเพลงประสานเสียง', 'ดนตรีโฟลคซอง', 'ละครคริสต์มาส', 'เต้นประกอบเพลง (COVER)', 'ดนตรีสากล (Band)'],
+                eqLabels: { mic: '🎤 ไมโครโฟน', chair: '🪑 เก้าอี้', speaker: '🔊 ลำโพง/เปิด Backing Track' }
+            },
+            en: {
+                adminBtn: 'Admin',
+                headerSubtitle: 'Christmas Show Registration · Bangkok Christian Hospital',
+                headerDateRange: '📅 Show Dates: 20–25 December 2026',
+                checkScheduleBtn: 'View Schedule / Edit My Booking',
+                step1Short: '1. Booker', step2Short: '2. Date & Time', step3Short: '3. Show Info', step4Short: '4. Members', step5Short: '5. Pass',
+                step1Badge: 'Step 1 of 5', step1Title: 'Booker & Church Information',
+                labelName: '1. Full Name', phName: 'e.g. John Doe',
+                labelChurch: '2. Church / Organization', phChurch: 'Enter Church or Group Name',
+                labelPhone: '3. Phone Number', phPhone: 'e.g. 081-234-5678',
+                phoneHint: 'Your phone number is used to verify your identity if you edit your booking later.',
+                btnNextStep2: 'Next: Select Date, Venue & Time',
+                step2Badge: 'Step 2 of 5', step2Title: 'Select Date, Venue & Time Slots',
+                step2MultiHint: '(You can select multiple time slots at once)',
+                labelSelectDate: '1. Select Show Date (20 - 25 Dec 2026)',
+                labelSelectVenue: '2. Select Performance Venue',
+                venueIndoorTitle: 'Dr. Well Building (Indoor)', venueIndoorSub: 'Bangkok Christian Hospital',
+                venueOutdoorTitle: 'Hospital Front Yard (Outdoor)', venueOutdoorSub: 'Silom Road Front Area',
+                labelSelectSlot: '3. Click to Select Time Slots',
+                btnBack: 'Back', btnNextStep3: 'Next: Performance Details',
+                step3Badge: 'Step 3 of 5', step3Title: 'Performance Style',
+                labelQuickTags: 'Quick Tags (Click to add):',
+                labelPerfDesc: 'Brief Performance Description', phPerfDesc: 'e.g. Christmas Choir 5 songs, Acoustic band...',
+                btnNextStep4: 'Next: Team Size',
+                step4Badge: 'Step 4 of 5', step4Title: 'Performers & Equipment',
+                labelPeopleCount: '1. Number of Performers', phPeopleCount: 'Enter number of people (e.g. 12)',
+                labelEquipment: '2. Equipment Needed (Optional):', phEqNotes: 'Additional notes...',
+                reviewHeading: 'Review Before Confirming', reviewBookerLabel: 'Booker:', reviewPeopleLabel: 'Performers:', reviewTimeLabel: 'Selected Date & Time Slots:',
+                btnConfirmBooking: 'Confirm All Bookings',
+                step5Title: 'Booking Confirmed!',
+                ticketChurchLabel: 'Church / Organization', ticketBookerLabel: 'Booker / Phone',
+                ticketPeopleRefLabel: 'Performers / Ref Code', ticketTimeListLabel: 'Venue & Time Details', ticketPerfLabel: 'Performance & Equipment',
+                btnDownloadAgain: 'Download Image Again', btnFinishHome: 'Done · Back to Home (New Booking)',
+                modalScheduleTitle: 'Show Schedule (20–25 Dec 2026)',
+                modalScheduleSub: 'Shows booker name & last 4 digits of phone · Click "Edit" and enter your full phone number to modify',
+                userEditModalTitle: 'Edit Your Booking',
+                userVerifyLabel: 'Enter the full phone number used for this booking to verify:',
+                userVerifyError: 'Phone number does not match this booking. Please try again.',
+                btnCancel: 'Cancel', btnVerifyPhone: 'Verify Phone',
+                verifiedSuccessBadge: 'Phone verified! You can now update your booking details below.',
+                btnSaveChanges: 'Save Changes',
+                adminModalTitle: 'System Management (Admin)',
+                statusFree: 'Available', statusFull: 'Full', statusBooked: 'Booked', statusSelected: '✓ Selected',
+                selectedCountPrefix: 'Selected', selectedCountSuffix: 'slot(s)',
+                editOwnBtn: 'Edit', bookerPrefix: 'Booker:', phoneLast4Prefix: 'Tel:',
+                peopleUnit: 'people', showDatePrefix: '📅 Show Date:',
+                quickTags: ['Christmas Choir', 'Acoustic Folk', 'Christmas Drama', 'Cover Dance', 'Live Band'],
+                eqLabels: { mic: '🎤 Microphone', chair: '🪑 Chairs', speaker: '🔊 Speaker / Backing Track' }
+            },
+            zh: {
+                adminBtn: '管理员',
+                headerSubtitle: '圣诞演出预约系统 · 曼谷基督教医院',
+                headerDateRange: '📅 演出日期：2026年12月20日至25日',
+                checkScheduleBtn: '查看排期表 / 修改预约信息',
+                step1Short: '1. 预约人', step2Short: '2. 日期时间', step3Short: '3. 演出形式', step4Short: '4. 人数设备', step5Short: '5. 确认卡',
+                step1Badge: '第 1 步（共 5 步）', step1Title: '预约人及教会/机构信息',
+                labelName: '1. 预约人姓名', phName: '例如：张伟',
+                labelChurch: '2. 教会 / 机构名称', phChurch: '请输入教会或团体名称',
+                labelPhone: '3. 联系电话', phPhone: '例如：081-234-5678',
+                phoneHint: '电话号码将作为您日后修改预约信息的验证凭据',
+                btnNextStep2: '下一步：选择日期、地点与时间',
+                step2Badge: '第 2 步（共 5 步）', step2Title: '选择演出日期、场地与时间段',
+                step2MultiHint: '（您可以同时点击选择多个时间段）',
+                labelSelectDate: '1. 选择演出日期 (2026年12月20日 - 25日)',
+                labelSelectVenue: '2. 选择演出场地',
+                venueIndoorTitle: 'Dr. Well 大楼（室内）', venueIndoorSub: '曼谷基督教医院',
+                venueOutdoorTitle: '医院前广场（室外）', venueOutdoorSub: '是隆路医院正门前',
+                labelSelectSlot: '3. 点击选择时间段',
+                btnBack: '返回', btnNextStep3: '下一步：演出形式',
+                step3Badge: '第 3 步（共 5 步）', step3Title: '演出形式说明',
+                labelQuickTags: '快捷标签（点击添加）：',
+                labelPerfDesc: '演出形式简介', phPerfDesc: '例如：圣诞合唱5首歌曲、木吉他弹唱...',
+                btnNextStep4: '下一步：演出人数',
+                step4Badge: '第 4 步（共 5 步）', step4Title: '演出人数与设备需求',
+                labelPeopleCount: '1. 参演人数（人）', phPeopleCount: '请输入人数（如 12）',
+                labelEquipment: '2. 需要准备的设备（可选）：', phEqNotes: '其他备注说明...',
+                reviewHeading: '确认前核对信息', reviewBookerLabel: '预约人：', reviewPeopleLabel: '参演人数：', reviewTimeLabel: '已选日期与时间段：',
+                btnConfirmBooking: '确认所有预约',
+                step5Title: '预约成功！',
+                ticketChurchLabel: '教会 / 机构', ticketBookerLabel: '预约人 / 电话',
+                ticketPeopleRefLabel: '参演人数 / 预约编号', ticketTimeListLabel: '场地与时间详情', ticketPerfLabel: '演出形式与设备',
+                btnDownloadAgain: '重新下载图片', btnFinishHome: '完成 · 返回首页（重新预约）',
+                modalScheduleTitle: '演出排期表 (2026年12月20–25日)',
+                modalScheduleSub: '仅显示预约人姓名及电话后4位 · 点击“修改信息”并输入完整电话号码即可修改',
+                userEditModalTitle: '修改您的预约信息',
+                userVerifyLabel: '请输入预约该时段时使用的完整电话号码以验证身份：',
+                userVerifyError: '电话号码与登记信息不符，请重新核对',
+                btnCancel: '取消', btnVerifyPhone: '验证电话号码',
+                verifiedSuccessBadge: '电话验证成功！您可以在下方修改预约信息。',
+                btnSaveChanges: '保存修改',
+                adminModalTitle: '系统管理（管理员）',
+                statusFree: '空闲', statusFull: '已满', statusBooked: '已预约', statusSelected: '✓ 已选',
+                selectedCountPrefix: '已选', selectedCountSuffix: '个时段',
+                editOwnBtn: '修改信息', bookerPrefix: '预约人:', phoneLast4Prefix: '电话尾号:',
+                peopleUnit: '人', showDatePrefix: '📅 演出日期:',
+                quickTags: ['圣诞合唱团', '民谣弹唱', '圣诞短剧', '舞蹈表演 (COVER)', '乐队演奏 (Band)'],
+                eqLabels: { mic: '🎤 麦克风', chair: '🪑 椅子', speaker: '🔊 音箱 / 伴奏线' }
+            }
+        };
+
+        let currentLang = localStorage.getItem('sha2026-lang') || 'th';
+        function t(key) { return (I18N[currentLang] && I18N[currentLang][key]) || I18N.th[key] || key; }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('sha2026-lang', lang);
+            document.documentElement.lang = lang;
+
+            ['th', 'en', 'zh'].forEach(l => {
+                const btn = document.getElementById(`lang-btn-${l}`);
+                if (btn) btn.classList.toggle('active', l === lang);
+            });
+
+            // แปลข้อความที่มี data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                el.textContent = t(key);
+            });
+
+            // แปล placeholder
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                el.placeholder = t(key);
+            });
+
+            renderQuickTags();
+            renderEq();
+            renderAll();
+        }
+
+        // === Theme System (Default = Pine Green) ===
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('sha2026-theme', theme);
+            updateStepper();
+            renderAll();
+        }
+
+        // === Data & State ===
+        const DATES_LIST = ['20 ธ.ค. 2026', '21 ธ.ค. 2026', '22 ธ.ค. 2026', '23 ธ.ค. 2026', '24 ธ.ค. 2026', '25 ธ.ค. 2026'];
+        const INDOOR_TIME_SLOTS = [
+            ['09.00', '09.30'], ['09.30', '10.00'], ['10.00', '10.30'],
+            ['10.30', '11.00'], ['11.00', '11.30'], ['11.30', '12.00'],
+            ['13.00', '13.30'], ['13.30', '14.00'], ['14.00', '14.30'],
+            ['14.30', '15.00']
+        ];
+        const OUTDOOR_TIME_SLOTS = [
+            ['17.00', '17.30'], ['17.30', '18.00'], ['18.00', '18.30'],
+            ['18.30', '19.00'], ['19.00', '19.30'], ['19.30', '20.00']
+        ];
+        function getTimeSlotsForZone(zone) { return zone === 'indoor' ? INDOOR_TIME_SLOTS : OUTDOOR_TIME_SLOTS; }
+
+        const EQ_IDS = ['mic', 'chair', 'speaker'];
+        const STORAGE_KEY = 'sha2026-data-v4';
+
+        let appState = {
+            step: 1, name: '', church: '', phone: '',
+            date: '25 ธ.ค. 2026',
+            zone: 'indoor',
+            selectedSlots: [],
+            desc: '', people: '', eqIds: ['mic'], eqNotes: '',
+            sessionBookings: []
+        };
+
+        // เก็บตำแหน่งคิวที่ผู้จองกำลังจะแก้ไข
+        let pendingUserEditTarget = null;
+
+        function getBookings() {
+            try {
+                const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                if (data) return data;
+            } catch (e) { }
+            let initial = {};
+            DATES_LIST.forEach(d => { initial[d] = { indoor: {}, outdoor: {} }; });
+            return initial;
+        }
+        function saveBookings(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+
+        // ฟังก์ชันซ่อนเบอร์โทรศัพท์ แสดงเฉพาะ 4 หลักท้าย เช่น ***-***-5678
+        function maskPhoneLast4(phoneStr) {
+            const digits = String(phoneStr || '').replace(/\D/g, '');
+            if (digits.length >= 4) {
+                return `***-***-${digits.slice(-4)}`;
+            }
+            return '****';
+        }
+
+        // === Navigation & Flow ===
+        const STEP_ICONS = ['fa-user-pen', 'fa-calendar-days', 'fa-masks-theater', 'fa-users', 'fa-ticket'];
+
+        function goToStep(n) {
+            hideAlert();
+            document.querySelectorAll('.step-section').forEach((el, i) => {
+                if (i + 1 === n) { el.style.display = 'block'; setTimeout(() => el.classList.add('active'), 10); }
+                else { el.classList.remove('active'); el.style.display = 'none'; }
+            });
+            appState.step = n;
+            updateStepper();
+            renderAll();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateStepper() {
+            document.getElementById('stepper-fill').style.width = `${(appState.step - 1) * 25}%`;
+            for (let i = 1; i <= 5; i++) {
+                const circle = document.getElementById(`step-circle-${i}`);
+                const label = document.getElementById(`step-label-${i}`);
+                if (i < appState.step) {
+                    circle.className = 'w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all bg-th-accent text-amber-950 shadow';
+                    circle.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    label.className = 'mt-2 text-[11px] sm:text-xs font-bold text-th-accent';
+                } else if (i === appState.step) {
+                    circle.className = 'w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all bg-th-panel border-2 border-th-accent text-th-accent shadow-lg scale-105';
+                    circle.innerHTML = `<i class="fa-solid ${STEP_ICONS[i - 1]}"></i>`;
+                    label.className = 'mt-2 text-[11px] sm:text-xs font-bold text-th-text';
+                } else {
+                    circle.className = 'w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all bg-th-panel border border-th-border text-th-muted';
+                    circle.innerHTML = `<i class="fa-solid ${STEP_ICONS[i - 1]}"></i>`;
+                    label.className = 'mt-2 text-[11px] sm:text-xs font-medium text-th-muted opacity-70';
+                }
+            }
+        }
+
+        function showAlert(msg, type = 'error') {
+            const box = document.getElementById('alert-box');
+            box.className = `mb-6 p-4 rounded-2xl border shadow-sm flex items-center justify-between gap-3 ${type === 'error' ? 'bg-th-danger-bg border-th-danger text-th-danger' : 'bg-th-success-bg border-th-success text-th-success'}`;
+            document.getElementById('alert-icon').className = `fa-solid ${type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check'} text-lg`;
+            document.getElementById('alert-text').textContent = msg;
+            box.classList.remove('hidden'); setTimeout(hideAlert, 4000);
+        }
+        function hideAlert() { document.getElementById('alert-box').classList.add('hidden'); }
+
+        // Form Submissions
+        document.getElementById('step1-form').onsubmit = (e) => {
+            e.preventDefault();
+            const n = document.getElementById('guest-name').value.trim();
+            const c = document.getElementById('guest-church').value.trim();
+            const p = document.getElementById('guest-phone').value.trim().replace(/\D/g, '');
+            if (!n || !c || p.length < 9) return showAlert('กรุณากรอกข้อมูลให้ครบและเบอร์โทรศัพท์ให้ถูกต้อง');
+            appState.name = n; appState.church = c; appState.phone = p; goToStep(2);
+        };
+
+        function onDateChange() {
+            appState.date = document.getElementById('booking-date').value;
+            renderAll();
+        }
+
+        function selectZone(z) { appState.zone = z; renderAll(); }
+
+        function toggleSlot(date, zone, idx) {
+            const existingIdx = appState.selectedSlots.findIndex(s => s.date === date && s.zone === zone && s.idx === idx);
+            if (existingIdx >= 0) {
+                appState.selectedSlots.splice(existingIdx, 1);
+            } else {
+                appState.selectedSlots.push({ date, zone, idx });
+            }
+            renderAll();
+        }
+
+        function handleStep2Next() {
+            if (appState.selectedSlots.length === 0) return showAlert('กรุณาเลือกรอบเวลาอย่างน้อย 1 รอบ');
+            goToStep(3);
+        }
+
+        function handleStep3Next() {
+            appState.desc = document.getElementById('performance-desc').value.trim();
+            if (!appState.desc) return showAlert('กรุณาระบุรูปแบบการแสดง'); goToStep(4);
+        }
+
+        function setPerfCount(n) {
+            document.getElementById('perf-count').value = n;
+            renderAll();
+        }
+
+        function formatMergedTimeRanges(bookings) {
+            if (!bookings || bookings.length === 0) return '-';
+            const sorted = [...bookings].sort((a, b) => a.idx - b.idx);
+            const ranges = [];
+            sorted.forEach(item => {
+                const [start, end] = getTimeSlotsForZone(item.zone)[item.idx];
+                if (ranges.length > 0 && ranges[ranges.length - 1].end === start && ranges[ranges.length - 1].zone === item.zone && ranges[ranges.length - 1].date === item.date) {
+                    ranges[ranges.length - 1].end = end;
+                } else {
+                    ranges.push({ start, end, zone: item.zone, date: item.date });
+                }
+            });
+            return ranges.map(r => `${r.start}–${r.end} น.`).join(', ');
+        }
+
+        function submitFinalBooking() {
+            const people = document.getElementById('perf-count').value;
+            if (!people || people < 1) { showAlert('กรุณาระบุจำนวนผู้แสดง'); document.getElementById('perf-count').focus(); return; }
+
+            const saved = getBookings();
+
+            let conflict = false;
+            appState.selectedSlots.forEach(s => {
+                if (saved[s.date] && saved[s.date][s.zone] && saved[s.date][s.zone][s.idx]) conflict = true;
+            });
+            if (conflict) {
+                showAlert('บางรอบเวลาที่เลือกถูกจองไปแล้ว กรุณาตรวจสอบรอบเวลาใหม่', 'error');
+                goToStep(2); return;
+            }
+
+            const eqLabelsDict = t('eqLabels');
+            const eqText = EQ_IDS.filter(id => appState.eqIds.includes(id)).map(id => eqLabelsDict[id].substring(3)).join(', ')
+                + (document.getElementById('equipment-notes').value.trim() ? ' + ' + document.getElementById('equipment-notes').value.trim() : '');
+
+            appState.sessionBookings = [];
+
+            appState.selectedSlots.forEach(s => {
+                const d = s.date;
+                const z = s.zone;
+                const idx = s.idx;
+                const slotTimes = getTimeSlotsForZone(z)[idx];
+
+                const record = {
+                    ref: `SHA26-${z === 'indoor' ? 'IN' : 'OUT'}${idx + 1}-${Math.floor(100 + Math.random() * 900)}`,
+                    name: appState.name, church: appState.church, phone: appState.phone,
+                    date: d, zone: z, idx: idx, time: `${slotTimes[0]}–${slotTimes[1]} น.`,
+                    desc: appState.desc, people: people, eq: eqText
+                };
+
+                if (!saved[d]) saved[d] = { indoor: {}, outdoor: {} };
+                if (!saved[d][z]) saved[d][z] = {};
+                saved[d][z][idx] = record;
+                appState.sessionBookings.push(record);
+            });
+
+            saveBookings(saved);
+            updateTicketUI();
+            goToStep(5);
+            triggerSparkles();
+
+            setTimeout(() => { downloadTicketImage(true); }, 800);
+        }
+
+        function updateTicketUI() {
+            const bookings = appState.sessionBookings;
+            if (bookings.length === 0) return;
+            const first = bookings[0];
+
+            const uniqueDates = [...new Set(bookings.map(b => b.date))];
+            const dateLabel = uniqueDates.join(', ');
+            const mergedTimeText = formatMergedTimeRanges(bookings);
+
+            document.getElementById('ticket-date-display').textContent = `${t('showDatePrefix')} ${dateLabel}`;
+            document.getElementById('ticket-time-summary').textContent = `⏰ ${mergedTimeText}`;
+
+            document.getElementById('ticket-church').textContent = first.church;
+            document.getElementById('ticket-ref').textContent = `#${first.ref}`;
+            document.getElementById('ticket-name-phone').textContent = `${first.name} (${maskPhoneLast4(first.phone)})`;
+            document.getElementById('ticket-people').textContent = `${first.people} ${t('peopleUnit')}`;
+            document.getElementById('ticket-performance').textContent = `${first.desc} (${first.eq || '-'})`;
+
+            let timeHtml = '';
+            bookings.forEach(b => {
+                const icon = b.zone === 'indoor' ? `🏥 ${t('venueIndoorTitle')}` : `🎄 ${t('venueOutdoorTitle')}`;
+                timeHtml += `<div class="mb-1">📅 ${b.date} | ${icon} : ${b.time}</div>`;
+            });
+            document.getElementById('ticket-time-list').innerHTML = timeHtml;
+        }
+
+        // --- Action Buttons Step 5 ---
+        function downloadTicketImage(auto = false) {
+            const ticket = document.getElementById('ticket-capture-area');
+            const btnText = document.getElementById('dl-btn-text');
+            const autoMsg = document.getElementById('auto-dl-msg');
+
+            if (!auto && btnText) btnText.textContent = "Loading...";
+            ticket.classList.add('no-anim');
+
+            html2canvas(ticket, {
+                scale: 2,
+                backgroundColor: null,
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                const refCode = appState.sessionBookings[0] ? appState.sessionBookings[0].ref : 'PASS';
+                link.download = `SHAring2026_${refCode}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                ticket.classList.remove('no-anim');
+                if (!auto && btnText) btnText.textContent = t('btnDownloadAgain');
+                if (auto && autoMsg) autoMsg.innerHTML = '<i class="fa-solid fa-check-circle mr-1"></i> ดาวน์โหลดรูปภาพบัตรคิวอัตโนมัติเรียบร้อยแล้ว';
+            }).catch(() => {
+                ticket.classList.remove('no-anim');
+                if (!auto && btnText) btnText.textContent = t('btnDownloadAgain');
+            });
+        }
+
+        function resetForNewPerson() {
+            appState.step = 1;
+            appState.name = '';
+            appState.church = '';
+            appState.phone = '';
+            appState.selectedSlots = [];
+            appState.desc = '';
+            appState.people = '';
+            appState.eqIds = ['mic'];
+            appState.eqNotes = '';
+            appState.sessionBookings = [];
+
+            document.getElementById('step1-form').reset();
+            document.getElementById('performance-desc').value = '';
+            document.getElementById('perf-count').value = '';
+            document.getElementById('equipment-notes').value = '';
+            renderEq();
+            goToStep(1);
+        }
+
+        // === Main Render Loop ===
+        function renderAll() {
+            const data = getBookings();
+            const currentDateData = data[appState.date] || { indoor: {}, outdoor: {} };
+
+            ['indoor', 'outdoor'].forEach(z => {
+                const btn = document.getElementById(`zone-btn-${z}`);
+                const avail = document.getElementById(`zone-avail-${z}`);
+
+                const slots = getTimeSlotsForZone(z);
+                const free = slots.length - Object.keys(currentDateData[z] || {}).length;
+                avail.textContent = free > 0 ? `${t('statusFree')} ${free}` : t('statusFull');
+                avail.className = `text-xs font-bold px-2 py-0.5 rounded ${free > 0 ? 'bg-th-success-bg text-th-success' : 'bg-th-danger-bg text-th-danger'}`;
+
+                if (appState.zone === z) {
+                    btn.className = 'text-left p-4 rounded-2xl border-2 transition-all relative group border-th-accent bg-th-accent-light';
+                } else {
+                    btn.className = 'text-left p-4 rounded-2xl border transition-all relative group bg-th-card border-th-card-border hover:border-th-accent';
+                }
+            });
+
+            // Slots Grid (แสดงชื่อผู้จอง และเบอร์ 4 หลักท้าย)
+            const grid = document.getElementById('slots-grid');
+            grid.replaceChildren();
+            getTimeSlotsForZone(appState.zone).forEach(([start, end], i) => {
+                const b = (currentDateData[appState.zone] || {})[i];
+                const isSel = appState.selectedSlots.some(s => s.date === appState.date && s.zone === appState.zone && s.idx === i);
+                const btn = document.createElement('button');
+                btn.type = 'button'; btn.disabled = !!b;
+
+                if (b) {
+                    btn.className = 'slot-card p-4 rounded-2xl border text-left flex flex-col justify-between min-h-[116px] bg-th-danger-bg border-th-danger opacity-85 cursor-not-allowed';
+                    btn.innerHTML = `<div class="flex justify-between w-full"><span class="font-bold text-th-danger">${start}-${end}</span><span class="text-[11px] px-2 py-0.5 rounded-full bg-th-danger text-white font-bold">${t('statusBooked')}</span></div>
+                                     <div class="mt-2 text-xs font-bold text-th-text truncate">${b.name} (${maskPhoneLast4(b.phone)})</div>`;
+                } else {
+                    btn.className = `slot-card p-4 rounded-2xl border text-left flex flex-col justify-between min-h-[116px] cursor-pointer ${isSel ? 'border-th-accent bg-th-accent-light scale-[1.02] shadow-md' : 'bg-th-card border-th-card-border hover:bg-th-card-hover'}`;
+                    btn.innerHTML = `<div class="flex justify-between w-full"><span class="font-bold text-th-text">${start}-${end}</span><span class="text-[11px] px-2 py-0.5 rounded-full ${isSel ? 'bg-th-accent text-amber-950 font-bold' : 'bg-th-success-bg text-th-success font-bold'}">${isSel ? t('statusSelected') : t('statusFree')}</span></div>`;
+                    btn.onclick = () => { toggleSlot(appState.date, appState.zone, i); };
+                }
+                grid.appendChild(btn);
+            });
+
+            document.getElementById('slot-zone-pill').textContent = appState.zone === 'indoor' ? `🏥 ${t('venueIndoorTitle')} (${appState.date})` : `🎄 ${t('venueOutdoorTitle')} (${appState.date})`;
+            document.getElementById('selected-slots-count').textContent = `${t('selectedCountPrefix')} ${appState.selectedSlots.length} ${t('selectedCountSuffix')}`;
+
+            let timeHtml = appState.selectedSlots.map(s => {
+                const zName = s.zone === 'indoor' ? `🏥 ${t('venueIndoorTitle')}` : `🎄 ${t('venueOutdoorTitle')}`;
+                const times = getTimeSlotsForZone(s.zone)[s.idx].join('-');
+                return `<strong>📅 ${s.date}</strong> | ${zName}: ${times}`;
+            }).join('<br>');
+
+            document.getElementById('review-booker').textContent = appState.name || '-';
+            document.getElementById('review-time').innerHTML = timeHtml || '-';
+            document.getElementById('review-people').textContent = document.getElementById('perf-count').value ? `${document.getElementById('perf-count').value} ${t('peopleUnit')}` : '-';
+
+            renderPublicSchedule();
+        }
+
+        function renderQuickTags() {
+            const tags = t('quickTags');
+            document.getElementById('performance-tags-container').innerHTML = tags.map(tag => `<button type="button" class="px-3 py-1.5 rounded-xl border border-th-border bg-th-card text-xs text-th-text hover:bg-th-accent-light transition" onclick="document.getElementById('performance-desc').value += (document.getElementById('performance-desc').value ? ', ' : '') + '${tag}'">+ ${tag}</button>`).join('');
+        }
+
+        function renderEq() {
+            const eqLabelsDict = t('eqLabels');
+            document.getElementById('equipment-chips-container').innerHTML = EQ_IDS.map(id => {
+                const isChecked = appState.eqIds.includes(id);
+                return `<button type="button" onclick="toggleEq('${id}')" class="p-3 rounded-xl border text-left text-xs font-bold flex justify-between ${isChecked ? 'bg-th-accent-light border-th-accent text-th-text' : 'bg-th-card border-th-border text-th-muted'}">
+                    ${eqLabelsDict[id]} <i class="fa-solid ${isChecked ? 'fa-square-check text-th-accent' : 'fa-square opacity-50'} text-base"></i>
+                </button>`;
+            }).join('');
+        }
+        function toggleEq(id) { appState.eqIds = appState.eqIds.includes(id) ? appState.eqIds.filter(i => i !== id) : [...appState.eqIds, id]; renderEq(); }
+
+        // =========================================================================
+        // 2. PUBLIC SCHEDULE & USER SELF-EDIT (VERIFY BY PHONE)
+        // =========================================================================
+        function openScheduleModal() { renderPublicSchedule(); document.getElementById('schedule-modal').classList.remove('hidden'); }
+        function closeScheduleModal() { document.getElementById('schedule-modal').classList.add('hidden'); }
+
+        function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
+        function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
+
+        // ตารางจองสาธารณะ: แสดงเฉพาะ ชื่อผู้จอง และ เบอร์โทร 4 หลักท้าย + ปุ่มแก้ไขข้อมูล
+        function renderPublicSchedule() {
+            const data = getBookings();
+            const container = document.getElementById('user-results');
+            let html = '';
+
+            DATES_LIST.forEach(d => {
+                const dayData = data[d] || { indoor: {}, outdoor: {} };
+                html += `<div class="mb-6"><h4 class="font-bold text-th-accent text-base mb-2 border-b border-th-border pb-1">📅 ${d}</h4>`;
+
+                ['indoor', 'outdoor'].forEach(z => {
+                    const venueName = z === 'indoor' ? `🏥 ${t('venueIndoorTitle')}` : `🎄 ${t('venueOutdoorTitle')}`;
+                    html += `<div class="p-3 rounded-xl border border-th-border bg-th-card mb-2 shadow-sm"><div class="font-bold text-th-text text-xs mb-2">${venueName}</div><div class="space-y-2">`;
+
+                    const slots = getTimeSlotsForZone(z);
+                    slots.forEach(([s, e], i) => {
+                        const b = (dayData[z] || {})[i];
+                        if (b) {
+                            const maskedPhone = maskPhoneLast4(b.phone);
+                            html += `<div class="p-2.5 bg-th-accent-light border border-th-border rounded-lg flex flex-wrap justify-between items-center gap-2 text-xs">
+                                <div>
+                                    <strong class="text-th-text">${s}-${e}</strong> · 
+                                    <span class="text-th-text font-bold">${t('bookerPrefix')} ${b.name}</span>
+                                    <span class="text-th-muted ml-1">(${t('phoneLast4Prefix')} ${maskedPhone})</span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[10px] bg-th-danger text-white px-2 py-0.5 rounded font-bold">${t('statusBooked')}</span>
+                                    <button type="button" onclick="openUserSelfEditModal('${d}', '${z}', ${i})" class="px-2.5 py-1 rounded bg-th-accent text-amber-950 font-bold text-[11px] hover:brightness-110 transition shadow-sm">
+                                        <i class="fa-solid fa-pen-to-square mr-1"></i>${t('editOwnBtn')}
+                                    </button>
+                                </div>
+                            </div>`;
+                        } else {
+                            html += `<div class="p-2 bg-th-panel border border-th-border rounded-lg flex justify-between items-center text-xs opacity-75">
+                                <span class="text-th-muted">${s}-${e}</span>
+                                <span class="text-[10px] bg-th-success-bg text-th-success px-2 py-0.5 rounded font-bold">${t('statusFree')}</span>
+                            </div>`;
+                        }
+                    });
+                    html += `</div></div>`;
+                });
+                html += `</div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        // เปิดหน้าต่างให้ผู้จองยืนยันเบอร์โทรศัพท์ก่อนแก้ไข
+        function openUserSelfEditModal(date, zone, idx) {
+            const data = getBookings();
+            const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            if (!b) return;
+
+            pendingUserEditTarget = { date, zone, idx };
+
+            const [s, e] = getTimeSlotsForZone(zone)[idx];
+            const venueLabel = zone === 'indoor' ? t('venueIndoorTitle') : t('venueOutdoorTitle');
+            document.getElementById('user-verify-slot-info').textContent = `📅 ${date} | ${venueLabel} (${s}–${e})`;
+            document.getElementById('user-verify-booker-hint').textContent = `${t('bookerPrefix')} ${b.name} (${t('phoneLast4Prefix')} ${maskPhoneLast4(b.phone)})`;
+
+            document.getElementById('user-verify-phone-input').value = '';
+            document.getElementById('user-verify-error').classList.add('hidden');
+            document.getElementById('user-verify-step').classList.remove('hidden');
+            document.getElementById('user-self-edit-form').classList.add('hidden');
+
+            document.getElementById('user-self-edit-modal').classList.remove('hidden');
+        }
+
+        function closeUserSelfEditModal() {
+            document.getElementById('user-self-edit-modal').classList.add('hidden');
+            pendingUserEditTarget = null;
+        }
+
+        function confirmUserPhoneVerification() {
+            if (!pendingUserEditTarget) return;
+            const { date, zone, idx } = pendingUserEditTarget;
+            const data = getBookings();
+            const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            if (!b) return;
+
+            const inputDigits = document.getElementById('user-verify-phone-input').value.trim().replace(/\D/g, '');
+            const savedDigits = String(b.phone || '').replace(/\D/g, '');
+
+            if (!inputDigits || inputDigits !== savedDigits) {
+                document.getElementById('user-verify-error').classList.remove('hidden');
+                return;
+            }
+
+            // เมื่อยืนยันเบอร์ตรงกัน ให้เปิดฟอร์มแก้ไขข้อมูล
+            document.getElementById('user-verify-error').classList.add('hidden');
+            document.getElementById('user-verify-step').classList.add('hidden');
+            document.getElementById('user-self-edit-form').classList.remove('hidden');
+
+            document.getElementById('user-edit-date').value = date;
+            document.getElementById('user-edit-zone').value = zone;
+            document.getElementById('user-edit-idx').value = idx;
+            document.getElementById('user-edit-name').value = b.name || '';
+            document.getElementById('user-edit-church').value = b.church || '';
+            document.getElementById('user-edit-phone').value = b.phone || '';
+            document.getElementById('user-edit-people').value = b.people || '';
+            document.getElementById('user-edit-desc').value = b.desc || '';
+            document.getElementById('user-edit-eq').value = b.eq || '';
+        }
+
+        document.getElementById('user-self-edit-form').onsubmit = (e) => {
+            e.preventDefault();
+            const date = document.getElementById('user-edit-date').value;
+            const zone = document.getElementById('user-edit-zone').value;
+            const idx = parseInt(document.getElementById('user-edit-idx').value, 10);
+
+            const newPhone = document.getElementById('user-edit-phone').value.trim().replace(/\D/g, '');
+            if (newPhone.length < 9) return;
+
+            const data = getBookings();
+            const existing = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            if (!existing) return;
+
+            data[date][zone][idx] = {
+                ...existing,
+                name: document.getElementById('user-edit-name').value.trim(),
+                church: document.getElementById('user-edit-church').value.trim(),
+                phone: newPhone,
+                people: document.getElementById('user-edit-people').value.trim(),
+                desc: document.getElementById('user-edit-desc').value.trim(),
+                eq: document.getElementById('user-edit-eq').value.trim()
+            };
+
+            saveBookings(data);
+            closeUserSelfEditModal();
+            renderAll();
+        };
+
+        // --- Admin System ---
+        function verifyAdmin() {
+            const pwd = document.getElementById('verify-pwd').value;
+            if (pwd === 'Chap20610.' || pwd === 'admin2026') {
+                document.getElementById('admin-login-box').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                renderAdminDashboard();
+            } else {
+                document.getElementById('admin-error').classList.remove('hidden');
+            }
+        }
+
+        function renderAdminDashboard() {
+            const data = getBookings();
+            ['indoor', 'outdoor'].forEach(z => {
+                const list = document.getElementById(`modal-list-${z}`);
+                list.replaceChildren();
+
+                DATES_LIST.forEach(d => {
+                    const dayData = (data[d] || {})[z] || {};
+                    const slots = getTimeSlotsForZone(z);
+
+                    let dateHeader = document.createElement('div');
+                    dateHeader.className = 'font-bold text-th-accent text-xs mt-3 mb-1 bg-th-accent-light px-2 py-1 rounded';
+                    dateHeader.textContent = `📅 ${d}`;
+                    list.appendChild(dateHeader);
+
+                    slots.forEach(([s, e], i) => {
+                        const b = dayData[i];
+                        const div = document.createElement('div');
+                        if (b) {
+                            div.className = 'p-2.5 border border-th-border bg-th-card rounded-lg mb-1.5 text-xs';
+                            div.innerHTML = `
+                                <div class="flex justify-between items-start">
+                                    <strong class="text-th-text">${s}-${e} น.</strong>
+                                    <div class="flex gap-1">
+                                        <button onclick="openAdminEdit('${d}', '${z}', ${i})" class="px-2 py-1 bg-blue-500 text-white text-[10px] rounded"><i class="fa-solid fa-pen"></i></button>
+                                        <button onclick="deleteBooking('${d}', '${z}', ${i})" class="px-2 py-1 bg-red-500 text-white text-[10px] rounded"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </div>
+                                <div class="text-th-text font-semibold mt-0.5">${b.church} (${b.name} / โทร: ${b.phone})</div>
+                            `;
+                        } else {
+                            div.className = 'p-2 border border-th-border flex justify-between items-center text-xs opacity-70 mb-1.5 rounded bg-th-input';
+                            div.innerHTML = `<span>${s}-${e} น. <span class="text-[10px] text-th-success">ว่าง</span></span> <button onclick="openAdminEdit('${d}', '${z}', ${i})" class="px-2 py-0.5 bg-th-success text-pine-950 font-bold text-[10px] rounded"><i class="fa-solid fa-plus"></i> เพิ่ม</button>`;
+                        }
+                        list.appendChild(div);
+                    });
+                });
+            });
+        }
+
+        function deleteBooking(date, zone, idx) {
+            if (confirm(`ยืนยันลบการจองวันที่ ${date} รอบนี้ใช่หรือไม่?`)) {
+                const data = getBookings();
+                delete data[date][zone][idx];
+                saveBookings(data);
+                renderAdminDashboard();
+                renderAll();
+            }
+        }
+
+        function openAdminEdit(date, zone, idx) {
+            const data = getBookings();
+            const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+
+            document.getElementById('edit-date-select').value = date;
+            document.getElementById('edit-zone').value = zone;
+            document.getElementById('edit-idx').value = idx;
+
+            if (b) {
+                document.getElementById('edit-name').value = b.name || '';
+                document.getElementById('edit-church').value = b.church || '';
+                document.getElementById('edit-phone').value = b.phone || '';
+                document.getElementById('edit-people').value = b.people || '';
+                document.getElementById('edit-desc').value = b.desc || '';
+                document.getElementById('edit-eq').value = b.eq || '';
+            } else {
+                document.getElementById('admin-edit-form').reset();
+                document.getElementById('edit-date-select').value = date;
+            }
+
+            document.getElementById('admin-edit-modal').classList.remove('hidden');
+        }
+
+        function closeAdminEdit() { document.getElementById('admin-edit-modal').classList.add('hidden'); }
+
+        document.getElementById('admin-edit-form').onsubmit = (e) => {
+            e.preventDefault();
+            const date = document.getElementById('edit-date-select').value;
+            const zone = document.getElementById('edit-zone').value;
+            const idx = parseInt(document.getElementById('edit-idx').value, 10);
+            const data = getBookings();
+
+            const slots = getTimeSlotsForZone(zone);
+            const slot = slots[idx];
+
+            const existing = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            const ref = existing ? existing.ref : `SHA26-${zone === 'indoor' ? 'IN' : 'OUT'}${idx + 1}-ADM${Math.floor(10 + Math.random() * 90)}`;
+
+            if (!data[date]) data[date] = { indoor: {}, outdoor: {} };
+            if (!data[date][zone]) data[date][zone] = {};
+
+            data[date][zone][idx] = {
+                ref: ref,
+                name: document.getElementById('edit-name').value.trim(),
+                church: document.getElementById('edit-church').value.trim(),
+                phone: document.getElementById('edit-phone').value.trim(),
+                date: date,
+                zone: zone,
+                idx: idx,
+                time: `${slot[0]}–${slot[1]} น.`,
+                desc: document.getElementById('edit-desc').value.trim(),
+                people: document.getElementById('edit-people').value.trim(),
+                eq: document.getElementById('edit-eq').value.trim()
+            };
+
+            saveBookings(data);
+            closeAdminEdit();
+            renderAdminDashboard();
+            renderAll();
+        };
+
+        function handleResetBookings() {
+            if (confirm("ยืนยันล้างข้อมูลตารางการจองทั้งหมดหรือไม่? (สำหรับผู้ดูแลระบบ)")) {
+                localStorage.removeItem(STORAGE_KEY);
+                renderAll(); renderAdminDashboard();
+            }
+        }
+
+        function exportToPDF() {
+            const data = getBookings();
+            let printContent = `
+                <div style="font-family: 'Prompt', sans-serif; padding: 25px; color: #000; background: #fff; width: 850px;">
+                    <h2 style="text-align: center; margin-bottom: 5px; color: #000; font-size: 24px;">ตารางคิวการแสดง Christmas of SHAring 2026</h2>
+                    <p style="text-align: center; margin-bottom: 25px; font-size: 16px; color: #444;">โรงพยาบาลกรุงเทพคริสเตียน (20-25 ธ.ค. 2026)</p>
+            `;
+
+            DATES_LIST.forEach(d => {
+                printContent += `<h3 style="background:#ddd; padding:6px 10px; margin-top:20px; font-size:16px;">📅 วันที่ ${d}</h3>`;
+                ['indoor', 'outdoor'].forEach(z => {
+                    const venueName = z === 'indoor' ? 'ภายในอาคาร (อาคารหมอแวลล์)' : 'ภายนอกอาคาร (หน้าโรงพยาบาล)';
+                    printContent += `
+                        <h4 style="margin-top: 10px; margin-bottom: 8px; color: #111; font-size: 14px;">📍 ${venueName}</h4>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px;">
+                            <thead>
+                                <tr style="background-color: #f3f4f6;">
+                                    <th style="border: 1px solid #999; padding: 8px; text-align: left; width: 15%;">เวลา</th>
+                                    <th style="border: 1px solid #999; padding: 8px; text-align: left; width: 25%;">ผู้ติดต่อ</th>
+                                    <th style="border: 1px solid #999; padding: 8px; text-align: left; width: 25%;">หน่วยงาน</th>
+                                    <th style="border: 1px solid #999; padding: 8px; text-align: left; width: 35%;">หมายเหตุ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    const slots = getTimeSlotsForZone(z);
+                    slots.forEach(([s, e], i) => {
+                        const b = (data[d] && data[d][z]) ? data[d][z][i] : null;
+                        if (b) {
+                            printContent += `
+                                <tr>
+                                    <td style="border: 1px solid #999; padding: 6px; font-weight: bold;">${s}-${e} น.</td>
+                                    <td style="border: 1px solid #999; padding: 6px;">${b.name}<br><span style="color:#555; font-size:10px;">โทร: ${b.phone}</span></td>
+                                    <td style="border: 1px solid #999; padding: 6px; font-weight: bold; color: #166534;">${b.church}</td>
+                                    <td style="border: 1px solid #999; padding: 6px; line-height: 1.4;">${b.desc} (คน: ${b.people})</td>
+                                </tr>
+                            `;
+                        } else {
+                            printContent += `
+                                <tr style="background-color: #fafafa;">
+                                    <td style="border: 1px solid #999; padding: 6px; color: #666;">${s}-${e} น.</td>
+                                    <td style="border: 1px solid #999; padding: 6px; color: #999; text-align: center;" colspan="3">- ว่าง -</td>
+                                </tr>
+                            `;
+                        }
+                    });
+                    printContent += `</tbody></table>`;
+                });
+            });
+
+            printContent += `</div>`;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = printContent;
+            tempDiv.style.position = 'absolute';
+            tempDiv.style.left = '-9999px';
+            document.body.appendChild(tempDiv);
+
+            const btn = document.querySelector('.fa-file-pdf').parentElement;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> กำลังสร้าง...';
+
+            const opt = {
+                margin: 10, filename: 'SHAring_2026_Schedule.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            };
+
+            html2pdf().set(opt).from(tempDiv.firstElementChild).save().then(() => {
+                document.body.removeChild(tempDiv);
+                btn.innerHTML = originalText;
+            });
+        }
+
+        // === FX (Snow & Sparkle) ===
+        function initSnowfall() {
+            const cv = document.getElementById('snow-canvas'), ctx = cv.getContext('2d');
+            let w, h, flakes = [];
+            function resize() { w = cv.width = window.innerWidth; h = cv.height = window.innerHeight; }
+            window.addEventListener('resize', resize); resize();
+            for (let i = 0; i < 60; i++) flakes.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 2 + 1, sy: Math.random() * 0.8 + 0.2, sx: (Math.random() - 0.5) * 0.5, a: Math.random() * Math.PI * 2, o: Math.random() * 0.5 + 0.3 });
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                const theme = document.documentElement.getAttribute('data-theme') || 'pine';
+                const compStyles = getComputedStyle(document.documentElement);
+                const snowColor = compStyles.getPropertyValue('--th-snow').trim() || 'rgba(255,255,255,0.8)';
+                const snowShadow = compStyles.getPropertyValue('--th-snow-shadow').trim() || 'transparent';
+
+                for (let f of flakes) {
+                    f.a += 0.01; f.y += f.sy; f.x += Math.sin(f.a) * 0.3 + f.sx;
+                    if (f.y > h + 5) { f.y = -5; f.x = Math.random() * w; }
+                    ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                    ctx.fillStyle = snowColor;
+                    ctx.shadowBlur = theme === 'pine' ? 0 : 5;
+                    ctx.shadowColor = snowShadow;
+                    ctx.fill(); ctx.shadowBlur = 0;
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        function triggerSparkles() {
+            const cv = document.getElementById('sparkle-canvas'), ctx = cv.getContext('2d');
+            cv.width = window.innerWidth; cv.height = window.innerHeight;
+            let particles = [], colors = ['#fbbf24', '#ef4444', '#fcd34d', '#ffffff', '#38bdf8'];
+            for (let i = 0; i < 80; i++) particles.push({ x: cv.width / 2, y: cv.height * 0.3, vx: (Math.random() - 0.5) * 15, vy: (Math.random() - 0.7) * 15, s: Math.random() * 5 + 2, c: colors[Math.floor(Math.random() * colors.length)], a: 1 });
+            function animate() {
+                ctx.clearRect(0, 0, cv.width, cv.height); let alive = false;
+                for (let p of particles) {
+                    if (p.a <= 0) continue; alive = true; p.x += p.vx; p.y += p.vy; p.vy += 0.2; p.a *= 0.95;
+                    ctx.globalAlpha = p.a; ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2); ctx.fill();
+                }
+                if (alive) requestAnimationFrame(animate); else ctx.clearRect(0, 0, cv.width, cv.height);
+            }
+            animate();
+        }
+
+        window.onload = () => {
+            initSnowfall();
+            setLanguage(currentLang);
+            updateStepper();
+        };
+    </script>
+</body>
+
+</html>
