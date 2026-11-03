@@ -1879,13 +1879,15 @@
         async function deleteBooking(date, zone, idx) {
             if (confirm(`ยืนยันลบการจองวันที่ ${date} รอบนี้ใช่หรือไม่?`)) {
                 const data = getBookings();
+                // ตรวจสอบความถูกต้องของโครงสร้างข้อมูลก่อนทำการลบ
                 if (data[date] && data[date][zone]) {
                     delete data[date][zone][idx];
-                    // บันทึกและซิงค์ข้อมูลที่ลบแล้วขึ้น Firebase ทันที
                     await saveBookings(data);
                     renderAdminDashboard();
                     renderAll();
                     showAlert('ลบข้อมูลเรียบร้อยแล้ว', 'success');
+                } else {
+                    showAlert('ไม่พบข้อมูลที่ต้องการลบในระบบ', 'error');
                 }
             }
         }
