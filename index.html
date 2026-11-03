@@ -1362,16 +1362,25 @@
         }
 
         async function saveBookings(data) {
-            bookingsCache = data;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            // บันทึกในเครื่องก่อน และคืนค่า true/false เพื่อให้ผู้เรียกตรวจสอบผลได้
             if (firebaseDbRef) {
                 try {
                     await firebaseDbRef.set(serializeForFirebase(data));
+                    bookingsCache = data;
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                    return true;
                 } catch (err) {
                     console.error('Firebase write error:', err);
-                    showAlert('บันทึกขึ้นฐานข้อมูลออนไลน์ไม่สำเร็จ กรุณาตรวจสอบว่าเปิด Rules (.write: true) ใน Firebase แล้ว', 'error');
+                    showAlert('บันทึกฐานข้อมูลออนไลน์ไม่สำเร็จ ข้อมูลยังไม่ถูกลบจากระบบออนไลน์ กรุณาตรวจสอบ Firebase Rules / สิทธิ์ .write', 'error');
+                    return false;
                 }
             }
+
+            // ไม่มีการเชื่อมต่อ Firebase: เก็บเฉพาะใน browser นี้เท่านั้น
+            bookingsCache = data;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            updateSyncBadge('local');
+            return true;
         }
 
         function maskPhoneLast4(phoneStr) {
@@ -1565,32 +1574,65 @@
         }
 
         // --- Action Buttons Step 5 ---
-        function downloadTicketImage(auto = false) {
+        async function downloadTicketImage(auto = false) {
             const ticket = document.getElementById('ticket-capture-area');
             const btnText = document.getElementById('dl-btn-text');
             const autoMsg = document.getElementById('auto-dl-msg');
 
-            if (!auto && btnText) btnText.textContent = "Loading...";
+            if (!ticket) {
+                if (autoMsg) autoMsg.textContent = 'ไม่พบพื้นที่บัตรคิว กรุณากดโหลดรูปอีกครั้ง';
+                return;
+            }
+            if (typeof html2canvas !== 'function') {
+                if (autoMsg) autoMsg.textContent = 'โหลดเครื่องมือสร้างรูปไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ตแล้วกดโหลดรูปอีกครั้ง';
+                return;
+            }
+
+            if (!auto && btnText) btnText.textContent = 'กำลังสร้างรูป...';
+            if (autoMsg) autoMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> กำลังสร้างรูปภาพบัตรคิว...';
+
             ticket.classList.add('no-anim');
+            try {
+                // รอ Font และ layout ให้พร้อมก่อนจับภาพ ลดปัญหาภาพว่าง/ตัวหนังสือไม่ครบ
+                if (document.fonts && document.fonts.ready) await document.fonts.ready;
+                await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
-            html2canvas(ticket, {
-                scale: 2,
-                backgroundColor: null,
-                useCORS: true
-            }).then(canvas => {
-                const link = document.createElement('a');
+                const canvas = await html2canvas(ticket, {
+                    scale: Math.min(2, window.devicePixelRatio || 1.5),
+                    backgroundColor: null,
+                    useCORS: true,
+                    allowTaint: false,
+                    logging: false,
+                    windowWidth: Math.max(document.documentElement.clientWidth, ticket.scrollWidth)
+                });
+
+                const blob = await new Promise((resolve, reject) => {
+                    canvas.toBlob(result => result ? resolve(result) : reject(new Error('สร้างไฟล์ PNG ไม่สำเร็จ')), 'image/png');
+                });
+
                 const refCode = appState.sessionBookings[0] ? appState.sessionBookings[0].ref : 'PASS';
-                link.download = `SHAring2026_${refCode}.png`;
-                link.href = canvas.toDataURL('image/png');
+                const fileName = `SHAring2026_${refCode}.png`;
+                const objectUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = objectUrl;
+                link.download = fileName;
+                link.style.display = 'none';
+                document.body.appendChild(link);
                 link.click();
+                link.remove();
+                setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
 
+                if (autoMsg) {
+                    autoMsg.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> สร้างรูปบัตรคิวเรียบร้อย หากเบราว์เซอร์ไม่ดาวน์โหลดอัตโนมัติ กรุณากดปุ่ม “โหลดรูปอีกครั้ง” ด้านล่าง';
+                }
+            } catch (err) {
+                console.error('Ticket image generation/download failed:', err);
+                if (autoMsg) autoMsg.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> สร้างรูปอัตโนมัติไม่สำเร็จ กรุณากด “โหลดรูปอีกครั้ง” หรืออนุญาตการดาวน์โหลดในเบราว์เซอร์';
+                if (!auto && btnText) btnText.textContent = t('btnDownloadAgain');
+            } finally {
                 ticket.classList.remove('no-anim');
                 if (!auto && btnText) btnText.textContent = t('btnDownloadAgain');
-                if (auto && autoMsg) autoMsg.innerHTML = '<i class="fa-solid fa-check-circle mr-1"></i> ดาวน์โหลดรูปภาพบัตรคิวอัตโนมัติเรียบร้อยแล้ว';
-            }).catch(() => {
-                ticket.classList.remove('no-anim');
-                if (!auto && btnText) btnText.textContent = t('btnDownloadAgain');
-            });
+            }
         }
 
         function resetForNewPerson() {
@@ -1877,19 +1919,33 @@
         }
 
         async function deleteBooking(date, zone, idx) {
-            if (confirm(`ยืนยันลบการจองวันที่ ${date} รอบนี้ใช่หรือไม่?`)) {
-                const data = getBookings();
-                // ตรวจสอบความถูกต้องของโครงสร้างข้อมูลก่อนทำการลบ
-                if (data[date] && data[date][zone]) {
-                    delete data[date][zone][idx];
-                    await saveBookings(data);
-                    renderAdminDashboard();
-                    renderAll();
-                    showAlert('ลบข้อมูลเรียบร้อยแล้ว', 'success');
-                } else {
-                    showAlert('ไม่พบข้อมูลที่ต้องการลบในระบบ', 'error');
-                }
+            if (!confirm(`ยืนยันลบการจองวันที่ ${date} รอบนี้ใช่หรือไม่?`)) return;
+
+            // คัดลอกข้อมูลก่อนแก้ไข ป้องกัน cache เปลี่ยนก่อน Firebase ยืนยัน
+            const current = getBookings();
+            const data = JSON.parse(JSON.stringify(current || {}));
+            const slotData = data[date] && data[date][zone];
+            const key = String(idx);
+
+            if (!slotData || !Object.prototype.hasOwnProperty.call(slotData, key) || !slotData[key]) {
+                showAlert('ไม่พบข้อมูลการจองรอบนี้ อาจถูกลบไปแล้วหรือข้อมูลยังไม่อัปเดต', 'error');
+                renderAdminDashboard();
+                return;
             }
+
+            // ลบเฉพาะรอบที่เลือก ไม่กระทบรายการอื่น
+            delete slotData[key];
+
+            const saved = await saveBookings(data);
+            if (!saved) {
+                // โหลดหน้ารายการใหม่จาก cache เดิม และไม่แจ้งว่าลบสำเร็จ
+                renderAdminDashboard();
+                return;
+            }
+
+            renderAdminDashboard();
+            renderAll();
+            showAlert('ลบข้อมูลการจองเรียบร้อยแล้ว', 'success');
         }
 
         function openAdminEdit(date, zone, idx) {
