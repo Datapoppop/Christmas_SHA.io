@@ -1921,11 +1921,9 @@
         async function deleteBooking(date, zone, idx) {
             if (!confirm(`ยืนยันลบการจองวันที่ ${date} รอบนี้ใช่หรือไม่?`)) return;
 
-            // คัดลอกข้อมูลก่อนแก้ไข ป้องกัน cache เปลี่ยนก่อน Firebase ยืนยัน
-            const current = getBookings();
-            const data = JSON.parse(JSON.stringify(current || {}));
-            const slotData = data[date] && data[date][zone];
             const key = String(idx);
+            const current = getBookings() || {};
+            const slotData = current[date] && current[date][zone];
 
             if (!slotData || !Object.prototype.hasOwnProperty.call(slotData, key) || !slotData[key]) {
                 showAlert('ไม่พบข้อมูลการจองรอบนี้ อาจถูกลบไปแล้วหรือข้อมูลยังไม่อัปเดต', 'error');
@@ -1933,19 +1931,55 @@
                 return;
             }
 
-            // ลบเฉพาะรอบที่เลือก ไม่กระทบรายการอื่น
-            delete slotData[key];
-
-            const saved = await saveBookings(data);
-            if (!saved) {
-                // โหลดหน้ารายการใหม่จาก cache เดิม และไม่แจ้งว่าลบสำเร็จ
-                renderAdminDashboard();
+            // ต้องเชื่อมต่อ Firebase จริงก่อน จึงอนุญาตให้ลบจากหน้าแอดมิน
+            if (!firebaseDbRef) {
+                showAlert('ยังไม่ได้เชื่อมต่อ Firebase จึงยังลบข้อมูลออนไลน์ไม่ได้ กรุณารอให้สถานะเป็น ออนไลน์ (Real-time) แล้วลองใหม่', 'error');
+                updateSyncBadge('local');
                 return;
             }
 
-            renderAdminDashboard();
-            renderAll();
-            showAlert('ลบข้อมูลการจองเรียบร้อยแล้ว', 'success');
+            const deleteButton = document.querySelector(`button[onclick="deleteBooking('${date}', '${zone}', ${idx})"]`);
+            if (deleteButton) {
+                deleteButton.disabled = true;
+                deleteButton.classList.add('opacity-50', 'pointer-events-none');
+            }
+
+            try {
+                // Firebase ใช้ชื่อวันที่ที่ encode แล้ว และลบเฉพาะ date/zone/slot นี้
+                const targetRef = firebaseDbRef
+                    .child(encodeFirebaseKey(date))
+                    .child(zone)
+                    .child(key);
+
+                await targetRef.remove();
+
+                // ตรวจยืนยันจาก Firebase ว่ารายการเป้าหมายหายไปจริง
+                const verifySnapshot = await targetRef.once('value');
+                if (verifySnapshot.exists()) {
+                    throw new Error('Firebase ยังพบข้อมูลรายการนี้หลังสั่งลบ');
+                }
+
+                // ปรับ cache หลัง Firebase ยืนยันแล้วเท่านั้น
+                const updated = JSON.parse(JSON.stringify(getBookings() || {}));
+                if (updated[date] && updated[date][zone]) {
+                    delete updated[date][zone][key];
+                }
+                bookingsCache = updated;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+
+                renderAdminDashboard();
+                renderAll();
+                showAlert('ลบข้อมูลจาก Firebase เรียบร้อยแล้ว', 'success');
+            } catch (err) {
+                console.error('Firebase delete error:', err);
+                showAlert(`ลบข้อมูล Firebase ไม่สำเร็จ: ${err && err.message ? err.message : err}`, 'error');
+                renderAdminDashboard();
+            } finally {
+                if (deleteButton) {
+                    deleteButton.disabled = false;
+                    deleteButton.classList.remove('opacity-50', 'pointer-events-none');
+                }
+            }
         }
 
         function openAdminEdit(date, zone, idx) {
