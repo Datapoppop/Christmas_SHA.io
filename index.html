@@ -1535,186 +1535,186 @@
             goToStep(5);
             triggerSparkles();
 
-            setTimeout(() => {
-                downloadTicketImage(true);
-            }, 800);
-            function updateTicketUI() {
-                const bookings = appState.sessionBookings;
-                if (bookings.length === 0) return;
-                const first = bookings[0];
+            setTimeout(() => { downloadTicketImage(true); }, 800);
+        }
 
-                const uniqueDates = [...new Set(bookings.map(b => b.date))];
-                const dateLabel = uniqueDates.join(', ');
-                const mergedTimeText = formatMergedTimeRanges(bookings);
+        function updateTicketUI() {
+            const bookings = appState.sessionBookings;
+            if (bookings.length === 0) return;
+            const first = bookings[0];
 
-                document.getElementById('ticket-date-display').textContent = `${t('showDatePrefix')} ${dateLabel}`;
-                document.getElementById('ticket-time-summary').textContent = `⏰ ${mergedTimeText}`;
+            const uniqueDates = [...new Set(bookings.map(b => b.date))];
+            const dateLabel = uniqueDates.join(', ');
+            const mergedTimeText = formatMergedTimeRanges(bookings);
 
-                document.getElementById('ticket-church').textContent = first.church;
-                document.getElementById('ticket-ref').textContent = `#${first.ref}`;
-                document.getElementById('ticket-name-phone').textContent = `${first.name} (${maskPhoneLast4(first.phone)})`;
-                document.getElementById('ticket-people').textContent = `${first.people} ${t('peopleUnit')}`;
-                document.getElementById('ticket-performance').textContent = `${first.desc} (${first.eq || '-'})`;
+            document.getElementById('ticket-date-display').textContent = `${t('showDatePrefix')} ${dateLabel}`;
+            document.getElementById('ticket-time-summary').textContent = `⏰ ${mergedTimeText}`;
 
-                let timeHtml = '';
-                bookings.forEach(b => {
-                    const icon = b.zone === 'indoor' ? `🏥 ${t('venueIndoorTitle')}` : `🎄 ${t('venueOutdoorTitle')}`;
-                    timeHtml += `<div class="mb-1">📅 ${b.date} | ${icon} : ${b.time}</div>`;
-                });
-                document.getElementById('ticket-time-list').innerHTML = timeHtml;
-            }
+            document.getElementById('ticket-church').textContent = first.church;
+            document.getElementById('ticket-ref').textContent = `#${first.ref}`;
+            document.getElementById('ticket-name-phone').textContent = `${first.name} (${maskPhoneLast4(first.phone)})`;
+            document.getElementById('ticket-people').textContent = `${first.people} ${t('peopleUnit')}`;
+            document.getElementById('ticket-performance').textContent = `${first.desc} (${first.eq || '-'})`;
 
-            // --- Action Buttons Step 5 ---
-            function downloadTicketImage(auto = false) {
-                const ticket = document.getElementById('ticket-capture-area');
-                const btnText = document.getElementById('dl-btn-text');
-                const autoMsg = document.getElementById('auto-dl-msg');
+            let timeHtml = '';
+            bookings.forEach(b => {
+                const icon = b.zone === 'indoor' ? `🏥 ${t('venueIndoorTitle')}` : `🎄 ${t('venueOutdoorTitle')}`;
+                timeHtml += `<div class="mb-1">📅 ${b.date} | ${icon} : ${b.time}</div>`;
+            });
+            document.getElementById('ticket-time-list').innerHTML = timeHtml;
+        }
 
-                if (!auto && btnText) btnText.textContent = "Loading...";
-                ticket.classList.add('no-anim');
+        // --- Action Buttons Step 5 ---
+        function downloadTicketImage(auto = false) {
+            const ticket = document.getElementById('ticket-capture-area');
+            const btnText = document.getElementById('dl-btn-text');
+            const autoMsg = document.getElementById('auto-dl-msg');
 
-                html2canvas(ticket, {
-                    scale: 2,
-                    backgroundColor: null,
-                    useCORS: true
-                }).then(canvas => {
-                    const link = document.createElement('a');
-                    const refCode = appState.sessionBookings[0] ? appState.sessionBookings[0].ref : 'PASS';
-                    link.download = `SHAring2026_${refCode}.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
+            if (!auto && btnText) btnText.textContent = "Loading...";
+            ticket.classList.add('no-anim');
 
-                    ticket.classList.remove('no-anim');
-                    if (!auto && btnText) btnText.textContent = t('btnDownloadAgain');
-                    if (auto && autoMsg) autoMsg.innerHTML = '<i class="fa-solid fa-check-circle mr-1"></i> ดาวน์โหลดรูปภาพบัตรคิวอัตโนมัติเรียบร้อยแล้ว';
-                }).catch(() => {
-                    ticket.classList.remove('no-anim');
-                    if (!auto && btnText) btnText.textContent = t('btnDownloadAgain');
-                });
-            }
+            html2canvas(ticket, {
+                scale: 2,
+                backgroundColor: null,
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                const refCode = appState.sessionBookings[0] ? appState.sessionBookings[0].ref : 'PASS';
+                link.download = `SHAring2026_${refCode}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
 
-            function resetForNewPerson() {
-                appState.step = 1;
-                appState.name = '';
-                appState.church = '';
-                appState.phone = '';
-                appState.selectedSlots = [];
-                appState.desc = '';
-                appState.people = '';
-                appState.eqIds = ['mic'];
-                appState.eqNotes = '';
-                appState.sessionBookings = [];
+                ticket.classList.remove('no-anim');
+                if (!auto && btnText) btnText.textContent = t('btnDownloadAgain');
+                if (auto && autoMsg) autoMsg.innerHTML = '<i class="fa-solid fa-check-circle mr-1"></i> ดาวน์โหลดรูปภาพบัตรคิวอัตโนมัติเรียบร้อยแล้ว';
+            }).catch(() => {
+                ticket.classList.remove('no-anim');
+                if (!auto && btnText) btnText.textContent = t('btnDownloadAgain');
+            });
+        }
 
-                document.getElementById('step1-form').reset();
-                document.getElementById('performance-desc').value = '';
-                document.getElementById('perf-count').value = '';
-                document.getElementById('equipment-notes').value = '';
-                renderEq();
-                goToStep(1);
-            }
+        function resetForNewPerson() {
+            appState.step = 1;
+            appState.name = '';
+            appState.church = '';
+            appState.phone = '';
+            appState.selectedSlots = [];
+            appState.desc = '';
+            appState.people = '';
+            appState.eqIds = ['mic'];
+            appState.eqNotes = '';
+            appState.sessionBookings = [];
 
-            // === Main Render Loop ===
-            function renderAll() {
-                const data = getBookings();
-                const currentDateData = data[appState.date] || { indoor: {}, outdoor: {} };
+            document.getElementById('step1-form').reset();
+            document.getElementById('performance-desc').value = '';
+            document.getElementById('perf-count').value = '';
+            document.getElementById('equipment-notes').value = '';
+            renderEq();
+            goToStep(1);
+        }
 
-                ['indoor', 'outdoor'].forEach(z => {
-                    const btn = document.getElementById(`zone-btn-${z}`);
-                    const avail = document.getElementById(`zone-avail-${z}`);
+        // === Main Render Loop ===
+        function renderAll() {
+            const data = getBookings();
+            const currentDateData = data[appState.date] || { indoor: {}, outdoor: {} };
 
-                    const slots = getTimeSlotsForZone(z);
-                    const free = slots.length - Object.keys(currentDateData[z] || {}).length;
-                    avail.textContent = free > 0 ? `${t('statusFree')} ${free}` : t('statusFull');
-                    avail.className = `text-xs font-bold px-2 py-0.5 rounded ${free > 0 ? 'bg-th-success-bg text-th-success' : 'bg-th-danger-bg text-th-danger'}`;
+            ['indoor', 'outdoor'].forEach(z => {
+                const btn = document.getElementById(`zone-btn-${z}`);
+                const avail = document.getElementById(`zone-avail-${z}`);
 
-                    if (appState.zone === z) {
-                        btn.className = 'text-left p-4 rounded-2xl border-2 transition-all relative group border-th-accent bg-th-accent-light';
-                    } else {
-                        btn.className = 'text-left p-4 rounded-2xl border transition-all relative group bg-th-card border-th-card-border hover:border-th-accent';
-                    }
-                });
+                const slots = getTimeSlotsForZone(z);
+                const free = slots.length - Object.keys(currentDateData[z] || {}).length;
+                avail.textContent = free > 0 ? `${t('statusFree')} ${free}` : t('statusFull');
+                avail.className = `text-xs font-bold px-2 py-0.5 rounded ${free > 0 ? 'bg-th-success-bg text-th-success' : 'bg-th-danger-bg text-th-danger'}`;
 
-                // Slots Grid
-                const grid = document.getElementById('slots-grid');
-                grid.replaceChildren();
-                getTimeSlotsForZone(appState.zone).forEach(([start, end], i) => {
-                    const b = (currentDateData[appState.zone] || {})[i];
-                    const isSel = appState.selectedSlots.some(s => s.date === appState.date && s.zone === appState.zone && s.idx === i);
-                    const btn = document.createElement('button');
-                    btn.type = 'button'; btn.disabled = !!b;
+                if (appState.zone === z) {
+                    btn.className = 'text-left p-4 rounded-2xl border-2 transition-all relative group border-th-accent bg-th-accent-light';
+                } else {
+                    btn.className = 'text-left p-4 rounded-2xl border transition-all relative group bg-th-card border-th-card-border hover:border-th-accent';
+                }
+            });
 
-                    if (b) {
-                        btn.className = 'slot-card p-4 rounded-2xl border text-left flex flex-col justify-between min-h-[116px] bg-th-danger-bg border-th-danger opacity-85 cursor-not-allowed';
-                        btn.innerHTML = `<div class="flex justify-between w-full"><span class="font-bold text-th-danger">${start}-${end}</span><span class="text-[11px] px-2 py-0.5 rounded-full bg-th-danger text-white font-bold">${t('statusBooked')}</span></div>
+            // Slots Grid
+            const grid = document.getElementById('slots-grid');
+            grid.replaceChildren();
+            getTimeSlotsForZone(appState.zone).forEach(([start, end], i) => {
+                const b = (currentDateData[appState.zone] || {})[i];
+                const isSel = appState.selectedSlots.some(s => s.date === appState.date && s.zone === appState.zone && s.idx === i);
+                const btn = document.createElement('button');
+                btn.type = 'button'; btn.disabled = !!b;
+
+                if (b) {
+                    btn.className = 'slot-card p-4 rounded-2xl border text-left flex flex-col justify-between min-h-[116px] bg-th-danger-bg border-th-danger opacity-85 cursor-not-allowed';
+                    btn.innerHTML = `<div class="flex justify-between w-full"><span class="font-bold text-th-danger">${start}-${end}</span><span class="text-[11px] px-2 py-0.5 rounded-full bg-th-danger text-white font-bold">${t('statusBooked')}</span></div>
                                      <div class="mt-2 text-xs font-bold text-th-text truncate">${b.name} (${maskPhoneLast4(b.phone)})</div>`;
-                    } else {
-                        btn.className = `slot-card p-4 rounded-2xl border text-left flex flex-col justify-between min-h-[116px] cursor-pointer ${isSel ? 'border-th-accent bg-th-accent-light scale-[1.02] shadow-md' : 'bg-th-card border-th-card-border hover:bg-th-card-hover'}`;
-                        btn.innerHTML = `<div class="flex justify-between w-full"><span class="font-bold text-th-text">${start}-${end}</span><span class="text-[11px] px-2 py-0.5 rounded-full ${isSel ? 'bg-th-accent text-amber-950 font-bold' : 'bg-th-success-bg text-th-success font-bold'}">${isSel ? t('statusSelected') : t('statusFree')}</span></div>`;
-                        btn.onclick = () => { toggleSlot(appState.date, appState.zone, i); };
-                    }
-                    grid.appendChild(btn);
-                });
+                } else {
+                    btn.className = `slot-card p-4 rounded-2xl border text-left flex flex-col justify-between min-h-[116px] cursor-pointer ${isSel ? 'border-th-accent bg-th-accent-light scale-[1.02] shadow-md' : 'bg-th-card border-th-card-border hover:bg-th-card-hover'}`;
+                    btn.innerHTML = `<div class="flex justify-between w-full"><span class="font-bold text-th-text">${start}-${end}</span><span class="text-[11px] px-2 py-0.5 rounded-full ${isSel ? 'bg-th-accent text-amber-950 font-bold' : 'bg-th-success-bg text-th-success font-bold'}">${isSel ? t('statusSelected') : t('statusFree')}</span></div>`;
+                    btn.onclick = () => { toggleSlot(appState.date, appState.zone, i); };
+                }
+                grid.appendChild(btn);
+            });
 
-                document.getElementById('slot-zone-pill').textContent = appState.zone === 'indoor' ? `🏥 ${t('venueIndoorTitle')} (${appState.date})` : `🎄 ${t('venueOutdoorTitle')} (${appState.date})`;
-                document.getElementById('selected-slots-count').textContent = `${t('selectedCountPrefix')} ${appState.selectedSlots.length} ${t('selectedCountSuffix')}`;
+            document.getElementById('slot-zone-pill').textContent = appState.zone === 'indoor' ? `🏥 ${t('venueIndoorTitle')} (${appState.date})` : `🎄 ${t('venueOutdoorTitle')} (${appState.date})`;
+            document.getElementById('selected-slots-count').textContent = `${t('selectedCountPrefix')} ${appState.selectedSlots.length} ${t('selectedCountSuffix')}`;
 
-                let timeHtml = appState.selectedSlots.map(s => {
-                    const zName = s.zone === 'indoor' ? `🏥 ${t('venueIndoorTitle')}` : `🎄 ${t('venueOutdoorTitle')}`;
-                    const times = getTimeSlotsForZone(s.zone)[s.idx].join('-');
-                    return `<strong>📅 ${s.date}</strong> | ${zName}: ${times}`;
-                }).join('<br>');
+            let timeHtml = appState.selectedSlots.map(s => {
+                const zName = s.zone === 'indoor' ? `🏥 ${t('venueIndoorTitle')}` : `🎄 ${t('venueOutdoorTitle')}`;
+                const times = getTimeSlotsForZone(s.zone)[s.idx].join('-');
+                return `<strong>📅 ${s.date}</strong> | ${zName}: ${times}`;
+            }).join('<br>');
 
-                document.getElementById('review-booker').textContent = appState.name || '-';
-                document.getElementById('review-time').innerHTML = timeHtml || '-';
-                document.getElementById('review-people').textContent = document.getElementById('perf-count').value ? `${document.getElementById('perf-count').value} ${t('peopleUnit')}` : '-';
+            document.getElementById('review-booker').textContent = appState.name || '-';
+            document.getElementById('review-time').innerHTML = timeHtml || '-';
+            document.getElementById('review-people').textContent = document.getElementById('perf-count').value ? `${document.getElementById('perf-count').value} ${t('peopleUnit')}` : '-';
 
-                renderPublicSchedule();
-            }
+            renderPublicSchedule();
+        }
 
-            function renderQuickTags() {
-                const tags = t('quickTags');
-                document.getElementById('performance-tags-container').innerHTML = tags.map(tag => `<button type="button" class="px-3 py-1.5 rounded-xl border border-th-border bg-th-card text-xs text-th-text hover:bg-th-accent-light transition" onclick="document.getElementById('performance-desc').value += (document.getElementById('performance-desc').value ? ', ' : '') + '${tag}'">+ ${tag}</button>`).join('');
-            }
+        function renderQuickTags() {
+            const tags = t('quickTags');
+            document.getElementById('performance-tags-container').innerHTML = tags.map(tag => `<button type="button" class="px-3 py-1.5 rounded-xl border border-th-border bg-th-card text-xs text-th-text hover:bg-th-accent-light transition" onclick="document.getElementById('performance-desc').value += (document.getElementById('performance-desc').value ? ', ' : '') + '${tag}'">+ ${tag}</button>`).join('');
+        }
 
-            function renderEq() {
-                const eqLabelsDict = t('eqLabels');
-                document.getElementById('equipment-chips-container').innerHTML = EQ_IDS.map(id => {
-                    const isChecked = appState.eqIds.includes(id);
-                    return `<button type="button" onclick="toggleEq('${id}')" class="p-3 rounded-xl border text-left text-xs font-bold flex justify-between ${isChecked ? 'bg-th-accent-light border-th-accent text-th-text' : 'bg-th-card border-th-border text-th-muted'}">
+        function renderEq() {
+            const eqLabelsDict = t('eqLabels');
+            document.getElementById('equipment-chips-container').innerHTML = EQ_IDS.map(id => {
+                const isChecked = appState.eqIds.includes(id);
+                return `<button type="button" onclick="toggleEq('${id}')" class="p-3 rounded-xl border text-left text-xs font-bold flex justify-between ${isChecked ? 'bg-th-accent-light border-th-accent text-th-text' : 'bg-th-card border-th-border text-th-muted'}">
                     ${eqLabelsDict[id]} <i class="fa-solid ${isChecked ? 'fa-square-check text-th-accent' : 'fa-square opacity-50'} text-base"></i>
                 </button>`;
-                }).join('');
-            }
-            function toggleEq(id) { appState.eqIds = appState.eqIds.includes(id) ? appState.eqIds.filter(i => i !== id) : [...appState.eqIds, id]; renderEq(); }
+            }).join('');
+        }
+        function toggleEq(id) { appState.eqIds = appState.eqIds.includes(id) ? appState.eqIds.filter(i => i !== id) : [...appState.eqIds, id]; renderEq(); }
 
-            // =========================================================================
-            // 3. PUBLIC SCHEDULE & USER SELF-EDIT (VERIFY BY PHONE)
-            // =========================================================================
-            function openScheduleModal() { renderPublicSchedule(); document.getElementById('schedule-modal').classList.remove('hidden'); }
-            function closeScheduleModal() { document.getElementById('schedule-modal').classList.add('hidden'); }
+        // =========================================================================
+        // 3. PUBLIC SCHEDULE & USER SELF-EDIT (VERIFY BY PHONE)
+        // =========================================================================
+        function openScheduleModal() { renderPublicSchedule(); document.getElementById('schedule-modal').classList.remove('hidden'); }
+        function closeScheduleModal() { document.getElementById('schedule-modal').classList.add('hidden'); }
 
-            function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
-            function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
+        function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
+        function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
 
-            function renderPublicSchedule() {
-                const data = getBookings();
-                const container = document.getElementById('user-results');
-                let html = '';
+        function renderPublicSchedule() {
+            const data = getBookings();
+            const container = document.getElementById('user-results');
+            let html = '';
 
-                DATES_LIST.forEach(d => {
-                    const dayData = data[d] || { indoor: {}, outdoor: {} };
-                    html += `<div class="mb-6"><h4 class="font-bold text-th-accent text-base mb-2 border-b border-th-border pb-1">📅 ${d}</h4>`;
+            DATES_LIST.forEach(d => {
+                const dayData = data[d] || { indoor: {}, outdoor: {} };
+                html += `<div class="mb-6"><h4 class="font-bold text-th-accent text-base mb-2 border-b border-th-border pb-1">📅 ${d}</h4>`;
 
-                    ['indoor', 'outdoor'].forEach(z => {
-                        const venueName = z === 'indoor' ? `🏥 ${t('venueIndoorTitle')}` : `🎄 ${t('venueOutdoorTitle')}`;
-                        html += `<div class="p-3 rounded-xl border border-th-border bg-th-card mb-2 shadow-sm"><div class="font-bold text-th-text text-xs mb-2">${venueName}</div><div class="space-y-2">`;
+                ['indoor', 'outdoor'].forEach(z => {
+                    const venueName = z === 'indoor' ? `🏥 ${t('venueIndoorTitle')}` : `🎄 ${t('venueOutdoorTitle')}`;
+                    html += `<div class="p-3 rounded-xl border border-th-border bg-th-card mb-2 shadow-sm"><div class="font-bold text-th-text text-xs mb-2">${venueName}</div><div class="space-y-2">`;
 
-                        const slots = getTimeSlotsForZone(z);
-                        slots.forEach(([s, e], i) => {
-                            const b = (dayData[z] || {})[i];
-                            if (b) {
-                                const maskedPhone = maskPhoneLast4(b.phone);
-                                html += `<div class="p-2.5 bg-th-accent-light border border-th-border rounded-lg flex flex-wrap justify-between items-center gap-2 text-xs">
+                    const slots = getTimeSlotsForZone(z);
+                    slots.forEach(([s, e], i) => {
+                        const b = (dayData[z] || {})[i];
+                        if (b) {
+                            const maskedPhone = maskPhoneLast4(b.phone);
+                            html += `<div class="p-2.5 bg-th-accent-light border border-th-border rounded-lg flex flex-wrap justify-between items-center gap-2 text-xs">
                                 <div>
                                     <strong class="text-th-text">${s}-${e}</strong> · 
                                     <span class="text-th-text font-bold">${t('bookerPrefix')} ${b.name}</span>
@@ -1727,136 +1727,136 @@
                                     </button>
                                 </div>
                             </div>`;
-                            } else {
-                                html += `<div class="p-2 bg-th-panel border border-th-border rounded-lg flex justify-between items-center text-xs opacity-75">
+                        } else {
+                            html += `<div class="p-2 bg-th-panel border border-th-border rounded-lg flex justify-between items-center text-xs opacity-75">
                                 <span class="text-th-muted">${s}-${e}</span>
                                 <span class="text-[10px] bg-th-success-bg text-th-success px-2 py-0.5 rounded font-bold">${t('statusFree')}</span>
                             </div>`;
-                            }
-                        });
-                        html += `</div></div>`;
+                        }
                     });
-                    html += `</div>`;
+                    html += `</div></div>`;
                 });
-                container.innerHTML = html;
+                html += `</div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function openUserSelfEditModal(date, zone, idx) {
+            const data = getBookings();
+            const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            if (!b) return;
+
+            pendingUserEditTarget = { date, zone, idx };
+
+            const [s, e] = getTimeSlotsForZone(zone)[idx];
+            const venueLabel = zone === 'indoor' ? t('venueIndoorTitle') : t('venueOutdoorTitle');
+            document.getElementById('user-verify-slot-info').textContent = `📅 ${date} | ${venueLabel} (${s}–${e})`;
+            document.getElementById('user-verify-booker-hint').textContent = `${t('bookerPrefix')} ${b.name} (${t('phoneLast4Prefix')} ${maskPhoneLast4(b.phone)})`;
+
+            document.getElementById('user-verify-phone-input').value = '';
+            document.getElementById('user-verify-error').classList.add('hidden');
+            document.getElementById('user-verify-step').classList.remove('hidden');
+            document.getElementById('user-self-edit-form').classList.add('hidden');
+
+            document.getElementById('user-self-edit-modal').classList.remove('hidden');
+        }
+
+        function closeUserSelfEditModal() {
+            document.getElementById('user-self-edit-modal').classList.add('hidden');
+            pendingUserEditTarget = null;
+        }
+
+        function confirmUserPhoneVerification() {
+            if (!pendingUserEditTarget) return;
+            const { date, zone, idx } = pendingUserEditTarget;
+            const data = getBookings();
+            const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            if (!b) return;
+
+            const inputDigits = document.getElementById('user-verify-phone-input').value.trim().replace(/\D/g, '');
+            const savedDigits = String(b.phone || '').replace(/\D/g, '');
+
+            if (!inputDigits || inputDigits !== savedDigits) {
+                document.getElementById('user-verify-error').classList.remove('hidden');
+                return;
             }
 
-            function openUserSelfEditModal(date, zone, idx) {
-                const data = getBookings();
-                const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
-                if (!b) return;
+            document.getElementById('user-verify-error').classList.add('hidden');
+            document.getElementById('user-verify-step').classList.add('hidden');
+            document.getElementById('user-self-edit-form').classList.remove('hidden');
 
-                pendingUserEditTarget = { date, zone, idx };
+            document.getElementById('user-edit-date').value = date;
+            document.getElementById('user-edit-zone').value = zone;
+            document.getElementById('user-edit-idx').value = idx;
+            document.getElementById('user-edit-name').value = b.name || '';
+            document.getElementById('user-edit-church').value = b.church || '';
+            document.getElementById('user-edit-phone').value = b.phone || '';
+            document.getElementById('user-edit-people').value = b.people || '';
+            document.getElementById('user-edit-desc').value = b.desc || '';
+            document.getElementById('user-edit-eq').value = b.eq || '';
+        }
 
-                const [s, e] = getTimeSlotsForZone(zone)[idx];
-                const venueLabel = zone === 'indoor' ? t('venueIndoorTitle') : t('venueOutdoorTitle');
-                document.getElementById('user-verify-slot-info').textContent = `📅 ${date} | ${venueLabel} (${s}–${e})`;
-                document.getElementById('user-verify-booker-hint').textContent = `${t('bookerPrefix')} ${b.name} (${t('phoneLast4Prefix')} ${maskPhoneLast4(b.phone)})`;
+        document.getElementById('user-self-edit-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const date = document.getElementById('user-edit-date').value;
+            const zone = document.getElementById('user-edit-zone').value;
+            const idx = parseInt(document.getElementById('user-edit-idx').value, 10);
 
-                document.getElementById('user-verify-phone-input').value = '';
-                document.getElementById('user-verify-error').classList.add('hidden');
-                document.getElementById('user-verify-step').classList.remove('hidden');
-                document.getElementById('user-self-edit-form').classList.add('hidden');
+            const newPhone = document.getElementById('user-edit-phone').value.trim().replace(/\D/g, '');
+            if (newPhone.length < 9) return;
 
-                document.getElementById('user-self-edit-modal').classList.remove('hidden');
-            }
+            const data = getBookings();
+            const existing = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            if (!existing) return;
 
-            function closeUserSelfEditModal() {
-                document.getElementById('user-self-edit-modal').classList.add('hidden');
-                pendingUserEditTarget = null;
-            }
-
-            function confirmUserPhoneVerification() {
-                if (!pendingUserEditTarget) return;
-                const { date, zone, idx } = pendingUserEditTarget;
-                const data = getBookings();
-                const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
-                if (!b) return;
-
-                const inputDigits = document.getElementById('user-verify-phone-input').value.trim().replace(/\D/g, '');
-                const savedDigits = String(b.phone || '').replace(/\D/g, '');
-
-                if (!inputDigits || inputDigits !== savedDigits) {
-                    document.getElementById('user-verify-error').classList.remove('hidden');
-                    return;
-                }
-
-                document.getElementById('user-verify-error').classList.add('hidden');
-                document.getElementById('user-verify-step').classList.add('hidden');
-                document.getElementById('user-self-edit-form').classList.remove('hidden');
-
-                document.getElementById('user-edit-date').value = date;
-                document.getElementById('user-edit-zone').value = zone;
-                document.getElementById('user-edit-idx').value = idx;
-                document.getElementById('user-edit-name').value = b.name || '';
-                document.getElementById('user-edit-church').value = b.church || '';
-                document.getElementById('user-edit-phone').value = b.phone || '';
-                document.getElementById('user-edit-people').value = b.people || '';
-                document.getElementById('user-edit-desc').value = b.desc || '';
-                document.getElementById('user-edit-eq').value = b.eq || '';
-            }
-
-            document.getElementById('user-self-edit-form').onsubmit = async (e) => {
-                e.preventDefault();
-                const date = document.getElementById('user-edit-date').value;
-                const zone = document.getElementById('user-edit-zone').value;
-                const idx = parseInt(document.getElementById('user-edit-idx').value, 10);
-
-                const newPhone = document.getElementById('user-edit-phone').value.trim().replace(/\D/g, '');
-                if (newPhone.length < 9) return;
-
-                const data = getBookings();
-                const existing = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
-                if (!existing) return;
-
-                data[date][zone][idx] = {
-                    ...existing,
-                    name: document.getElementById('user-edit-name').value.trim(),
-                    church: document.getElementById('user-edit-church').value.trim(),
-                    phone: newPhone,
-                    people: document.getElementById('user-edit-people').value.trim(),
-                    desc: document.getElementById('user-edit-desc').value.trim(),
-                    eq: document.getElementById('user-edit-eq').value.trim()
-                };
-
-                await saveBookings(data);
-                closeUserSelfEditModal();
-                renderAll();
+            data[date][zone][idx] = {
+                ...existing,
+                name: document.getElementById('user-edit-name').value.trim(),
+                church: document.getElementById('user-edit-church').value.trim(),
+                phone: newPhone,
+                people: document.getElementById('user-edit-people').value.trim(),
+                desc: document.getElementById('user-edit-desc').value.trim(),
+                eq: document.getElementById('user-edit-eq').value.trim()
             };
 
-            // --- Admin System ---
-            function verifyAdmin() {
-                const pwd = document.getElementById('verify-pwd').value;
-                if (pwd === 'Chap20610.' || pwd === 'admin2026') {
-                    document.getElementById('admin-login-box').classList.add('hidden');
-                    document.getElementById('admin-dashboard').classList.remove('hidden');
-                    renderAdminDashboard();
-                } else {
-                    document.getElementById('admin-error').classList.remove('hidden');
-                }
+            await saveBookings(data);
+            closeUserSelfEditModal();
+            renderAll();
+        };
+
+        // --- Admin System ---
+        function verifyAdmin() {
+            const pwd = document.getElementById('verify-pwd').value;
+            if (pwd === 'Chap20610.' || pwd === 'admin2026') {
+                document.getElementById('admin-login-box').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                renderAdminDashboard();
+            } else {
+                document.getElementById('admin-error').classList.remove('hidden');
             }
+        }
 
-            function renderAdminDashboard() {
-                const data = getBookings();
-                ['indoor', 'outdoor'].forEach(z => {
-                    const list = document.getElementById(`modal-list-${z}`);
-                    list.replaceChildren();
+        function renderAdminDashboard() {
+            const data = getBookings();
+            ['indoor', 'outdoor'].forEach(z => {
+                const list = document.getElementById(`modal-list-${z}`);
+                list.replaceChildren();
 
-                    DATES_LIST.forEach(d => {
-                        const dayData = (data[d] || {})[z] || {};
-                        const slots = getTimeSlotsForZone(z);
+                DATES_LIST.forEach(d => {
+                    const dayData = (data[d] || {})[z] || {};
+                    const slots = getTimeSlotsForZone(z);
 
-                        let dateHeader = document.createElement('div');
-                        dateHeader.className = 'font-bold text-th-accent text-xs mt-3 mb-1 bg-th-accent-light px-2 py-1 rounded';
-                        dateHeader.textContent = `📅 ${d}`;
-                        list.appendChild(dateHeader);
+                    let dateHeader = document.createElement('div');
+                    dateHeader.className = 'font-bold text-th-accent text-xs mt-3 mb-1 bg-th-accent-light px-2 py-1 rounded';
+                    dateHeader.textContent = `📅 ${d}`;
+                    list.appendChild(dateHeader);
 
-                        slots.forEach(([s, e], i) => {
-                            const b = dayData[i];
-                            const div = document.createElement('div');
-                            if (b) {
-                                div.className = 'p-2.5 border border-th-border bg-th-card rounded-lg mb-1.5 text-xs';
-                                div.innerHTML = `
+                    slots.forEach(([s, e], i) => {
+                        const b = dayData[i];
+                        const div = document.createElement('div');
+                        if (b) {
+                            div.className = 'p-2.5 border border-th-border bg-th-card rounded-lg mb-1.5 text-xs';
+                            div.innerHTML = `
                                 <div class="flex justify-between items-start">
                                     <strong class="text-th-text">${s}-${e} น.</strong>
                                     <div class="flex gap-1">
@@ -1866,115 +1866,113 @@
                                 </div>
                                 <div class="text-th-text font-semibold mt-0.5">${b.church} (${b.name} / โทร: ${b.phone})</div>
                             `;
-                            } else {
-                                div.className = 'p-2 border border-th-border flex justify-between items-center text-xs opacity-70 mb-1.5 rounded bg-th-input';
-                                div.innerHTML = `<span>${s}-${e} น. <span class="text-[10px] text-th-success">ว่าง</span></span> <button onclick="openAdminEdit('${d}', '${z}', ${i})" class="px-2 py-0.5 bg-th-success text-pine-950 font-bold text-[10px] rounded"><i class="fa-solid fa-plus"></i> เพิ่ม</button>`;
-                            }
-                            list.appendChild(div);
-                        });
+                        } else {
+                            div.className = 'p-2 border border-th-border flex justify-between items-center text-xs opacity-70 mb-1.5 rounded bg-th-input';
+                            div.innerHTML = `<span>${s}-${e} น. <span class="text-[10px] text-th-success">ว่าง</span></span> <button onclick="openAdminEdit('${d}', '${z}', ${i})" class="px-2 py-0.5 bg-th-success text-pine-950 font-bold text-[10px] rounded"><i class="fa-solid fa-plus"></i> เพิ่ม</button>`;
+                        }
+                        list.appendChild(div);
                     });
                 });
-            }
-            async function deleteBooking(date, zone, idx) {
-                if (confirm(`ยืนยันลบการจองวันที่ ${date} รอบนี้ใช่หรือไม่?`)) {
-                    const data = getBookings();
+            });
+        }
 
-                    // ตรวจสอบความถูกต้องของโครงสร้างข้อมูลก่อนลบ
-                    if (data[date] && data[date][zone]) {
-                        delete data[date][zone][idx];
-                        await saveBookings(data);
-                        renderAdminDashboard();
-                        renderAll();
-                        showAlert('ลบข้อมูลเรียบร้อยแล้ว', 'success');
-                    } else {
-                        showAlert('ไม่พบข้อมูลที่ต้องการลบในระบบ', 'error');
-                    }
+        async function deleteBooking(date, zone, idx) {
+            if (confirm(`ยืนยันลบการจองวันที่ ${date} รอบนี้ใช่หรือไม่?`)) {
+                const data = getBookings();
+                if (data[date] && data[date][zone]) {
+                    delete data[date][zone][idx];
+                    // บันทึกและซิงค์ข้อมูลที่ลบแล้วขึ้น Firebase ทันที
+                    await saveBookings(data);
+                    renderAdminDashboard();
+                    renderAll();
+                    showAlert('ลบข้อมูลเรียบร้อยแล้ว', 'success');
                 }
             }
+        }
 
-            function openAdminEdit(date, zone, idx) {
-                const data = getBookings();
-                const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+        function openAdminEdit(date, zone, idx) {
+            const data = getBookings();
+            const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
 
+            document.getElementById('edit-date-select').value = date;
+            document.getElementById('edit-zone').value = zone;
+            document.getElementById('edit-idx').value = idx;
+
+            if (b) {
+                document.getElementById('edit-name').value = b.name || '';
+                document.getElementById('edit-church').value = b.church || '';
+                document.getElementById('edit-phone').value = b.phone || '';
+                document.getElementById('edit-people').value = b.people || '';
+                document.getElementById('edit-desc').value = b.desc || '';
+                document.getElementById('edit-eq').value = b.eq || '';
+            } else {
+                document.getElementById('admin-edit-form').reset();
                 document.getElementById('edit-date-select').value = date;
-                document.getElementById('edit-zone').value = zone;
-                document.getElementById('edit-idx').value = idx;
-
-                if (b) {
-                    document.getElementById('edit-name').value = b.name || '';
-                    document.getElementById('edit-church').value = b.church || '';
-                    document.getElementById('edit-phone').value = b.phone || '';
-                    document.getElementById('edit-people').value = b.people || '';
-                    document.getElementById('edit-desc').value = b.desc || '';
-                    document.getElementById('edit-eq').value = b.eq || '';
-                } else {
-                    document.getElementById('admin-edit-form').reset();
-                    document.getElementById('edit-date-select').value = date;
-                }
-
-                document.getElementById('admin-edit-modal').classList.remove('hidden');
             }
 
-            function closeAdminEdit() { document.getElementById('admin-edit-modal').classList.add('hidden'); }
+            document.getElementById('admin-edit-modal').classList.remove('hidden');
+        }
 
-            document.getElementById('admin-edit-form').onsubmit = async (e) => {
-                e.preventDefault();
-                const date = document.getElementById('edit-date-select').value;
-                const zone = document.getElementById('edit-zone').value;
-                const idx = parseInt(document.getElementById('edit-idx').value, 10);
-                const data = getBookings();
+        function closeAdminEdit() { document.getElementById('admin-edit-modal').classList.add('hidden'); }
 
-                const slots = getTimeSlotsForZone(zone);
-                const slot = slots[idx];
+        document.getElementById('admin-edit-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const date = document.getElementById('edit-date-select').value;
+            const zone = document.getElementById('edit-zone').value;
+            const idx = parseInt(document.getElementById('edit-idx').value, 10);
+            const data = getBookings();
 
-                const existing = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
-                const ref = existing ? existing.ref : `SHA26-${zone === 'indoor' ? 'IN' : 'OUT'}${idx + 1}-ADM${Math.floor(10 + Math.random() * 90)}`;
+            const slots = getTimeSlotsForZone(zone);
+            const slot = slots[idx];
 
-                if (!data[date]) data[date] = { indoor: {}, outdoor: {} };
-                if (!data[date][zone]) data[date][zone] = {};
+            const existing = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            const ref = existing ? existing.ref : `SHA26-${zone === 'indoor' ? 'IN' : 'OUT'}${idx + 1}-ADM${Math.floor(10 + Math.random() * 90)}`;
 
-                data[date][zone][idx] = {
-                    ref: ref,
-                    name: document.getElementById('edit-name').value.trim(),
-                    church: document.getElementById('edit-church').value.trim(),
-                    phone: document.getElementById('edit-phone').value.trim(),
-                    date: date,
-                    zone: zone,
-                    idx: idx,
-                    time: `${slot[0]}–${slot[1]} น.`,
-                    desc: document.getElementById('edit-desc').value.trim(),
-                    people: document.getElementById('edit-people').value.trim(),
-                    eq: document.getElementById('edit-eq').value.trim()
-                };
+            if (!data[date]) data[date] = { indoor: {}, outdoor: {} };
+            if (!data[date][zone]) data[date][zone] = {};
 
-                await saveBookings(data);
-                closeAdminEdit();
-                renderAdminDashboard();
-                renderAll();
+            data[date][zone][idx] = {
+                ref: ref,
+                name: document.getElementById('edit-name').value.trim(),
+                church: document.getElementById('edit-church').value.trim(),
+                phone: document.getElementById('edit-phone').value.trim(),
+                date: date,
+                zone: zone,
+                idx: idx,
+                time: `${slot[0]}–${slot[1]} น.`,
+                desc: document.getElementById('edit-desc').value.trim(),
+                people: document.getElementById('edit-people').value.trim(),
+                eq: document.getElementById('edit-eq').value.trim()
             };
 
-            async function handleResetBookings() {
-                if (confirm("ยืนยันล้างข้อมูลตารางการจองทั้งหมดหรือไม่? (สำหรับผู้ดูแลระบบ)")) {
-                    const empty = createEmptySchedule();
-                    await saveBookings(empty);
-                    renderAll();
-                    renderAdminDashboard();
-                }
-            }
+            await saveBookings(data);
+            closeAdminEdit();
+            renderAdminDashboard();
+            renderAll();
+        };
 
-            function exportToPDF() {
-                const data = getBookings();
-                let printContent = `
+        async function handleResetBookings() {
+            if (confirm("ยืนยันล้างข้อมูลตารางการจองทั้งหมดหรือไม่? (สำหรับผู้ดูแลระบบ)")) {
+                const empty = createEmptySchedule();
+                await saveBookings(empty);
+                renderAll();
+                renderAdminDashboard();
+            }
+        }
+
+        function exportToPDF() {
+            const data = getBookings();
+            let printContent = `
                 <div style="font-family: 'Prompt', sans-serif; padding: 25px; color: #000; background: #fff; width: 850px;">
                     <h2 style="text-align: center; margin-bottom: 5px; color: #000; font-size: 24px;">ตารางคิวการแสดง Christmas of SHAring 2026</h2>
                     <p style="text-align: center; margin-bottom: 25px; font-size: 16px; color: #444;">โรงพยาบาลกรุงเทพคริสเตียน (20-25 ธ.ค. 2026)</p>
             `;
 
-                DATES_LIST.forEach(d => {
-                    printContent += `<h3 style="background:#ddd; padding:6px 10px; margin-top:20px; font-size:16px;">📅 วันที่ ${d}</h3>`;
-                    ['indoor', 'outdoor'].forEach(z => {
-                        const venueName = z === 'indoor' ? 'ภายในอาคาร (อาคารหมอแวลล์)' : 'ภายนอกอาคาร (หน้าโรงพยาบาล)';
-                        printContent += `
+            DATES_LIST.forEach(d => {
+                printContent += `<h3 style="background:#ddd; padding:6px 10px; margin-top:20px; font-size:16px;">📅 วันที่ ${d}</h3>`;
+                ['indoor', 'outdoor'].forEach(z => {
+                    const venueName = z === 'indoor' ? 'ภายในอาคาร (อาคารหมอแวลล์)' : 'ภายนอกอาคาร (หน้าโรงพยาบาล)';
+                    printContent += `
                         <h4 style="margin-top: 10px; margin-bottom: 8px; color: #111; font-size: 14px;">📍 ${venueName}</h4>
                         <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px;">
                             <thead>
@@ -1987,11 +1985,11 @@
                             </thead>
                             <tbody>
                     `;
-                        const slots = getTimeSlotsForZone(z);
-                        slots.forEach(([s, e], i) => {
-                            const b = (data[d] && data[d][z]) ? data[d][z][i] : null;
-                            if (b) {
-                                printContent += `
+                    const slots = getTimeSlotsForZone(z);
+                    slots.forEach(([s, e], i) => {
+                        const b = (data[d] && data[d][z]) ? data[d][z][i] : null;
+                        if (b) {
+                            printContent += `
                                 <tr>
                                     <td style="border: 1px solid #999; padding: 6px; font-weight: bold;">${s}-${e} น.</td>
                                     <td style="border: 1px solid #999; padding: 6px;">${b.name}<br><span style="color:#555; font-size:10px;">โทร: ${b.phone}</span></td>
@@ -1999,93 +1997,93 @@
                                     <td style="border: 1px solid #999; padding: 6px; line-height: 1.4;">${b.desc} (คน: ${b.people})</td>
                                 </tr>
                             `;
-                            } else {
-                                printContent += `
+                        } else {
+                            printContent += `
                                 <tr style="background-color: #fafafa;">
                                     <td style="border: 1px solid #999; padding: 6px; color: #666;">${s}-${e} น.</td>
                                     <td style="border: 1px solid #999; padding: 6px; color: #999; text-align: center;" colspan="3">- ว่าง -</td>
                                 </tr>
                             `;
-                            }
-                        });
-                        printContent += `</tbody></table>`;
+                        }
                     });
+                    printContent += `</tbody></table>`;
                 });
+            });
 
-                printContent += `</div>`;
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = printContent;
-                tempDiv.style.position = 'absolute';
-                tempDiv.style.left = '-9999px';
-                document.body.appendChild(tempDiv);
+            printContent += `</div>`;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = printContent;
+            tempDiv.style.position = 'absolute';
+            tempDiv.style.left = '-9999px';
+            document.body.appendChild(tempDiv);
 
-                const btn = document.querySelector('.fa-file-pdf').parentElement;
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> กำลังสร้าง...';
+            const btn = document.querySelector('.fa-file-pdf').parentElement;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> กำลังสร้าง...';
 
-                const opt = {
-                    margin: 10, filename: 'SHAring_2026_Schedule.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
-                };
-
-                html2pdf().set(opt).from(tempDiv.firstElementChild).save().then(() => {
-                    document.body.removeChild(tempDiv);
-                    btn.innerHTML = originalText;
-                });
-            }
-
-            // === FX (Snow & Sparkle) ===
-            function initSnowfall() {
-                const cv = document.getElementById('snow-canvas'), ctx = cv.getContext('2d');
-                let w, h, flakes = [];
-                function resize() { w = cv.width = window.innerWidth; h = cv.height = window.innerHeight; }
-                window.addEventListener('resize', resize); resize();
-                for (let i = 0; i < 60; i++) flakes.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 2 + 1, sy: Math.random() * 0.8 + 0.2, sx: (Math.random() - 0.5) * 0.5, a: Math.random() * Math.PI * 2, o: Math.random() * 0.5 + 0.3 });
-                function draw() {
-                    ctx.clearRect(0, 0, w, h);
-                    const theme = document.documentElement.getAttribute('data-theme') || 'pine';
-                    const compStyles = getComputedStyle(document.documentElement);
-                    const snowColor = compStyles.getPropertyValue('--th-snow').trim() || 'rgba(255,255,255,0.8)';
-                    const snowShadow = compStyles.getPropertyValue('--th-snow-shadow').trim() || 'transparent';
-
-                    for (let f of flakes) {
-                        f.a += 0.01; f.y += f.sy; f.x += Math.sin(f.a) * 0.3 + f.sx;
-                        if (f.y > h + 5) { f.y = -5; f.x = Math.random() * w; }
-                        ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-                        ctx.fillStyle = snowColor;
-                        ctx.shadowBlur = theme === 'pine' ? 0 : 5;
-                        ctx.shadowColor = snowShadow;
-                        ctx.fill(); ctx.shadowBlur = 0;
-                    }
-                    requestAnimationFrame(draw);
-                }
-                draw();
-            }
-
-            function triggerSparkles() {
-                const cv = document.getElementById('sparkle-canvas'), ctx = cv.getContext('2d');
-                cv.width = window.innerWidth; cv.height = window.innerHeight;
-                let particles = [], colors = ['#fbbf24', '#ef4444', '#fcd34d', '#ffffff', '#38bdf8'];
-                for (let i = 0; i < 80; i++) particles.push({ x: cv.width / 2, y: cv.height * 0.3, vx: (Math.random() - 0.5) * 15, vy: (Math.random() - 0.7) * 15, s: Math.random() * 5 + 2, c: colors[Math.floor(Math.random() * colors.length)], a: 1 });
-                function animate() {
-                    ctx.clearRect(0, 0, cv.width, cv.height); let alive = false;
-                    for (let p of particles) {
-                        if (p.a <= 0) continue; alive = true; p.x += p.vx; p.y += p.vy; p.vy += 0.2; p.a *= 0.95;
-                        ctx.globalAlpha = p.a; ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2); ctx.fill();
-                    }
-                    if (alive) requestAnimationFrame(animate); else ctx.clearRect(0, 0, cv.width, cv.height);
-                }
-                animate();
-            }
-
-            window.onload = () => {
-                initSnowfall();
-                initDatabaseConnection();
-                setLanguage(currentLang);
-                updateStepper();
+            const opt = {
+                margin: 10, filename: 'SHAring_2026_Schedule.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
             };
+
+            html2pdf().set(opt).from(tempDiv.firstElementChild).save().then(() => {
+                document.body.removeChild(tempDiv);
+                btn.innerHTML = originalText;
+            });
+        }
+
+        // === FX (Snow & Sparkle) ===
+        function initSnowfall() {
+            const cv = document.getElementById('snow-canvas'), ctx = cv.getContext('2d');
+            let w, h, flakes = [];
+            function resize() { w = cv.width = window.innerWidth; h = cv.height = window.innerHeight; }
+            window.addEventListener('resize', resize); resize();
+            for (let i = 0; i < 60; i++) flakes.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 2 + 1, sy: Math.random() * 0.8 + 0.2, sx: (Math.random() - 0.5) * 0.5, a: Math.random() * Math.PI * 2, o: Math.random() * 0.5 + 0.3 });
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                const theme = document.documentElement.getAttribute('data-theme') || 'pine';
+                const compStyles = getComputedStyle(document.documentElement);
+                const snowColor = compStyles.getPropertyValue('--th-snow').trim() || 'rgba(255,255,255,0.8)';
+                const snowShadow = compStyles.getPropertyValue('--th-snow-shadow').trim() || 'transparent';
+
+                for (let f of flakes) {
+                    f.a += 0.01; f.y += f.sy; f.x += Math.sin(f.a) * 0.3 + f.sx;
+                    if (f.y > h + 5) { f.y = -5; f.x = Math.random() * w; }
+                    ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                    ctx.fillStyle = snowColor;
+                    ctx.shadowBlur = theme === 'pine' ? 0 : 5;
+                    ctx.shadowColor = snowShadow;
+                    ctx.fill(); ctx.shadowBlur = 0;
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        function triggerSparkles() {
+            const cv = document.getElementById('sparkle-canvas'), ctx = cv.getContext('2d');
+            cv.width = window.innerWidth; cv.height = window.innerHeight;
+            let particles = [], colors = ['#fbbf24', '#ef4444', '#fcd34d', '#ffffff', '#38bdf8'];
+            for (let i = 0; i < 80; i++) particles.push({ x: cv.width / 2, y: cv.height * 0.3, vx: (Math.random() - 0.5) * 15, vy: (Math.random() - 0.7) * 15, s: Math.random() * 5 + 2, c: colors[Math.floor(Math.random() * colors.length)], a: 1 });
+            function animate() {
+                ctx.clearRect(0, 0, cv.width, cv.height); let alive = false;
+                for (let p of particles) {
+                    if (p.a <= 0) continue; alive = true; p.x += p.vx; p.y += p.vy; p.vy += 0.2; p.a *= 0.95;
+                    ctx.globalAlpha = p.a; ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2); ctx.fill();
+                }
+                if (alive) requestAnimationFrame(animate); else ctx.clearRect(0, 0, cv.width, cv.height);
+            }
+            animate();
+        }
+
+        window.onload = () => {
+            initSnowfall();
+            initDatabaseConnection();
+            setLanguage(currentLang);
+            updateStepper();
+        };
     </script>
 </body>
 
