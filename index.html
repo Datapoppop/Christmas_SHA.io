@@ -19,17 +19,15 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- PDF & Canvas Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-    <!-- Firebase SDK (Compat Version สำหรับใช้งานในไฟล์ HTML เดี่ยวได้ทันที) -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
     <script>
         tailwind.config = {
@@ -56,18 +54,34 @@
     </script>
 
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         /* โทนสีเขียวคริสต์มาส (Default: Pine) */
-        :root, :root[data-theme="pine"] {
+        :root,
+        :root[data-theme="pine"] {
             --th-grad-body: radial-gradient(circle at 50% 0%, #1b5c45 0%, #09281f 52%, #03100c 100%);
-            --th-panel: rgba(11, 43, 33, 0.93); --th-border: rgba(245, 203, 120, 0.35); --th-text: #fff8e9;
-            --th-muted: rgba(169, 227, 184, 0.85); --th-accent: #f5cb78; --th-accent-light: rgba(245, 203, 120, 0.15);
-            --th-danger: #ef4444; --th-danger-bg: rgba(220, 38, 38, 0.2); --th-success: #4ade80; --th-success-bg: rgba(74, 222, 128, 0.15);
-            --th-input: rgba(4, 20, 15, 0.75); --th-input-border: rgba(5, 150, 105, 0.5); --th-card: rgba(4, 20, 15, 0.65);
-            --th-card-border: rgba(5, 150, 105, 0.45); --th-card-hover: rgba(4, 20, 15, 0.95);
-            --th-grad-btn: linear-gradient(to right, #f5cb78, #d4a346); --th-grad-ticket: linear-gradient(135deg, #1d1508 0%, #33230c 45%, #171005 100%);
-            --th-modal: rgba(3, 16, 12, 0.92); --th-snow: rgba(255, 255, 255, 0.8); --th-snow-shadow: transparent;
+            --th-panel: rgba(11, 43, 33, 0.93);
+            --th-border: rgba(245, 203, 120, 0.35);
+            --th-text: #fff8e9;
+            --th-muted: rgba(169, 227, 184, 0.85);
+            --th-accent: #f5cb78;
+            --th-accent-light: rgba(245, 203, 120, 0.15);
+            --th-danger: #ef4444;
+            --th-danger-bg: rgba(220, 38, 38, 0.2);
+            --th-success: #4ade80;
+            --th-success-bg: rgba(74, 222, 128, 0.15);
+            --th-input: rgba(4, 20, 15, 0.75);
+            --th-input-border: rgba(5, 150, 105, 0.5);
+            --th-card: rgba(4, 20, 15, 0.65);
+            --th-card-border: rgba(5, 150, 105, 0.45);
+            --th-card-hover: rgba(4, 20, 15, 0.95);
+            --th-grad-btn: linear-gradient(to right, #f5cb78, #d4a346);
+            --th-grad-ticket: linear-gradient(135deg, #1d1508 0%, #33230c 45%, #171005 100%);
+            --th-modal: rgba(3, 16, 12, 0.92);
+            --th-snow: rgba(255, 255, 255, 0.8);
+            --th-snow-shadow: transparent;
             --glow-1: radial-gradient(circle, rgba(217, 56, 58, 0.25) 0%, transparent 70%);
             --glow-2: radial-gradient(circle, rgba(245, 203, 120, 0.2) 0%, transparent 70%);
         }
@@ -75,13 +89,26 @@
         /* โทนสีขาวทอง (Light) */
         :root[data-theme="light"] {
             --th-grad-body: radial-gradient(circle at 50% 0%, #ffffff 0%, #fef3c7 45%, #fde68a 100%);
-            --th-panel: rgba(255, 255, 255, 0.88); --th-border: #fbbf24; --th-text: #451a03;
-            --th-muted: #92400e; --th-accent: #f59e0b; --th-accent-light: rgba(251, 191, 36, 0.15);
-            --th-danger: #dc2626; --th-danger-bg: #fee2e2; --th-success: #16a34a; --th-success-bg: #dcfce7;
-            --th-input: #ffffff; --th-input-border: #fcd34d; --th-card: #ffffff; --th-card-border: #fde047;
-            --th-card-hover: #fffbeb; --th-grad-btn: linear-gradient(to right, #fbbf24, #f59e0b);
+            --th-panel: rgba(255, 255, 255, 0.88);
+            --th-border: #fbbf24;
+            --th-text: #451a03;
+            --th-muted: #92400e;
+            --th-accent: #f59e0b;
+            --th-accent-light: rgba(251, 191, 36, 0.15);
+            --th-danger: #dc2626;
+            --th-danger-bg: #fee2e2;
+            --th-success: #16a34a;
+            --th-success-bg: #dcfce7;
+            --th-input: #ffffff;
+            --th-input-border: #fcd34d;
+            --th-card: #ffffff;
+            --th-card-border: #fde047;
+            --th-card-hover: #fffbeb;
+            --th-grad-btn: linear-gradient(to right, #fbbf24, #f59e0b);
             --th-grad-ticket: linear-gradient(135deg, #fef3c7 0%, #fde68a 45%, #fcd34d 100%);
-            --th-modal: rgba(254, 243, 199, 0.94); --th-snow: rgba(255, 255, 255, 0.9); --th-snow-shadow: rgba(251, 191, 36, 0.5);
+            --th-modal: rgba(254, 243, 199, 0.94);
+            --th-snow: rgba(255, 255, 255, 0.9);
+            --th-snow-shadow: rgba(251, 191, 36, 0.5);
             --glow-1: radial-gradient(circle, rgba(220, 38, 38, 0.15) 0%, transparent 70%);
             --glow-2: radial-gradient(circle, rgba(251, 191, 36, 0.25) 0%, transparent 70%);
         }
@@ -89,50 +116,156 @@
         /* โทนสีน้ำเงินหิมะ (Midnight) */
         :root[data-theme="midnight"] {
             --th-grad-body: radial-gradient(circle at 50% 0%, #1e3a8a 0%, #0f172a 50%, #020617 100%);
-            --th-panel: rgba(15, 23, 42, 0.88); --th-border: rgba(56, 189, 248, 0.4); --th-text: #f8fafc;
-            --th-muted: #cbd5e1; --th-accent: #38bdf8; --th-accent-light: rgba(56, 189, 248, 0.15);
-            --th-danger: #f87171; --th-danger-bg: rgba(248, 113, 113, 0.2); --th-success: #34d399; --th-success-bg: rgba(52, 211, 153, 0.15);
-            --th-input: rgba(2, 6, 23, 0.7); --th-input-border: rgba(56, 189, 248, 0.4); --th-card: rgba(2, 6, 23, 0.6);
-            --th-card-border: rgba(51, 65, 85, 0.8); --th-card-hover: rgba(15, 23, 42, 0.9);
-            --th-grad-btn: linear-gradient(to right, #38bdf8, #0284c7); --th-grad-ticket: linear-gradient(135deg, #0f172a 0%, #1e293b 45%, #020617 100%);
-            --th-modal: rgba(2, 6, 23, 0.92); --th-snow: rgba(255, 255, 255, 0.9); --th-snow-shadow: rgba(56, 189, 248, 0.4);
+            --th-panel: rgba(15, 23, 42, 0.88);
+            --th-border: rgba(56, 189, 248, 0.4);
+            --th-text: #f8fafc;
+            --th-muted: #cbd5e1;
+            --th-accent: #38bdf8;
+            --th-accent-light: rgba(56, 189, 248, 0.15);
+            --th-danger: #f87171;
+            --th-danger-bg: rgba(248, 113, 113, 0.2);
+            --th-success: #34d399;
+            --th-success-bg: rgba(52, 211, 153, 0.15);
+            --th-input: rgba(2, 6, 23, 0.7);
+            --th-input-border: rgba(56, 189, 248, 0.4);
+            --th-card: rgba(2, 6, 23, 0.6);
+            --th-card-border: rgba(51, 65, 85, 0.8);
+            --th-card-hover: rgba(15, 23, 42, 0.9);
+            --th-grad-btn: linear-gradient(to right, #38bdf8, #0284c7);
+            --th-grad-ticket: linear-gradient(135deg, #0f172a 0%, #1e293b 45%, #020617 100%);
+            --th-modal: rgba(2, 6, 23, 0.92);
+            --th-snow: rgba(255, 255, 255, 0.9);
+            --th-snow-shadow: rgba(56, 189, 248, 0.4);
             --glow-1: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, transparent 70%);
             --glow-2: radial-gradient(circle, rgba(226, 232, 240, 0.15) 0%, transparent 70%);
         }
 
-        body { background: var(--th-grad-body); color: var(--th-text); transition: background 0.5s ease; }
-        .bg-glow-1, .bg-glow-2 { position: fixed; width: 420px; height: 420px; pointer-events: none; z-index: 0; }
-        .bg-glow-1 { top: -120px; left: -120px; background: var(--glow-1); }
-        .bg-glow-2 { bottom: -150px; right: -120px; width: 480px; height: 480px; background: var(--glow-2); }
-        #snow-canvas, #sparkle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-        #snow-canvas { z-index: 1; } #sparkle-canvas { z-index: 60; }
+        body {
+            background: var(--th-grad-body);
+            color: var(--th-text);
+            transition: background 0.5s ease;
+        }
+
+        .bg-glow-1,
+        .bg-glow-2 {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow-1 {
+            top: -120px;
+            left: -120px;
+            background: var(--glow-1);
+        }
+
+        .bg-glow-2 {
+            bottom: -150px;
+            right: -120px;
+            width: 480px;
+            height: 480px;
+            background: var(--glow-2);
+        }
+
+        #snow-canvas,
+        #sparkle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #snow-canvas {
+            z-index: 1;
+        }
+
+        #sparkle-canvas {
+            z-index: 60;
+        }
 
         .festive-panel {
-            background: var(--th-panel); backdrop-filter: blur(20px); border: 1px solid var(--th-border);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1); transition: all 0.4s;
+            background: var(--th-panel);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--th-border);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s;
         }
 
-        .step-section { display: none; opacity: 0; transform: translateX(38px) scale(0.98); transition: opacity 0.45s, transform 0.45s; }
-        .step-section.active { display: block; opacity: 1; transform: translateX(0) scale(1); }
+        .step-section {
+            display: none;
+            opacity: 0;
+            transform: translateX(38px) scale(0.98);
+            transition: opacity 0.45s, transform 0.45s;
+        }
+
+        .step-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
 
         .golden-ticket {
-            background: var(--th-grad-ticket); border: 2px solid var(--th-accent); color: var(--th-text);
-            position: relative; overflow: hidden; transition: all 0.4s;
+            background: var(--th-grad-ticket);
+            border: 2px solid var(--th-accent);
+            color: var(--th-text);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s;
         }
+
         .golden-ticket::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
             background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.4) 50%, transparent 60%);
-            animation: ticketShine 4.5s infinite linear; pointer-events: none;
+            animation: ticketShine 4.5s infinite linear;
+            pointer-events: none;
         }
-        .golden-ticket.no-anim::before { display: none !important; }
-        @keyframes ticketShine { 0% { transform: translateX(-40%) translateY(-40%); } 100% { transform: translateX(40%) translateY(40%); } }
 
-        .modal-bg { background: var(--th-modal); }
-        .slot-card { transition: all 0.25s; }
-        .slot-card:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 10px 20px -5px rgba(0,0,0,0.15); }
+        .golden-ticket.no-anim::before {
+            display: none !important;
+        }
 
-        .lang-btn { transition: all 0.2s; }
-        .lang-btn.active { background: var(--th-accent); color: #1a1205; font-weight: 800; box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
+        @keyframes ticketShine {
+            0% {
+                transform: translateX(-40%) translateY(-40%);
+            }
+
+            100% {
+                transform: translateX(40%) translateY(40%);
+            }
+        }
+
+        .modal-bg {
+            background: var(--th-modal);
+        }
+
+        .slot-card {
+            transition: all 0.25s;
+        }
+
+        .slot-card:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        .lang-btn {
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background: var(--th-accent);
+            color: #1a1205;
+            font-weight: 800;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
     </style>
 </head>
 
@@ -143,9 +276,12 @@
         <div class="flex items-center gap-2">
             <!-- Language Switcher (TH / EN / ZH) -->
             <div class="flex bg-black/30 backdrop-blur-md p-1 rounded-full border border-white/20 shadow-lg text-xs">
-                <button type="button" id="lang-btn-th" onclick="setLanguage('th')" class="lang-btn px-2.5 py-1 rounded-full text-white">TH</button>
-                <button type="button" id="lang-btn-en" onclick="setLanguage('en')" class="lang-btn px-2.5 py-1 rounded-full text-white">EN</button>
-                <button type="button" id="lang-btn-zh" onclick="setLanguage('zh')" class="lang-btn px-2.5 py-1 rounded-full text-white">中文</button>
+                <button type="button" id="lang-btn-th" onclick="setLanguage('th')"
+                    class="lang-btn px-2.5 py-1 rounded-full text-white">TH</button>
+                <button type="button" id="lang-btn-en" onclick="setLanguage('en')"
+                    class="lang-btn px-2.5 py-1 rounded-full text-white">EN</button>
+                <button type="button" id="lang-btn-zh" onclick="setLanguage('zh')"
+                    class="lang-btn px-2.5 py-1 rounded-full text-white">中文</button>
             </div>
 
             <!-- Admin Button -->
@@ -155,17 +291,17 @@
             </button>
         </div>
 
-        <!-- Theme Switcher & Cloud Status -->
-        <div class="flex items-center gap-2">
-            <div id="sync-status-badge" class="px-2.5 py-1 rounded-full bg-black/30 backdrop-blur-md border border-white/15 text-[11px] font-bold flex items-center gap-1.5 shadow">
-                <span id="sync-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                <span id="sync-text" class="text-white/90">กำลังเชื่อมต่อ Firebase...</span>
-            </div>
-            <div class="flex gap-1.5 bg-black/20 backdrop-blur-md p-1.5 rounded-full border border-white/20 shadow-lg">
-                <button onclick="setTheme('pine')" class="w-6 h-6 rounded-full border-2 border-white shadow-md bg-[#09281f]" title="Classic Pine"></button>
-                <button onclick="setTheme('light')" class="w-6 h-6 rounded-full border-2 border-white shadow-md bg-[#fef3c7]" title="White & Gold"></button>
-                <button onclick="setTheme('midnight')" class="w-6 h-6 rounded-full border-2 border-white shadow-md bg-[#0f172a]" title="Midnight Blue"></button>
-            </div>
+        <!-- Theme Switcher -->
+        <div class="flex gap-2 bg-black/20 backdrop-blur-md p-1.5 rounded-full border border-white/20 shadow-lg">
+            <button onclick="setTheme('pine')"
+                class="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-white shadow-md bg-[#09281f]"
+                title="Classic Pine"></button>
+            <button onclick="setTheme('light')"
+                class="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-white shadow-md bg-[#fef3c7]"
+                title="White & Gold"></button>
+            <button onclick="setTheme('midnight')"
+                class="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-white shadow-md bg-[#0f172a]"
+                title="Midnight Blue"></button>
         </div>
     </div>
 
@@ -173,10 +309,11 @@
     <div class="bg-glow-2"></div>
     <canvas id="snow-canvas"></canvas><canvas id="sparkle-canvas"></canvas>
 
-    <main class="relative z-10 max-w-4xl mx-auto mt-12 sm:mt-6">
+    <main class="relative z-10 max-w-4xl mx-auto mt-10 sm:mt-6">
         <!-- Header -->
         <header class="text-center mb-7">
-            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-th-accent-light border border-th-border text-th-text text-xs sm:text-sm font-bold tracking-wider mb-3 shadow-md">
+            <div
+                class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-th-accent-light border border-th-border text-th-text text-xs sm:text-sm font-bold tracking-wider mb-3 shadow-md">
                 <i class="fa-solid fa-star text-th-accent"></i>
                 <span>BANGKOK CHRISTIAN HOSPITAL PRESENTS</span>
                 <i class="fa-solid fa-star text-th-accent"></i>
@@ -186,7 +323,8 @@
             </h1>
             <p class="text-th-muted text-sm sm:text-base max-w-2xl mx-auto font-medium">
                 <span data-i18n="headerSubtitle">ระบบลงทะเบียนจองรอบการแสดงคริสต์มาส โรงพยาบาลกรุงเทพคริสเตียน</span>
-                <span class="block text-xs sm:text-sm mt-1 text-th-accent font-bold" data-i18n="headerDateRange">📅 จัดแสดงระหว่างวันที่ 20–25 ธันวาคม 2026</span>
+                <span class="block text-xs sm:text-sm mt-1 text-th-accent font-bold" data-i18n="headerDateRange">📅
+                    จัดแสดงระหว่างวันที่ 20–25 ธันวาคม 2026</span>
             </p>
             <div class="mt-4 flex flex-wrap items-center justify-center gap-2.5">
                 <button type="button" onclick="openScheduleModal()"
@@ -204,79 +342,129 @@
                 <!-- Stepper -->
                 <div class="mb-8">
                     <div class="relative flex items-center justify-between max-w-3xl mx-auto">
-                        <div class="absolute left-0 top-5 transform -translate-y-1/2 w-full h-1.5 bg-th-input-border opacity-30 rounded-full z-0"></div>
-                        <div id="stepper-fill" class="absolute left-0 top-5 transform -translate-y-1/2 h-1.5 bg-grad-btn rounded-full z-0 transition-all duration-500" style="width: 0%;"></div>
+                        <div
+                            class="absolute left-0 top-5 transform -translate-y-1/2 w-full h-1.5 bg-th-input-border opacity-30 rounded-full z-0">
+                        </div>
+                        <div id="stepper-fill"
+                            class="absolute left-0 top-5 transform -translate-y-1/2 h-1.5 bg-grad-btn rounded-full z-0 transition-all duration-500"
+                            style="width: 0%;"></div>
 
                         <button type="button" class="relative z-10 flex flex-col items-center">
-                            <div id="step-circle-1" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all"><i class="fa-solid fa-user-pen"></i></div>
-                            <span id="step-label-1" data-i18n="step1Short" class="mt-2 text-[11px] sm:text-xs font-semibold text-center">1. ผู้จอง</span>
+                            <div id="step-circle-1"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all">
+                                <i class="fa-solid fa-user-pen"></i>
+                            </div>
+                            <span id="step-label-1" data-i18n="step1Short"
+                                class="mt-2 text-[11px] sm:text-xs font-semibold text-center">1. ผู้จอง</span>
                         </button>
                         <button type="button" class="relative z-10 flex flex-col items-center">
-                            <div id="step-circle-2" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all"><i class="fa-solid fa-calendar-days"></i></div>
-                            <span id="step-label-2" data-i18n="step2Short" class="mt-2 text-[11px] sm:text-xs font-medium text-center">2. วัน & เวลา</span>
+                            <div id="step-circle-2"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all">
+                                <i class="fa-solid fa-calendar-days"></i>
+                            </div>
+                            <span id="step-label-2" data-i18n="step2Short"
+                                class="mt-2 text-[11px] sm:text-xs font-medium text-center">2. วัน & เวลา</span>
                         </button>
                         <button type="button" class="relative z-10 flex flex-col items-center">
-                            <div id="step-circle-3" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all"><i class="fa-solid fa-masks-theater"></i></div>
-                            <span id="step-label-3" data-i18n="step3Short" class="mt-2 text-[11px] sm:text-xs font-medium text-center">3. รูปแบบ</span>
+                            <div id="step-circle-3"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all">
+                                <i class="fa-solid fa-masks-theater"></i>
+                            </div>
+                            <span id="step-label-3" data-i18n="step3Short"
+                                class="mt-2 text-[11px] sm:text-xs font-medium text-center">3. รูปแบบ</span>
                         </button>
                         <button type="button" class="relative z-10 flex flex-col items-center">
-                            <div id="step-circle-4" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all"><i class="fa-solid fa-users"></i></div>
-                            <span id="step-label-4" data-i18n="step4Short" class="mt-2 text-[11px] sm:text-xs font-medium text-center">4. จำนวนคน</span>
+                            <div id="step-circle-4"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <span id="step-label-4" data-i18n="step4Short"
+                                class="mt-2 text-[11px] sm:text-xs font-medium text-center">4. จำนวนคน</span>
                         </button>
                         <button type="button" class="relative z-10 flex flex-col items-center">
-                            <div id="step-circle-5" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all"><i class="fa-solid fa-ticket"></i></div>
-                            <span id="step-label-5" data-i18n="step5Short" class="mt-2 text-[11px] sm:text-xs font-medium text-center">5. ยืนยัน</span>
+                            <div id="step-circle-5"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all">
+                                <i class="fa-solid fa-ticket"></i>
+                            </div>
+                            <span id="step-label-5" data-i18n="step5Short"
+                                class="mt-2 text-[11px] sm:text-xs font-medium text-center">5. ยืนยัน</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Alert -->
-                <div id="alert-box" class="hidden mb-6 p-4 rounded-2xl border shadow-sm flex items-center justify-between gap-3 transition-all">
+                <div id="alert-box"
+                    class="hidden mb-6 p-4 rounded-2xl border shadow-sm flex items-center justify-between gap-3 transition-all">
                     <div class="flex items-center gap-3">
                         <i id="alert-icon" class="text-lg"></i>
                         <span id="alert-text" class="text-sm font-medium"></span>
                     </div>
-                    <button type="button" onclick="hideAlert()" class="opacity-70 hover:opacity-100 text-sm px-2"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" onclick="hideAlert()" class="opacity-70 hover:opacity-100 text-sm px-2"><i
+                            class="fa-solid fa-xmark"></i></button>
                 </div>
 
                 <!-- STEP 1 -->
                 <div id="step-1" class="step-section active">
                     <div class="max-w-xl mx-auto">
                         <div class="text-center mb-6">
-                            <span data-i18n="step1Badge" class="inline-block px-3.5 py-1 rounded-full bg-th-accent-light text-th-text text-xs font-bold mb-2 border border-th-border">ขั้นตอนที่ 1 จาก 5</span>
-                            <h2 class="text-xl sm:text-2xl font-bold text-th-text flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-address-card text-th-accent"></i> <span data-i18n="step1Title">ข้อมูลผู้จองและคริสตจักร</span>
+                            <span data-i18n="step1Badge"
+                                class="inline-block px-3.5 py-1 rounded-full bg-th-accent-light text-th-text text-xs font-bold mb-2 border border-th-border">ขั้นตอนที่
+                                1 จาก 5</span>
+                            <h2
+                                class="text-xl sm:text-2xl font-bold text-th-text flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-address-card text-th-accent"></i> <span
+                                    data-i18n="step1Title">ข้อมูลผู้จองและคริสตจักร</span>
                             </h2>
                         </div>
                         <form id="step1-form" class="space-y-5" novalidate>
                             <div>
-                                <label class="block text-sm font-bold text-th-text mb-1.5"><span data-i18n="labelName">1. ชื่อ-นามสกุล ผู้จอง</span> <span class="text-th-danger">*</span></label>
+                                <label class="block text-sm font-bold text-th-text mb-1.5"><span
+                                        data-i18n="labelName">1. ชื่อ-นามสกุล ผู้จอง</span> <span
+                                        class="text-th-danger">*</span></label>
                                 <div class="relative">
-                                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-th-muted opacity-50"><i class="fa-solid fa-user"></i></span>
-                                    <input id="guest-name" type="text" maxlength="60" required data-i18n-placeholder="phName" placeholder="เช่น คุณสมชาย ใจดี"
+                                    <span
+                                        class="absolute inset-y-0 left-0 pl-4 flex items-center text-th-muted opacity-50"><i
+                                            class="fa-solid fa-user"></i></span>
+                                    <input id="guest-name" type="text" maxlength="60" required
+                                        data-i18n-placeholder="phName" placeholder="เช่น คุณสมชาย ใจดี"
                                         class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-th-input border border-th-input-border focus:outline-none focus:border-th-accent focus:ring-2 focus:ring-th-accent/30 text-th-text font-medium placeholder-th-muted">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-th-text mb-1.5"><span data-i18n="labelChurch">2. คริสตจักร / หน่วยงาน</span> <span class="text-th-danger">*</span></label>
+                                <label class="block text-sm font-bold text-th-text mb-1.5"><span
+                                        data-i18n="labelChurch">2. คริสตจักร / หน่วยงาน</span> <span
+                                        class="text-th-danger">*</span></label>
                                 <div class="relative">
-                                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-th-muted opacity-50"><i class="fa-solid fa-church"></i></span>
-                                    <input id="guest-church" type="text" maxlength="80" required data-i18n-placeholder="phChurch" placeholder="ระบุชื่อคริสตจักร หรือ หน่วยงาน"
+                                    <span
+                                        class="absolute inset-y-0 left-0 pl-4 flex items-center text-th-muted opacity-50"><i
+                                            class="fa-solid fa-church"></i></span>
+                                    <input id="guest-church" type="text" maxlength="80" required
+                                        data-i18n-placeholder="phChurch" placeholder="ระบุชื่อคริสตจักร หรือ หน่วยงาน"
                                         class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-th-input border border-th-input-border focus:outline-none focus:border-th-accent focus:ring-2 focus:ring-th-accent/30 text-th-text font-medium placeholder-th-muted">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-th-text mb-1.5"><span data-i18n="labelPhone">3. เบอร์โทรศัพท์ติดต่อ</span> <span class="text-th-danger">*</span></label>
+                                <label class="block text-sm font-bold text-th-text mb-1.5"><span
+                                        data-i18n="labelPhone">3. เบอร์โทรศัพท์ติดต่อ</span> <span
+                                        class="text-th-danger">*</span></label>
                                 <div class="relative">
-                                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-th-muted opacity-50"><i class="fa-solid fa-phone-volume"></i></span>
-                                    <input id="guest-phone" type="tel" maxlength="12" required data-i18n-placeholder="phPhone" placeholder="เช่น 081-234-5678"
+                                    <span
+                                        class="absolute inset-y-0 left-0 pl-4 flex items-center text-th-muted opacity-50"><i
+                                            class="fa-solid fa-phone-volume"></i></span>
+                                    <input id="guest-phone" type="tel" maxlength="12" required
+                                        data-i18n-placeholder="phPhone" placeholder="เช่น 081-234-5678"
                                         class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-th-input border border-th-input-border focus:outline-none focus:border-th-accent focus:ring-2 focus:ring-th-accent/30 text-th-text font-medium placeholder-th-muted">
                                 </div>
-                                <p class="text-xs text-th-muted mt-1.5 opacity-85"><i class="fa-solid fa-key mr-1 text-th-accent"></i><span data-i18n="phoneHint">เบอร์โทรศัพท์จะใช้เป็นรหัสยืนยันหากท่านต้องการแก้ไขข้อมูลในภายหลัง</span></p>
+                                <p class="text-xs text-th-muted mt-1.5 opacity-85"><i
+                                        class="fa-solid fa-key mr-1 text-th-accent"></i><span
+                                        data-i18n="phoneHint">เบอร์โทรศัพท์จะใช้เป็นรหัสยืนยันหากท่านต้องการแก้ไขข้อมูลในภายหลัง</span>
+                                </p>
                             </div>
                             <div class="pt-4">
-                                <button type="submit" class="w-full py-4 px-6 rounded-xl bg-grad-btn font-bold text-base shadow-lg hover:brightness-110 active:scale-[0.99] transition flex items-center justify-center gap-2 text-amber-950">
-                                    <span data-i18n="btnNextStep2">ถัดไป: เลือกวันที่ สถานที่ และเวลา</span><i class="fa-solid fa-arrow-right"></i>
+                                <button type="submit"
+                                    class="w-full py-4 px-6 rounded-xl bg-grad-btn font-bold text-base shadow-lg hover:brightness-110 active:scale-[0.99] transition flex items-center justify-center gap-2 text-amber-950">
+                                    <span data-i18n="btnNextStep2">ถัดไป: เลือกวันที่ สถานที่ และเวลา</span><i
+                                        class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
                         </form>
@@ -286,14 +474,22 @@
                 <!-- STEP 2 -->
                 <div id="step-2" class="step-section">
                     <div class="text-center mb-6">
-                        <span data-i18n="step2Badge" class="inline-block px-3.5 py-1 rounded-full bg-th-accent-light text-th-text text-xs font-bold mb-2 border border-th-border">ขั้นตอนที่ 2 จาก 5</span>
-                        <h2 data-i18n="step2Title" class="text-xl sm:text-2xl font-bold text-th-text">เลือกวันที่ สถานที่ และรอบเวลา</h2>
-                        <p data-i18n="step2MultiHint" class="text-sm text-th-accent font-bold mt-1">(ท่านสามารถคลิกเลือกได้หลายรอบเวลาพร้อมกัน)</p>
+                        <span data-i18n="step2Badge"
+                            class="inline-block px-3.5 py-1 rounded-full bg-th-accent-light text-th-text text-xs font-bold mb-2 border border-th-border">ขั้นตอนที่
+                            2 จาก 5</span>
+                        <h2 data-i18n="step2Title" class="text-xl sm:text-2xl font-bold text-th-text">เลือกวันที่
+                            สถานที่ และรอบเวลา</h2>
+                        <p data-i18n="step2MultiHint" class="text-sm text-th-accent font-bold mt-1">
+                            (ท่านสามารถคลิกเลือกได้หลายรอบเวลาพร้อมกัน)</p>
                     </div>
 
                     <div class="mb-5">
-                        <label class="block text-sm font-bold text-th-text mb-2"><i class="fa-regular fa-calendar-days text-th-accent mr-1"></i> <span data-i18n="labelSelectDate">1. เลือกวันที่ต้องการแสดง (20 - 25 ธ.ค. 2026)</span> <span class="text-th-danger">*</span></label>
-                        <select id="booking-date" onchange="onDateChange()" class="w-full p-3.5 rounded-xl bg-th-input border border-th-input-border text-th-text font-bold text-base focus:outline-none focus:border-th-accent">
+                        <label class="block text-sm font-bold text-th-text mb-2"><i
+                                class="fa-regular fa-calendar-days text-th-accent mr-1"></i> <span
+                                data-i18n="labelSelectDate">1. เลือกวันที่ต้องการแสดง (20 - 25 ธ.ค. 2026)</span> <span
+                                class="text-th-danger">*</span></label>
+                        <select id="booking-date" onchange="onDateChange()"
+                            class="w-full p-3.5 rounded-xl bg-th-input border border-th-input-border text-th-text font-bold text-base focus:outline-none focus:border-th-accent">
                             <option value="20 ธ.ค. 2026">20 Dec 2026 (20 ธ.ค. 2026)</option>
                             <option value="21 ธ.ค. 2026">21 Dec 2026 (21 ธ.ค. 2026)</option>
                             <option value="22 ธ.ค. 2026">22 Dec 2026 (22 ธ.ค. 2026)</option>
@@ -304,24 +500,37 @@
                     </div>
 
                     <div class="mb-6">
-                        <label class="block text-sm font-bold text-th-text mb-2"><i class="fa-solid fa-location-dot text-th-accent mr-1"></i> <span data-i18n="labelSelectVenue">2. เลือกสถานที่จัดการแสดง</span> <span class="text-th-danger">*</span></label>
+                        <label class="block text-sm font-bold text-th-text mb-2"><i
+                                class="fa-solid fa-location-dot text-th-accent mr-1"></i> <span
+                                data-i18n="labelSelectVenue">2. เลือกสถานที่จัดการแสดง</span> <span
+                                class="text-th-danger">*</span></label>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <button type="button" id="zone-btn-indoor" onclick="selectZone('indoor')" class="text-left p-4 rounded-2xl border transition-all relative group bg-th-card border-th-card-border hover:border-th-accent">
+                            <button type="button" id="zone-btn-indoor" onclick="selectZone('indoor')"
+                                class="text-left p-4 rounded-2xl border transition-all relative group bg-th-card border-th-card-border hover:border-th-accent">
                                 <div class="flex items-center gap-3">
-                                    <div id="zone-icon-indoor" class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 border border-th-border bg-th-input text-th-accent">🏥</div>
+                                    <div id="zone-icon-indoor"
+                                        class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 border border-th-border bg-th-input text-th-accent">
+                                        🏥</div>
                                     <div class="flex-1">
-                                        <h4 data-i18n="venueIndoorTitle" class="font-bold text-sm text-th-text">อาคารหมอแวลล์ (ภายในอาคาร)</h4>
-                                        <p data-i18n="venueIndoorSub" class="text-xs text-th-muted">รพ.กรุงเทพคริสเตียน</p>
+                                        <h4 data-i18n="venueIndoorTitle" class="font-bold text-sm text-th-text">
+                                            อาคารหมอแวลล์ (ภายในอาคาร)</h4>
+                                        <p data-i18n="venueIndoorSub" class="text-xs text-th-muted">รพ.กรุงเทพคริสเตียน
+                                        </p>
                                     </div>
                                     <span id="zone-avail-indoor" class="text-xs font-bold px-2 py-0.5 rounded"></span>
                                 </div>
                             </button>
-                            <button type="button" id="zone-btn-outdoor" onclick="selectZone('outdoor')" class="text-left p-4 rounded-2xl border transition-all relative group bg-th-card border-th-card-border hover:border-th-accent">
+                            <button type="button" id="zone-btn-outdoor" onclick="selectZone('outdoor')"
+                                class="text-left p-4 rounded-2xl border transition-all relative group bg-th-card border-th-card-border hover:border-th-accent">
                                 <div class="flex items-center gap-3">
-                                    <div id="zone-icon-outdoor" class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 border border-th-border bg-th-input text-th-accent">🎄</div>
+                                    <div id="zone-icon-outdoor"
+                                        class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 border border-th-border bg-th-input text-th-accent">
+                                        🎄</div>
                                     <div class="flex-1">
-                                        <h4 data-i18n="venueOutdoorTitle" class="font-bold text-sm text-th-text">หน้า รพ. (ภายนอกอาคาร)</h4>
-                                        <p data-i18n="venueOutdoorSub" class="text-xs text-th-muted">ลานด้านหน้าติดถนนสีลม</p>
+                                        <h4 data-i18n="venueOutdoorTitle" class="font-bold text-sm text-th-text">หน้า
+                                            รพ. (ภายนอกอาคาร)</h4>
+                                        <p data-i18n="venueOutdoorSub" class="text-xs text-th-muted">
+                                            ลานด้านหน้าติดถนนสีลม</p>
                                     </div>
                                     <span id="zone-avail-outdoor" class="text-xs font-bold px-2 py-0.5 rounded"></span>
                                 </div>
@@ -331,15 +540,25 @@
 
                     <div class="mb-6">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                            <h3 class="text-base font-bold text-th-text flex items-center gap-2"><span data-i18n="labelSelectSlot">3. คลิกเลือกรอบเวลา</span> <span id="slot-zone-pill" class="text-xs px-2.5 py-0.5 rounded-full bg-th-accent-light text-th-text border border-th-border"></span></h3>
-                            <span id="selected-slots-count" class="text-xs font-bold text-th-accent">เลือกแล้ว 0 รอบ</span>
+                            <h3 class="text-base font-bold text-th-text flex items-center gap-2"><span
+                                    data-i18n="labelSelectSlot">3. คลิกเลือกรอบเวลา</span> <span id="slot-zone-pill"
+                                    class="text-xs px-2.5 py-0.5 rounded-full bg-th-accent-light text-th-text border border-th-border"></span>
+                            </h3>
+                            <span id="selected-slots-count" class="text-xs font-bold text-th-accent">เลือกแล้ว 0
+                                รอบ</span>
                         </div>
                         <div id="slots-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5"></div>
                     </div>
 
-                    <div class="pt-4 border-t border-th-border flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <button type="button" onclick="goToStep(1)" class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-th-input hover:bg-th-accent-light text-th-text border border-th-border font-bold text-sm transition flex items-center justify-center gap-2"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="btnBack">ย้อนกลับ</span></button>
-                        <button type="button" onclick="handleStep2Next()" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-grad-btn text-amber-950 font-bold text-sm shadow-lg hover:brightness-110 transition flex items-center justify-center gap-2"><span data-i18n="btnNextStep3">ถัดไป: รูปแบบการแสดง</span> <i class="fa-solid fa-arrow-right"></i></button>
+                    <div
+                        class="pt-4 border-t border-th-border flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <button type="button" onclick="goToStep(1)"
+                            class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-th-input hover:bg-th-accent-light text-th-text border border-th-border font-bold text-sm transition flex items-center justify-center gap-2"><i
+                                class="fa-solid fa-arrow-left"></i> <span data-i18n="btnBack">ย้อนกลับ</span></button>
+                        <button type="button" onclick="handleStep2Next()"
+                            class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-grad-btn text-amber-950 font-bold text-sm shadow-lg hover:brightness-110 transition flex items-center justify-center gap-2"><span
+                                data-i18n="btnNextStep3">ถัดไป: รูปแบบการแสดง</span> <i
+                                class="fa-solid fa-arrow-right"></i></button>
                     </div>
                 </div>
 
@@ -347,21 +566,37 @@
                 <div id="step-3" class="step-section">
                     <div class="max-w-2xl mx-auto">
                         <div class="text-center mb-6">
-                            <span data-i18n="step3Badge" class="inline-block px-3.5 py-1 rounded-full bg-th-accent-light text-th-text text-xs font-bold mb-2 border border-th-border">ขั้นตอนที่ 3 จาก 5</span>
-                            <h2 class="text-xl sm:text-2xl font-bold text-th-text"><i class="fa-solid fa-masks-theater text-th-accent"></i> <span data-i18n="step3Title">รูปแบบการแสดง</span></h2>
+                            <span data-i18n="step3Badge"
+                                class="inline-block px-3.5 py-1 rounded-full bg-th-accent-light text-th-text text-xs font-bold mb-2 border border-th-border">ขั้นตอนที่
+                                3 จาก 5</span>
+                            <h2 class="text-xl sm:text-2xl font-bold text-th-text"><i
+                                    class="fa-solid fa-masks-theater text-th-accent"></i> <span
+                                    data-i18n="step3Title">รูปแบบการแสดง</span></h2>
                         </div>
                         <div class="mb-4">
-                            <label data-i18n="labelQuickTags" class="block text-xs sm:text-sm font-bold text-th-muted mb-2">ตัวอย่าง (คลิกเพื่อเพิ่มข้อความ):</label>
+                            <label data-i18n="labelQuickTags"
+                                class="block text-xs sm:text-sm font-bold text-th-muted mb-2">ตัวอย่าง
+                                (คลิกเพื่อเพิ่มข้อความ):</label>
                             <div id="performance-tags-container" class="flex flex-wrap gap-2"></div>
                         </div>
                         <div class="mb-6">
-                            <label class="block text-sm font-bold text-th-text mb-2"><span data-i18n="labelPerfDesc">รายละเอียดรูปแบบการแสดงคร่าวๆ</span> <span class="text-th-danger">*</span></label>
-                            <textarea id="performance-desc" rows="5" maxlength="500" data-i18n-placeholder="phPerfDesc" placeholder="เช่น ร้องเพลงประสานเสียง 5 เพลง, ดนตรีอะคูสติก..."
+                            <label class="block text-sm font-bold text-th-text mb-2"><span
+                                    data-i18n="labelPerfDesc">รายละเอียดรูปแบบการแสดงคร่าวๆ</span> <span
+                                    class="text-th-danger">*</span></label>
+                            <textarea id="performance-desc" rows="5" maxlength="500" data-i18n-placeholder="phPerfDesc"
+                                placeholder="เช่น ร้องเพลงประสานเสียง 5 เพลง, ดนตรีอะคูสติก..."
                                 class="w-full p-4 rounded-2xl bg-th-input border border-th-input-border text-th-text placeholder-th-muted focus:outline-none focus:border-th-accent focus:ring-2 focus:ring-th-accent/30"></textarea>
                         </div>
-                        <div class="pt-4 border-t border-th-border flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <button type="button" onclick="goToStep(2)" class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-th-input hover:bg-th-accent-light text-th-text border border-th-border font-bold text-sm transition"><i class="fa-solid fa-arrow-left mr-2"></i><span data-i18n="btnBack">ย้อนกลับ</span></button>
-                            <button type="button" onclick="handleStep3Next()" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-grad-btn text-amber-950 font-bold text-sm shadow-lg hover:brightness-110 transition"><span data-i18n="btnNextStep4">ถัดไป: จำนวนคน</span> <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                        <div
+                            class="pt-4 border-t border-th-border flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <button type="button" onclick="goToStep(2)"
+                                class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-th-input hover:bg-th-accent-light text-th-text border border-th-border font-bold text-sm transition"><i
+                                    class="fa-solid fa-arrow-left mr-2"></i><span
+                                    data-i18n="btnBack">ย้อนกลับ</span></button>
+                            <button type="button" onclick="handleStep3Next()"
+                                class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-grad-btn text-amber-950 font-bold text-sm shadow-lg hover:brightness-110 transition"><span
+                                    data-i18n="btnNextStep4">ถัดไป: จำนวนคน</span> <i
+                                    class="fa-solid fa-arrow-right ml-2"></i></button>
                         </div>
                     </div>
                 </div>
@@ -370,44 +605,73 @@
                 <div id="step-4" class="step-section">
                     <div class="max-w-2xl mx-auto">
                         <div class="text-center mb-6">
-                            <span data-i18n="step4Badge" class="inline-block px-3.5 py-1 rounded-full bg-th-accent-light text-th-text text-xs font-bold mb-2 border border-th-border">ขั้นตอนที่ 4 จาก 5</span>
-                            <h2 class="text-xl sm:text-2xl font-bold text-th-text"><i class="fa-solid fa-users text-th-accent"></i> <span data-i18n="step4Title">จำนวนผู้แสดงและอุปกรณ์</span></h2>
+                            <span data-i18n="step4Badge"
+                                class="inline-block px-3.5 py-1 rounded-full bg-th-accent-light text-th-text text-xs font-bold mb-2 border border-th-border">ขั้นตอนที่
+                                4 จาก 5</span>
+                            <h2 class="text-xl sm:text-2xl font-bold text-th-text"><i
+                                    class="fa-solid fa-users text-th-accent"></i> <span
+                                    data-i18n="step4Title">จำนวนผู้แสดงและอุปกรณ์</span></h2>
                         </div>
 
                         <div class="mb-5">
-                            <label class="block text-sm font-bold text-th-text mb-2"><span data-i18n="labelPeopleCount">1. จำนวนผู้เข้าร่วมแสดง (คน)</span> <span class="text-th-danger">*</span></label>
+                            <label class="block text-sm font-bold text-th-text mb-2"><span
+                                    data-i18n="labelPeopleCount">1. จำนวนผู้เข้าร่วมแสดง (คน)</span> <span
+                                    class="text-th-danger">*</span></label>
                             <div class="flex flex-wrap gap-2 mb-3">
-                                <button type="button" onclick="setPerfCount(5)" class="px-4 py-2 rounded-lg border border-th-border bg-th-card text-th-text text-sm font-medium hover:bg-th-accent-light">1-5</button>
-                                <button type="button" onclick="setPerfCount(10)" class="px-4 py-2 rounded-lg border border-th-border bg-th-card text-th-text text-sm font-medium hover:bg-th-accent-light">6-10</button>
-                                <button type="button" onclick="setPerfCount(20)" class="px-4 py-2 rounded-lg border border-th-border bg-th-card text-th-text text-sm font-medium hover:bg-th-accent-light">11-20</button>
+                                <button type="button" onclick="setPerfCount(5)"
+                                    class="px-4 py-2 rounded-lg border border-th-border bg-th-card text-th-text text-sm font-medium hover:bg-th-accent-light">1-5</button>
+                                <button type="button" onclick="setPerfCount(10)"
+                                    class="px-4 py-2 rounded-lg border border-th-border bg-th-card text-th-text text-sm font-medium hover:bg-th-accent-light">6-10</button>
+                                <button type="button" onclick="setPerfCount(20)"
+                                    class="px-4 py-2 rounded-lg border border-th-border bg-th-card text-th-text text-sm font-medium hover:bg-th-accent-light">11-20</button>
                             </div>
-                            <input id="perf-count" type="number" min="1" max="200" required data-i18n-placeholder="phPeopleCount" placeholder="พิมพ์จำนวนคน (เช่น 12)"
+                            <input id="perf-count" type="number" min="1" max="200" required
+                                data-i18n-placeholder="phPeopleCount" placeholder="พิมพ์จำนวนคน (เช่น 12)"
                                 class="w-full p-3.5 rounded-xl bg-th-input border border-th-input-border focus:outline-none focus:border-th-accent text-th-text font-bold">
                         </div>
 
                         <div class="mb-6">
-                            <label data-i18n="labelEquipment" class="block text-sm font-bold text-th-text mb-2">2. เลือกอุปกรณ์ที่ต้องการใช้ (ถ้ามี):</label>
-                            <div id="equipment-chips-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-3"></div>
-                            <textarea id="equipment-notes" rows="2" maxlength="200" data-i18n-placeholder="phEqNotes" placeholder="หมายเหตุเพิ่มเติม..."
+                            <label data-i18n="labelEquipment" class="block text-sm font-bold text-th-text mb-2">2.
+                                เลือกอุปกรณ์ที่ต้องการใช้ (ถ้ามี):</label>
+                            <div id="equipment-chips-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-3">
+                            </div>
+                            <textarea id="equipment-notes" rows="2" maxlength="200" data-i18n-placeholder="phEqNotes"
+                                placeholder="หมายเหตุเพิ่มเติม..."
                                 class="w-full p-3.5 rounded-xl bg-th-input border border-th-input-border text-th-text placeholder-th-muted focus:outline-none focus:border-th-accent focus:ring-2 focus:ring-th-accent/30 text-sm"></textarea>
                         </div>
 
                         <!-- สรุป -->
-                        <div class="mb-6 p-4 rounded-2xl bg-th-card border border-th-border shadow-sm text-sm text-th-text">
-                            <h3 class="font-bold text-th-text mb-2 border-b border-th-border pb-2"><i class="fa-solid fa-clipboard-check mr-2 text-th-accent"></i><span data-i18n="reviewHeading">ตรวจสอบข้อมูลก่อนยืนยัน</span></h3>
+                        <div
+                            class="mb-6 p-4 rounded-2xl bg-th-card border border-th-border shadow-sm text-sm text-th-text">
+                            <h3 class="font-bold text-th-text mb-2 border-b border-th-border pb-2"><i
+                                    class="fa-solid fa-clipboard-check mr-2 text-th-accent"></i><span
+                                    data-i18n="reviewHeading">ตรวจสอบข้อมูลก่อนยืนยัน</span></h3>
                             <div class="grid grid-cols-2 gap-2">
-                                <div><span data-i18n="reviewBookerLabel" class="text-th-muted block text-xs">ผู้จอง:</span> <strong id="review-booker"></strong></div>
-                                <div><span data-i18n="reviewPeopleLabel" class="text-th-muted block text-xs">จำนวนผู้แสดง:</span> <strong id="review-people" class="text-th-text"></strong></div>
+                                <div><span data-i18n="reviewBookerLabel"
+                                        class="text-th-muted block text-xs">ผู้จอง:</span> <strong
+                                        id="review-booker"></strong></div>
+                                <div><span data-i18n="reviewPeopleLabel"
+                                        class="text-th-muted block text-xs">จำนวนผู้แสดง:</span> <strong
+                                        id="review-people" class="text-th-text"></strong></div>
                                 <div class="col-span-2 mt-1">
-                                    <span data-i18n="reviewTimeLabel" class="text-th-muted block text-xs">วันที่และรอบเวลาที่เลือกทั้งหมด:</span>
-                                    <div id="review-time" class="text-th-accent font-bold bg-th-accent-light p-2 rounded border border-th-border mt-1"></div>
+                                    <span data-i18n="reviewTimeLabel"
+                                        class="text-th-muted block text-xs">วันที่และรอบเวลาที่เลือกทั้งหมด:</span>
+                                    <div id="review-time"
+                                        class="text-th-accent font-bold bg-th-accent-light p-2 rounded border border-th-border mt-1">
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <button type="button" onclick="goToStep(3)" class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-th-input hover:bg-th-accent-light text-th-text border border-th-border font-bold text-sm transition"><i class="fa-solid fa-arrow-left mr-2"></i><span data-i18n="btnBack">ย้อนกลับ</span></button>
-                            <button type="button" id="submit-final-btn" onclick="submitFinalBooking()" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-th-danger text-white font-bold text-base shadow-xl hover:brightness-110 transition border border-white/20"><i class="fa-solid fa-check-double text-white mr-2"></i><span data-i18n="btnConfirmBooking">ยืนยันการจองทั้งหมด</span></button>
+                            <button type="button" onclick="goToStep(3)"
+                                class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-th-input hover:bg-th-accent-light text-th-text border border-th-border font-bold text-sm transition"><i
+                                    class="fa-solid fa-arrow-left mr-2"></i><span
+                                    data-i18n="btnBack">ย้อนกลับ</span></button>
+                            <button type="button" onclick="submitFinalBooking()"
+                                class="w-full sm:w-auto px-8 py-4 rounded-xl bg-th-danger text-white font-bold text-base shadow-xl hover:brightness-110 transition border border-white/20"><i
+                                    class="fa-solid fa-check-double text-white mr-2"></i><span
+                                    data-i18n="btnConfirmBooking">ยืนยันการจองทั้งหมด</span></button>
                         </div>
                     </div>
                 </div>
@@ -416,43 +680,63 @@
                 <div id="step-5" class="step-section">
                     <div class="max-w-2xl mx-auto">
                         <div class="text-center mb-6">
-                            <div class="w-16 h-16 rounded-full bg-th-success text-white text-3xl flex items-center justify-center mx-auto mb-3 shadow-lg"><i class="fa-solid fa-check"></i></div>
-                            <h2 data-i18n="step5Title" class="text-2xl sm:text-3xl font-bold text-th-text">จองรอบเวลาสำเร็จ!</h2>
-                            <p id="auto-dl-msg" class="text-sm text-th-success mt-2 font-bold"><i class="fa-solid fa-spinner fa-spin mr-1"></i> ระบบกำลังดาวน์โหลดรูปภาพบัตรคิวลงมือถือของท่าน...</p>
+                            <div
+                                class="w-16 h-16 rounded-full bg-th-success text-white text-3xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <h2 data-i18n="step5Title" class="text-2xl sm:text-3xl font-bold text-th-text">
+                                จองรอบเวลาสำเร็จ!</h2>
+                            <p id="auto-dl-msg" class="text-sm text-th-success mt-2 font-bold"><i
+                                    class="fa-solid fa-spinner fa-spin mr-1"></i>
+                                ระบบกำลังดาวน์โหลดรูปภาพบัตรคิวลงมือถือของท่าน...</p>
                         </div>
 
                         <!-- บัตรคิวรวม Golden Pass -->
-                        <div id="ticket-capture-area" class="golden-ticket rounded-3xl p-6 sm:p-8 shadow-2xl mb-6 mx-auto">
-                            <div class="flex flex-wrap justify-between items-center border-b border-th-text/20 pb-4 mb-4 gap-3">
+                        <div id="ticket-capture-area"
+                            class="golden-ticket rounded-3xl p-6 sm:p-8 shadow-2xl mb-6 mx-auto">
+                            <div
+                                class="flex flex-wrap justify-between items-center border-b border-th-text/20 pb-4 mb-4 gap-3">
                                 <div>
-                                    <div class="text-xs font-bold text-th-text uppercase tracking-widest opacity-80 flex items-center gap-1.5">
-                                        <i class="fa-solid fa-star text-th-accent"></i> <span>GOLDEN PASS · CHRISTMAS OF SHARING 2026</span>
+                                    <div
+                                        class="text-xs font-bold text-th-text uppercase tracking-widest opacity-80 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-star text-th-accent"></i> <span>GOLDEN PASS · CHRISTMAS OF
+                                            SHARING 2026</span>
                                     </div>
-                                    <h3 class="text-base sm:text-lg font-extrabold mt-1" id="ticket-date-display" style="color: var(--th-accent);">📅 วันที่แสดง: 25 ธ.ค. 2026</h3>
+                                    <h3 class="text-base sm:text-lg font-extrabold mt-1" id="ticket-date-display"
+                                        style="color: var(--th-accent);">📅 วันที่แสดง: 25 ธ.ค. 2026</h3>
                                 </div>
-                                <div class="bg-th-accent text-amber-950 px-4 py-2 rounded-xl text-xs font-extrabold shadow-md text-right">
+                                <div
+                                    class="bg-th-accent text-amber-950 px-4 py-2 rounded-xl text-xs font-extrabold shadow-md text-right">
                                     <span id="ticket-time-summary" class="text-sm sm:text-base">⏰ 09.00–10.00 น.</span>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="col-span-2">
-                                    <div data-i18n="ticketChurchLabel" class="text-xs text-th-text opacity-75">หน่วยงาน / คริสตจักร</div>
+                                    <div data-i18n="ticketChurchLabel" class="text-xs text-th-text opacity-75">หน่วยงาน
+                                        / คริสตจักร</div>
                                     <div id="ticket-church" class="text-lg font-bold"></div>
                                 </div>
                                 <div class="col-span-2 sm:col-span-1">
-                                    <div data-i18n="ticketBookerLabel" class="text-xs text-th-text opacity-70">ผู้จอง / เบอร์โทร</div>
+                                    <div data-i18n="ticketBookerLabel" class="text-xs text-th-text opacity-70">ผู้จอง /
+                                        เบอร์โทร</div>
                                     <div id="ticket-name-phone" class="font-semibold text-sm"></div>
                                 </div>
                                 <div class="col-span-2 sm:col-span-1">
-                                    <div data-i18n="ticketPeopleRefLabel" class="text-xs text-th-text opacity-70">จำนวนผู้แสดง / รหัสอ้างอิง</div>
-                                    <div><span id="ticket-people" class="font-bold"></span> · <span id="ticket-ref" class="text-xs opacity-80"></span></div>
+                                    <div data-i18n="ticketPeopleRefLabel" class="text-xs text-th-text opacity-70">
+                                        จำนวนผู้แสดง / รหัสอ้างอิง</div>
+                                    <div><span id="ticket-people" class="font-bold"></span> · <span id="ticket-ref"
+                                            class="text-xs opacity-80"></span></div>
                                 </div>
                                 <div class="col-span-2">
-                                    <div data-i18n="ticketTimeListLabel" class="text-xs text-th-text opacity-70 mb-1">รายละเอียดสถานที่และเวลาแสดง</div>
-                                    <div id="ticket-time-list" class="text-sm font-bold text-th-accent bg-black/25 p-3 rounded-xl border border-th-border"></div>
+                                    <div data-i18n="ticketTimeListLabel" class="text-xs text-th-text opacity-70 mb-1">
+                                        รายละเอียดสถานที่และเวลาแสดง</div>
+                                    <div id="ticket-time-list"
+                                        class="text-sm font-bold text-th-accent bg-black/25 p-3 rounded-xl border border-th-border">
+                                    </div>
                                 </div>
                                 <div class="col-span-2">
-                                    <div data-i18n="ticketPerfLabel" class="text-xs text-th-text opacity-70">รูปแบบการแสดง & อุปกรณ์</div>
+                                    <div data-i18n="ticketPerfLabel" class="text-xs text-th-text opacity-70">
+                                        รูปแบบการแสดง & อุปกรณ์</div>
                                     <div id="ticket-performance" class="text-sm"></div>
                                 </div>
                             </div>
@@ -460,11 +744,15 @@
 
                         <!-- Action Buttons -->
                         <div class="flex flex-col sm:flex-row justify-center gap-3">
-                            <button type="button" onclick="downloadTicketImage(false)" class="px-5 py-3.5 rounded-xl bg-th-input border border-th-border text-th-text font-bold shadow hover:bg-th-accent-light flex items-center justify-center transition text-sm">
-                                <i class="fa-solid fa-download mr-2 text-th-accent"></i> <span id="dl-btn-text" data-i18n="btnDownloadAgain">โหลดรูปอีกครั้ง</span>
+                            <button type="button" onclick="downloadTicketImage(false)"
+                                class="px-5 py-3.5 rounded-xl bg-th-input border border-th-border text-th-text font-bold shadow hover:bg-th-accent-light flex items-center justify-center transition text-sm">
+                                <i class="fa-solid fa-download mr-2 text-th-accent"></i> <span id="dl-btn-text"
+                                    data-i18n="btnDownloadAgain">โหลดรูปอีกครั้ง</span>
                             </button>
-                            <button type="button" onclick="resetForNewPerson()" class="px-6 py-3.5 rounded-xl bg-grad-btn text-amber-950 font-bold shadow-lg hover:brightness-110 flex items-center justify-center transition text-base w-full sm:w-auto">
-                                <i class="fa-solid fa-house mr-2"></i> <span data-i18n="btnFinishHome">เสร็จสิ้น · กลับหน้าแรก (เริ่มจองใหม่)</span>
+                            <button type="button" onclick="resetForNewPerson()"
+                                class="px-6 py-3.5 rounded-xl bg-grad-btn text-amber-950 font-bold shadow-lg hover:brightness-110 flex items-center justify-center transition text-base w-full sm:w-auto">
+                                <i class="fa-solid fa-house mr-2"></i> <span data-i18n="btnFinishHome">เสร็จสิ้น ·
+                                    กลับหน้าแรก (เริ่มจองใหม่)</span>
                             </button>
                         </div>
                     </div>
@@ -472,18 +760,26 @@
 
             </div>
         </section>
-        <footer class="mt-6 pb-10 text-center text-th-muted font-medium text-xs sm:text-sm">✦ Christmas of SHAring 2026 · Bangkok Christian Hospital ✦</footer>
+        <footer class="mt-6 pb-10 text-center text-th-muted font-medium text-xs sm:text-sm">✦ Christmas of SHAring 2026
+            · Bangkok Christian Hospital ✦</footer>
     </main>
 
     <!-- MODAL ตรวจสอบคิวการแสดง (สำหรับผู้จอง & แก้ไขข้อมูลย้อนหลัง) -->
-    <div id="schedule-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm">
-        <div class="w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
+    <div id="schedule-modal"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm">
+        <div
+            class="w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
             <div class="flex items-center justify-between p-4 sm:p-5 border-b border-th-border bg-th-panel">
                 <div>
-                    <h3 class="font-bold text-th-text text-lg"><i class="fa-solid fa-calendar-check text-th-accent mr-2"></i><span data-i18n="modalScheduleTitle">ตรวจสอบตารางคิวการแสดง (20–25 ธ.ค. 2026)</span></h3>
-                    <p data-i18n="modalScheduleSub" class="text-xs text-th-muted mt-0.5">ผู้จองสามารถกดปุ่ม "แก้ไขข้อมูล" ในรอบของตนเองโดยใช้เบอร์โทรศัพท์ที่ลงทะเบียนไว้เพื่อยืนยันตัวตน</p>
+                    <h3 class="font-bold text-th-text text-lg"><i
+                            class="fa-solid fa-calendar-check text-th-accent mr-2"></i><span
+                            data-i18n="modalScheduleTitle">ตรวจสอบตารางคิวการแสดง (20–25 ธ.ค. 2026)</span></h3>
+                    <p data-i18n="modalScheduleSub" class="text-xs text-th-muted mt-0.5">ผู้จองสามารถกดปุ่ม
+                        "แก้ไขข้อมูล" ในรอบของตนเองโดยใช้เบอร์โทรศัพท์ที่ลงทะเบียนไว้เพื่อยืนยันตัวตน</p>
                 </div>
-                <button onclick="closeScheduleModal()" class="w-8 h-8 rounded-full bg-th-input border border-th-border text-th-text hover:bg-th-danger hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeScheduleModal()"
+                    class="w-8 h-8 rounded-full bg-th-input border border-th-border text-th-text hover:bg-th-danger hover:text-white transition"><i
+                        class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-4 sm:p-6 overflow-y-auto flex-1 bg-th-panel/80">
                 <div id="user-results" class="space-y-4"></div>
@@ -492,11 +788,16 @@
     </div>
 
     <!-- MODAL ให้ผู้จองยืนยันตัวตนด้วยเบอร์โทรศัพท์ และแก้ไขข้อมูลย้อนหลัง -->
-    <div id="user-self-edit-modal" class="fixed inset-0 z-[65] hidden flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm">
-        <div class="w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
+    <div id="user-self-edit-modal"
+        class="fixed inset-0 z-[65] hidden flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm">
+        <div
+            class="w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
             <div class="p-4 border-b border-th-border flex justify-between items-center bg-th-input">
-                <h3 class="font-bold text-th-text"><i class="fa-solid fa-user-check text-th-accent mr-2"></i><span data-i18n="userEditModalTitle">แก้ไขข้อมูลการจองของคุณ</span></h3>
-                <button type="button" onclick="closeUserSelfEditModal()" class="text-th-text hover:text-th-danger transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <h3 class="font-bold text-th-text"><i class="fa-solid fa-user-check text-th-accent mr-2"></i><span
+                        data-i18n="userEditModalTitle">แก้ไขข้อมูลการจองของคุณ</span></h3>
+                <button type="button" onclick="closeUserSelfEditModal()"
+                    class="text-th-text hover:text-th-danger transition"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
             </div>
 
             <!-- ขั้นตอนที่ 1: ยืนยันเบอร์โทรศัพท์ -->
@@ -506,97 +807,136 @@
                     <div id="user-verify-booker-hint" class="text-th-text opacity-90"></div>
                 </div>
                 <div>
-                    <label data-i18n="userVerifyLabel" class="block text-xs sm:text-sm font-bold text-th-text mb-1.5">กรุณากรอกเบอร์โทรศัพท์เต็มที่ใช้จองรอบนี้เพื่อยืนยันตัวตน:</label>
+                    <label data-i18n="userVerifyLabel"
+                        class="block text-xs sm:text-sm font-bold text-th-text mb-1.5">กรุณากรอกเบอร์โทรศัพท์เต็มที่ใช้จองรอบนี้เพื่อยืนยันตัวตน:</label>
                     <input id="user-verify-phone-input" type="tel" maxlength="12" placeholder="08X-XXX-XXXX"
                         class="w-full p-3 rounded-xl bg-th-input border border-th-input-border text-th-text font-bold text-center tracking-wider focus:outline-none focus:border-th-accent">
-                    <p id="user-verify-error" data-i18n="userVerifyError" class="text-th-danger text-xs font-bold mt-2 hidden">เบอร์โทรศัพท์ไม่ตรงกับข้อมูลที่ลงทะเบียนไว้ กรุณาตรวจสอบอีกครั้ง</p>
+                    <p id="user-verify-error" data-i18n="userVerifyError"
+                        class="text-th-danger text-xs font-bold mt-2 hidden">เบอร์โทรศัพท์ไม่ตรงกับข้อมูลที่ลงทะเบียนไว้
+                        กรุณาตรวจสอบอีกครั้ง</p>
                 </div>
                 <div class="flex gap-2 pt-2">
-                    <button type="button" onclick="closeUserSelfEditModal()" data-i18n="btnCancel" class="flex-1 py-2.5 rounded-xl border border-th-border text-th-text font-bold text-sm bg-th-card">ยกเลิก</button>
-                    <button type="button" onclick="confirmUserPhoneVerification()" class="flex-1 py-2.5 rounded-xl bg-grad-btn text-amber-950 font-bold text-sm shadow"><i class="fa-solid fa-unlock-keyhole mr-1.5"></i><span data-i18n="btnVerifyPhone">ยืนยันเบอร์โทรศัพท์</span></button>
+                    <button type="button" onclick="closeUserSelfEditModal()" data-i18n="btnCancel"
+                        class="flex-1 py-2.5 rounded-xl border border-th-border text-th-text font-bold text-sm bg-th-card">ยกเลิก</button>
+                    <button type="button" onclick="confirmUserPhoneVerification()"
+                        class="flex-1 py-2.5 rounded-xl bg-grad-btn text-amber-950 font-bold text-sm shadow"><i
+                            class="fa-solid fa-unlock-keyhole mr-1.5"></i><span
+                            data-i18n="btnVerifyPhone">ยืนยันเบอร์โทรศัพท์</span></button>
                 </div>
             </div>
 
-            <!-- ขั้นตอนที่ 2: ฟอร์มแก้ไขข้อมูลของผู้จอง -->
+            <!-- ขั้นตอนที่ 2: ฟอร์มแก้ไขข้อมูลของผู้จอง (แสดงหลังยืนยันเบอร์ผ่าน) -->
             <form id="user-self-edit-form" class="p-5 space-y-3 overflow-y-auto max-h-[75vh] hidden">
                 <input type="hidden" id="user-edit-date">
                 <input type="hidden" id="user-edit-zone">
                 <input type="hidden" id="user-edit-idx">
 
-                <div class="p-2.5 rounded-lg bg-th-success-bg border border-th-success text-th-success text-xs font-bold flex items-center gap-2">
-                    <i class="fa-solid fa-circle-check"></i> <span data-i18n="verifiedSuccessBadge">ยืนยันเบอร์โทรศัพท์สำเร็จ สามารถแก้ไขข้อมูลด้านล่างได้</span>
+                <div
+                    class="p-2.5 rounded-lg bg-th-success-bg border border-th-success text-th-success text-xs font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-circle-check"></i> <span
+                        data-i18n="verifiedSuccessBadge">ยืนยันเบอร์โทรศัพท์สำเร็จ สามารถแก้ไขข้อมูลด้านล่างได้</span>
                 </div>
 
                 <div>
-                    <label data-i18n="labelName" class="block text-xs font-bold text-th-text mb-1">1. ชื่อ-นามสกุล ผู้จอง</label>
-                    <input id="user-edit-name" type="text" required class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                    <label data-i18n="labelName" class="block text-xs font-bold text-th-text mb-1">1. ชื่อ-นามสกุล
+                        ผู้จอง</label>
+                    <input id="user-edit-name" type="text" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
                 </div>
                 <div>
-                    <label data-i18n="labelChurch" class="block text-xs font-bold text-th-text mb-1">2. คริสตจักร / หน่วยงาน</label>
-                    <input id="user-edit-church" type="text" required class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                    <label data-i18n="labelChurch" class="block text-xs font-bold text-th-text mb-1">2. คริสตจักร /
+                        หน่วยงาน</label>
+                    <input id="user-edit-church" type="text" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
                 </div>
                 <div>
-                    <label data-i18n="labelPhone" class="block text-xs font-bold text-th-text mb-1">3. เบอร์โทรศัพท์ติดต่อ</label>
-                    <input id="user-edit-phone" type="tel" required class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                    <label data-i18n="labelPhone" class="block text-xs font-bold text-th-text mb-1">3.
+                        เบอร์โทรศัพท์ติดต่อ</label>
+                    <input id="user-edit-phone" type="tel" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
                 </div>
                 <div>
-                    <label data-i18n="labelPeopleCount" class="block text-xs font-bold text-th-text mb-1">จำนวนผู้เข้าร่วมแสดง (คน)</label>
-                    <input id="user-edit-people" type="number" min="1" max="200" required class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                    <label data-i18n="labelPeopleCount"
+                        class="block text-xs font-bold text-th-text mb-1">จำนวนผู้เข้าร่วมแสดง (คน)</label>
+                    <input id="user-edit-people" type="number" min="1" max="200" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
                 </div>
                 <div>
-                    <label data-i18n="labelPerfDesc" class="block text-xs font-bold text-th-text mb-1">รายละเอียดรูปแบบการแสดงคร่าวๆ</label>
-                    <textarea id="user-edit-desc" rows="2" required class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
+                    <label data-i18n="labelPerfDesc"
+                        class="block text-xs font-bold text-th-text mb-1">รายละเอียดรูปแบบการแสดงคร่าวๆ</label>
+                    <textarea id="user-edit-desc" rows="2" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
                 </div>
                 <div>
-                    <label data-i18n="labelEquipment" class="block text-xs font-bold text-th-text mb-1">อุปกรณ์ที่ต้องการใช้ / หมายเหตุ</label>
-                    <textarea id="user-edit-eq" rows="2" class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
+                    <label data-i18n="labelEquipment"
+                        class="block text-xs font-bold text-th-text mb-1">อุปกรณ์ที่ต้องการใช้ / หมายเหตุ</label>
+                    <textarea id="user-edit-eq" rows="2"
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
                 </div>
                 <div class="pt-3 flex gap-2">
-                    <button type="button" onclick="closeUserSelfEditModal()" data-i18n="btnCancel" class="flex-1 p-2.5 rounded-lg border border-th-border text-th-text font-bold text-sm bg-th-card">ยกเลิก</button>
-                    <button type="submit" data-i18n="btnSaveChanges" class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm hover:brightness-110 transition">บันทึกการแก้ไข</button>
+                    <button type="button" onclick="closeUserSelfEditModal()" data-i18n="btnCancel"
+                        class="flex-1 p-2.5 rounded-lg border border-th-border text-th-text font-bold text-sm bg-th-card">ยกเลิก</button>
+                    <button type="submit" data-i18n="btnSaveChanges"
+                        class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm hover:brightness-110 transition">บันทึกการแก้ไข</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- MODAL ผู้ดูแลระบบ (ADMIN) -->
-    <div id="admin-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm">
-        <div class="w-full max-w-5xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
+    <div id="admin-modal"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm">
+        <div
+            class="w-full max-w-5xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
             <div class="flex items-center justify-between p-4 border-b border-th-border bg-th-panel">
-                <h3 class="font-bold text-th-text text-lg"><i class="fa-solid fa-user-shield text-th-danger mr-2"></i><span data-i18n="adminModalTitle">จัดการระบบ (ผู้ดูแลระบบ)</span></h3>
-                <button onclick="closeAdminModal()" class="w-8 h-8 rounded-full bg-th-input border border-th-border text-th-text hover:bg-th-danger hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                <h3 class="font-bold text-th-text text-lg"><i
+                        class="fa-solid fa-user-shield text-th-danger mr-2"></i><span
+                        data-i18n="adminModalTitle">จัดการระบบ (ผู้ดูแลระบบ)</span></h3>
+                <button onclick="closeAdminModal()"
+                    class="w-8 h-8 rounded-full bg-th-input border border-th-border text-th-text hover:bg-th-danger hover:text-white transition"><i
+                        class="fa-solid fa-xmark"></i></button>
             </div>
 
             <div class="p-4 sm:p-6 overflow-y-auto flex-1 bg-th-panel/80">
                 <div id="admin-login-box" class="max-w-sm mx-auto text-center my-10">
-                    <div class="w-16 h-16 rounded-full bg-th-danger/10 text-th-danger text-3xl flex items-center justify-center mx-auto mb-4"><i class="fa-solid fa-lock"></i></div>
+                    <div
+                        class="w-16 h-16 rounded-full bg-th-danger/10 text-th-danger text-3xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
                     <p class="text-sm text-th-text mb-4 font-bold">กรุณาระบุรหัสผ่านผู้ดูแลระบบ</p>
                     <div class="flex gap-2">
-                        <input id="verify-pwd" type="password" placeholder="พิมพ์รหัสผ่าน" class="flex-1 p-3 rounded-xl border border-th-input-border bg-th-input text-th-text focus:outline-none focus:border-th-accent text-center">
-                        <button onclick="verifyAdmin()" class="px-5 rounded-xl bg-th-accent text-amber-950 font-bold hover:opacity-90 transition">เข้าสู่ระบบ</button>
+                        <input id="verify-pwd" type="password" placeholder="พิมพ์รหัสผ่าน"
+                            class="flex-1 p-3 rounded-xl border border-th-input-border bg-th-input text-th-text focus:outline-none focus:border-th-accent text-center">
+                        <button onclick="verifyAdmin()"
+                            class="px-5 rounded-xl bg-th-accent text-amber-950 font-bold hover:opacity-90 transition">เข้าสู่ระบบ</button>
                     </div>
                     <p id="admin-error" class="text-th-danger text-xs mt-3 font-bold hidden">รหัสผ่านไม่ถูกต้อง</p>
                 </div>
 
                 <div id="admin-dashboard" class="hidden space-y-5">
-                    <div class="flex flex-col sm:flex-row justify-between items-center bg-th-accent-light p-3 rounded-xl border border-th-border gap-3">
+                    <div
+                        class="flex flex-col sm:flex-row justify-between items-center bg-th-accent-light p-3 rounded-xl border border-th-border gap-3">
                         <span class="font-bold text-th-text">ตารางคิวทั้งหมด (แยกตามวัน 20–25 ธ.ค. 2026)</span>
                         <div class="flex gap-2 w-full sm:w-auto">
-                            <button onclick="exportToPDF()" class="flex-1 sm:flex-none px-4 py-2 bg-th-success text-pine-950 rounded-lg text-xs font-bold transition hover:brightness-110 flex items-center justify-center">
+                            <button onclick="exportToPDF()"
+                                class="flex-1 sm:flex-none px-4 py-2 bg-th-success text-pine-950 rounded-lg text-xs font-bold transition hover:brightness-110 flex items-center justify-center">
                                 <i class="fa-solid fa-file-pdf mr-1.5"></i> <span>Export PDF</span>
                             </button>
-                            <button onclick="handleResetBookings()" class="flex-1 sm:flex-none px-4 py-2 bg-th-danger text-white rounded-lg text-xs font-bold transition hover:brightness-110 flex items-center justify-center">
+                            <button onclick="handleResetBookings()"
+                                class="flex-1 sm:flex-none px-4 py-2 bg-th-danger text-white rounded-lg text-xs font-bold transition hover:brightness-110 flex items-center justify-center">
                                 <i class="fa-solid fa-trash-can mr-1.5"></i> ล้างข้อมูลทั้งหมด
                             </button>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                         <div class="p-4 rounded-2xl border border-th-border bg-th-card shadow-sm">
-                            <div class="font-bold text-th-text mb-3 pb-2 border-b border-th-border opacity-90">🏥 ภายในอาคาร (อาคารหมอแวลล์)</div>
+                            <div class="font-bold text-th-text mb-3 pb-2 border-b border-th-border opacity-90">🏥
+                                ภายในอาคาร (อาคารหมอแวลล์)</div>
                             <div id="modal-list-indoor" class="space-y-2.5 text-xs"></div>
                         </div>
                         <div class="p-4 rounded-2xl border border-th-border bg-th-card shadow-sm">
-                            <div class="font-bold text-th-text mb-3 pb-2 border-b border-th-border opacity-90">🎄 ภายนอกอาคาร (หน้าโรงพยาบาล)</div>
+                            <div class="font-bold text-th-text mb-3 pb-2 border-b border-th-border opacity-90">🎄
+                                ภายนอกอาคาร (หน้าโรงพยาบาล)</div>
                             <div id="modal-list-outdoor" class="space-y-2.5 text-xs"></div>
                         </div>
                     </div>
@@ -606,18 +946,23 @@
     </div>
 
     <!-- MODAL เพิ่ม/แก้ไขข้อมูลของแอดมิน -->
-    <div id="admin-edit-modal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm">
-        <div class="w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
+    <div id="admin-edit-modal"
+        class="fixed inset-0 z-[60] hidden flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm">
+        <div
+            class="w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
             <div class="p-4 border-b border-th-border flex justify-between items-center bg-th-input">
-                <h3 class="font-bold text-th-text"><i class="fa-solid fa-pen-to-square text-th-accent mr-2"></i>จัดการข้อมูลการจอง (Admin)</h3>
-                <button onclick="closeAdminEdit()" class="text-th-text hover:text-th-danger transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <h3 class="font-bold text-th-text"><i
+                        class="fa-solid fa-pen-to-square text-th-accent mr-2"></i>จัดการข้อมูลการจอง (Admin)</h3>
+                <button onclick="closeAdminEdit()" class="text-th-text hover:text-th-danger transition"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form id="admin-edit-form" class="p-4 space-y-3 overflow-y-auto max-h-[70vh]">
                 <input type="hidden" id="edit-zone">
                 <input type="hidden" id="edit-idx">
                 <div>
                     <label class="block text-xs font-bold text-th-text mb-1">วันที่แสดง</label>
-                    <select id="edit-date-select" class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm font-bold">
+                    <select id="edit-date-select"
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm font-bold">
                         <option value="20 ธ.ค. 2026">20 ธ.ค. 2026</option>
                         <option value="21 ธ.ค. 2026">21 ธ.ค. 2026</option>
                         <option value="22 ธ.ค. 2026">22 ธ.ค. 2026</option>
@@ -628,54 +973,45 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-th-text mb-1">ชื่อ-นามสกุล</label>
-                    <input id="edit-name" type="text" required class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                    <input id="edit-name" type="text" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-th-text mb-1">คริสตจักร/หน่วยงาน</label>
-                    <input id="edit-church" type="text" required class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                    <input id="edit-church" type="text" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-th-text mb-1">เบอร์โทรศัพท์</label>
-                    <input id="edit-phone" type="text" required class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                    <input id="edit-phone" type="text" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-th-text mb-1">จำนวนคน</label>
-                    <input id="edit-people" type="number" required class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
+                    <input id="edit-people" type="number" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-th-text mb-1">รูปแบบการแสดง</label>
-                    <textarea id="edit-desc" rows="2" required class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
+                    <textarea id="edit-desc" rows="2" required
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-th-text mb-1">อุปกรณ์ที่ใช้/หมายเหตุ</label>
-                    <textarea id="edit-eq" rows="2" class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
+                    <textarea id="edit-eq" rows="2"
+                        class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
                 </div>
                 <div class="pt-3 flex gap-2">
-                    <button type="button" onclick="closeAdminEdit()" class="flex-1 p-2.5 rounded-lg border border-th-border text-th-text font-bold text-sm bg-th-card hover:bg-th-accent-light transition">ยกเลิก</button>
-                    <button type="submit" class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm hover:brightness-110 transition">บันทึกข้อมูล</button>
+                    <button type="button" onclick="closeAdminEdit()"
+                        class="flex-1 p-2.5 rounded-lg border border-th-border text-th-text font-bold text-sm bg-th-card hover:bg-th-accent-light transition">ยกเลิก</button>
+                    <button type="submit"
+                        class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm hover:brightness-110 transition">บันทึกข้อมูล</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        // =========================================================================
-        // 🟢 ตั้งค่า FIREBASE CONFIG ของโปรเจกต์ christmas-sharing2026 เรียบร้อยแล้ว 🟢
-        // =========================================================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyDflgRrg2XWZ-MdfIDTfQlCoJNnHHjDxBw",
-            authDomain: "christmas-sharing2026.firebaseapp.com",
-            databaseURL: "https://christmas-sharing2026-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "christmas-sharing2026",
-            storageBucket: "christmas-sharing2026.firebasestorage.app",
-            messagingSenderId: "461385882687",
-            appId: "1:461385882687:web:67050f313f38a7657aac8a",
-            measurementId: "G-HQWR0BTV5G"
-        };
-
-        // สำรอง URL กรณีที่คุณเลือกสร้าง Database ไว้ที่โซน US-Central แทน Singapore
-        const FALLBACK_US_DATABASE_URL = "https://christmas-sharing2026-default-rtdb.firebaseio.com";
-
         // =========================================================================
         // 1. MULTI-LANGUAGE DICTIONARY (TH / EN / ZH)
         // =========================================================================
@@ -686,7 +1022,7 @@
                 headerDateRange: '📅 จัดแสดงระหว่างวันที่ 20–25 ธันวาคม 2026',
                 checkScheduleBtn: 'ตรวจสอบตารางคิว / แก้ไขข้อมูลการจอง',
                 step1Short: '1. ผู้จอง', step2Short: '2. วัน & เวลา', step3Short: '3. รูปแบบ', step4Short: '4. จำนวนคน', step5Short: '5. ยืนยัน',
-                step1Badge: 'ขั้นตอนที่ 1 จาก 5', step1Title: 'ข้อมูลผู้จองและคริสตจักร',
+                step1Badge: 'ขั้นตอนที่ 1 จาก 5', step1Title: 'ข้อมูลผู้จอง',
                 labelName: '1. ชื่อ-นามสกุล ผู้จอง', phName: 'เช่น คุณสมชาย ใจดี',
                 labelChurch: '2. คริสตจักร / หน่วยงาน', phChurch: 'ระบุชื่อคริสตจักร หรือ หน่วยงาน',
                 labelPhone: '3. เบอร์โทรศัพท์ติดต่อ', phPhone: 'เช่น 081-234-5678',
@@ -842,11 +1178,13 @@
                 if (btn) btn.classList.toggle('active', l === lang);
             });
 
+            // แปลข้อความที่มี data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 el.textContent = t(key);
             });
 
+            // แปล placeholder
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
                 el.placeholder = t(key);
@@ -857,6 +1195,7 @@
             renderAll();
         }
 
+        // === Theme System (Default = Pine Green) ===
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('sha2026-theme', theme);
@@ -864,9 +1203,7 @@
             renderAll();
         }
 
-        // =========================================================================
-        // 2. DATA & FIREBASE REALTIME DATABASE INTEGRATION
-        // =========================================================================
+        // === Data & State ===
         const DATES_LIST = ['20 ธ.ค. 2026', '21 ธ.ค. 2026', '22 ธ.ค. 2026', '23 ธ.ค. 2026', '24 ธ.ค. 2026', '25 ธ.ค. 2026'];
         const INDOOR_TIME_SLOTS = [
             ['09.00', '09.30'], ['09.30', '10.00'], ['10.00', '10.30'],
@@ -892,131 +1229,21 @@
             sessionBookings: []
         };
 
+        // เก็บตำแหน่งคิวที่ผู้จองกำลังจะแก้ไข
         let pendingUserEditTarget = null;
-        let firebaseDbRef = null;
 
-        function createEmptySchedule() {
+        function getBookings() {
+            try {
+                const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                if (data) return data;
+            } catch (e) { }
             let initial = {};
             DATES_LIST.forEach(d => { initial[d] = { indoor: {}, outdoor: {} }; });
             return initial;
         }
+        function saveBookings(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
-        let bookingsCache = createEmptySchedule();
-
-        function encodeFirebaseKey(dateStr) {
-            return String(dateStr).replace(/\./g, '_');
-        }
-        function decodeFirebaseKey(keyStr) {
-            return String(keyStr).replace(/_/g, '.');
-        }
-
-        function serializeForFirebase(dataObj) {
-            const out = {};
-            Object.keys(dataObj || {}).forEach(dateKey => {
-                out[encodeFirebaseKey(dateKey)] = dataObj[dateKey];
-            });
-            return out;
-        }
-
-        function deserializeFromFirebase(fbVal) {
-            const result = createEmptySchedule();
-            if (!fbVal) return result;
-            Object.keys(fbVal).forEach(encodedDate => {
-                const normalDate = decodeFirebaseKey(encodedDate);
-                if (!result[normalDate]) result[normalDate] = { indoor: {}, outdoor: {} };
-                result[normalDate].indoor = (fbVal[encodedDate] && fbVal[encodedDate].indoor) ? fbVal[encodedDate].indoor : {};
-                result[normalDate].outdoor = (fbVal[encodedDate] && fbVal[encodedDate].outdoor) ? fbVal[encodedDate].outdoor : {};
-            });
-            return result;
-        }
-
-        function updateSyncBadge(mode) {
-            const dot = document.getElementById('sync-dot');
-            const text = document.getElementById('sync-text');
-            if (!dot || !text) return;
-
-            if (mode === 'live') {
-                dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-ping';
-                text.textContent = 'ออนไลน์ (Real-time)';
-            } else {
-                dot.className = 'w-2 h-2 rounded-full bg-amber-400';
-                text.textContent = 'โหมดในเครื่อง (รอเปิด DB)';
-            }
-        }
-
-        function initDatabaseConnection() {
-            try {
-                const localRaw = JSON.parse(localStorage.getItem(STORAGE_KEY));
-                if (localRaw) bookingsCache = localRaw;
-            } catch (e) {}
-
-            try {
-                if (!firebase.apps.length) {
-                    firebase.initializeApp(firebaseConfig);
-                }
-                connectToDatabaseUrl(firebaseConfig.databaseURL, true);
-            } catch (err) {
-                console.warn('Firebase init error:', err);
-                updateSyncBadge('local');
-            }
-        }
-
-        function connectToDatabaseUrl(dbUrl, allowFallback) {
-            try {
-                const db = firebase.app().database(dbUrl);
-                const ref = db.ref('bookings_2026');
-
-                ref.on('value', (snapshot) => {
-                    firebaseDbRef = ref;
-                    updateSyncBadge('live');
-                    const val = snapshot.val();
-                    if (val) {
-                        bookingsCache = deserializeFromFirebase(val);
-                        localStorage.setItem(STORAGE_KEY, JSON.stringify(bookingsCache));
-                    } else {
-                        // หากฐานข้อมูลบน Firebase ยังว่างอยู่ แต่ในเครื่องมีข้อมูล ให้ซิงค์ข้อมูลขึ้นไปอัตโนมัติ
-                        ref.set(serializeForFirebase(bookingsCache)).catch(() => {});
-                    }
-                    renderAll();
-
-                    const adminDash = document.getElementById('admin-dashboard');
-                    if (adminDash && !adminDash.classList.contains('hidden')) {
-                        renderAdminDashboard();
-                    }
-                }, (error) => {
-                    console.warn('Firebase connection failed on ' + dbUrl, error);
-                    if (allowFallback) {
-                        connectToDatabaseUrl(FALLBACK_US_DATABASE_URL, false);
-                    } else {
-                        updateSyncBadge('local');
-                    }
-                });
-            } catch (e) {
-                if (allowFallback) {
-                    connectToDatabaseUrl(FALLBACK_US_DATABASE_URL, false);
-                } else {
-                    updateSyncBadge('local');
-                }
-            }
-        }
-
-        function getBookings() {
-            return bookingsCache;
-        }
-
-        async function saveBookings(data) {
-            bookingsCache = data;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-            if (firebaseDbRef) {
-                try {
-                    await firebaseDbRef.set(serializeForFirebase(data));
-                } catch (err) {
-                    console.error('Firebase write error:', err);
-                    showAlert('บันทึกขึ้นฐานข้อมูลออนไลน์ไม่สำเร็จ กรุณาตรวจสอบว่าเปิด Rules (.write: true) ใน Firebase แล้ว', 'error');
-                }
-            }
-        }
-
+        // ฟังก์ชันซ่อนเบอร์โทรศัพท์ แสดงเฉพาะ 4 หลักท้าย เช่น ***-***-5678
         function maskPhoneLast4(phoneStr) {
             const digits = String(phoneStr || '').replace(/\D/g, '');
             if (digits.length >= 4) {
@@ -1127,7 +1354,7 @@
             return ranges.map(r => `${r.start}–${r.end} น.`).join(', ');
         }
 
-        async function submitFinalBooking() {
+        function submitFinalBooking() {
             const people = document.getElementById('perf-count').value;
             if (!people || people < 1) { showAlert('กรุณาระบุจำนวนผู้แสดง'); document.getElementById('perf-count').focus(); return; }
 
@@ -1138,8 +1365,7 @@
                 if (saved[s.date] && saved[s.date][s.zone] && saved[s.date][s.zone][s.idx]) conflict = true;
             });
             if (conflict) {
-                showAlert('บางรอบเวลาที่เลือกเพิ่งถูกจองไปแล้ว กรุณาตรวจสอบรอบเวลาใหม่', 'error');
-                appState.selectedSlots = appState.selectedSlots.filter(s => !(saved[s.date] && saved[s.date][s.zone] && saved[s.date][s.zone][s.idx]));
+                showAlert('บางรอบเวลาที่เลือกถูกจองไปแล้ว กรุณาตรวจสอบรอบเวลาใหม่', 'error');
                 goToStep(2); return;
             }
 
@@ -1168,12 +1394,7 @@
                 appState.sessionBookings.push(record);
             });
 
-            const btn = document.getElementById('submit-final-btn');
-            if (btn) btn.disabled = true;
-
-            await saveBookings(saved);
-            if (btn) btn.disabled = false;
-
+            saveBookings(saved);
             updateTicketUI();
             goToStep(5);
             triggerSparkles();
@@ -1277,7 +1498,7 @@
                 }
             });
 
-            // Slots Grid
+            // Slots Grid (แสดงชื่อผู้จอง และเบอร์ 4 หลักท้าย)
             const grid = document.getElementById('slots-grid');
             grid.replaceChildren();
             getTimeSlotsForZone(appState.zone).forEach(([start, end], i) => {
@@ -1331,7 +1552,7 @@
         function toggleEq(id) { appState.eqIds = appState.eqIds.includes(id) ? appState.eqIds.filter(i => i !== id) : [...appState.eqIds, id]; renderEq(); }
 
         // =========================================================================
-        // 3. PUBLIC SCHEDULE & USER SELF-EDIT (VERIFY BY PHONE)
+        // 2. PUBLIC SCHEDULE & USER SELF-EDIT (VERIFY BY PHONE)
         // =========================================================================
         function openScheduleModal() { renderPublicSchedule(); document.getElementById('schedule-modal').classList.remove('hidden'); }
         function closeScheduleModal() { document.getElementById('schedule-modal').classList.add('hidden'); }
@@ -1339,6 +1560,7 @@
         function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
         function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
 
+        // ตารางจองสาธารณะ: แสดงเฉพาะ ชื่อผู้จอง และ เบอร์โทร 4 หลักท้าย + ปุ่มแก้ไขข้อมูล
         function renderPublicSchedule() {
             const data = getBookings();
             const container = document.getElementById('user-results');
@@ -1384,6 +1606,7 @@
             container.innerHTML = html;
         }
 
+        // เปิดหน้าต่างให้ผู้จองยืนยันเบอร์โทรศัพท์ก่อนแก้ไข
         function openUserSelfEditModal(date, zone, idx) {
             const data = getBookings();
             const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
@@ -1424,6 +1647,7 @@
                 return;
             }
 
+            // เมื่อยืนยันเบอร์ตรงกัน ให้เปิดฟอร์มแก้ไขข้อมูล
             document.getElementById('user-verify-error').classList.add('hidden');
             document.getElementById('user-verify-step').classList.add('hidden');
             document.getElementById('user-self-edit-form').classList.remove('hidden');
@@ -1439,7 +1663,7 @@
             document.getElementById('user-edit-eq').value = b.eq || '';
         }
 
-        document.getElementById('user-self-edit-form').onsubmit = async (e) => {
+        document.getElementById('user-self-edit-form').onsubmit = (e) => {
             e.preventDefault();
             const date = document.getElementById('user-edit-date').value;
             const zone = document.getElementById('user-edit-zone').value;
@@ -1462,7 +1686,7 @@
                 eq: document.getElementById('user-edit-eq').value.trim()
             };
 
-            await saveBookings(data);
+            saveBookings(data);
             closeUserSelfEditModal();
             renderAll();
         };
@@ -1519,11 +1743,11 @@
             });
         }
 
-        async function deleteBooking(date, zone, idx) {
+        function deleteBooking(date, zone, idx) {
             if (confirm(`ยืนยันลบการจองวันที่ ${date} รอบนี้ใช่หรือไม่?`)) {
                 const data = getBookings();
                 delete data[date][zone][idx];
-                await saveBookings(data);
+                saveBookings(data);
                 renderAdminDashboard();
                 renderAll();
             }
@@ -1554,7 +1778,7 @@
 
         function closeAdminEdit() { document.getElementById('admin-edit-modal').classList.add('hidden'); }
 
-        document.getElementById('admin-edit-form').onsubmit = async (e) => {
+        document.getElementById('admin-edit-form').onsubmit = (e) => {
             e.preventDefault();
             const date = document.getElementById('edit-date-select').value;
             const zone = document.getElementById('edit-zone').value;
@@ -1584,18 +1808,16 @@
                 eq: document.getElementById('edit-eq').value.trim()
             };
 
-            await saveBookings(data);
+            saveBookings(data);
             closeAdminEdit();
             renderAdminDashboard();
             renderAll();
         };
 
-        async function handleResetBookings() {
+        function handleResetBookings() {
             if (confirm("ยืนยันล้างข้อมูลตารางการจองทั้งหมดหรือไม่? (สำหรับผู้ดูแลระบบ)")) {
-                const empty = createEmptySchedule();
-                await saveBookings(empty);
-                renderAll();
-                renderAdminDashboard();
+                localStorage.removeItem(STORAGE_KEY);
+                renderAll(); renderAdminDashboard();
             }
         }
 
@@ -1719,7 +1941,6 @@
 
         window.onload = () => {
             initSnowfall();
-            initDatabaseConnection();
             setLanguage(currentLang);
             updateStepper();
         };
