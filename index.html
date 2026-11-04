@@ -521,7 +521,7 @@
                                 </div>
                                 <p class="text-xs text-th-muted mt-1.5 opacity-85"><i
                                         class="fa-solid fa-key mr-1 text-th-accent"></i><span
-                                        data-i18n="phoneHint">เบอร์โทรศัพท์จะใช้เป็นรหัสยืนยันหากท่านต้องการแก้ไขข้อมูลในภายหลัง</span>
+                                        data-i18n="phoneHint">เบอร์โทรศัพท์จะใช้เป็นรหัสยืนยันหากท่านต้องการแก้ไขหรือยกเลิกการจองในภายหลัง</span>
                                 </p>
                             </div>
                             <div class="pt-4">
@@ -828,7 +828,7 @@
             · Bangkok Christian Hospital ✦</footer>
     </main>
 
-    <!-- MODAL ตรวจสอบคิวการแสดง (สำหรับผู้จอง & แก้ไขข้อมูลย้อนหลัง) -->
+    <!-- MODAL ตรวจสอบคิวการแสดง (สำหรับผู้จอง & แก้ไข/ลบข้อมูลย้อนหลัง) -->
     <div id="schedule-modal"
         class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm">
         <div
@@ -839,7 +839,7 @@
                             class="fa-solid fa-calendar-check text-th-accent mr-2"></i><span
                             data-i18n="modalScheduleTitle">ตรวจสอบตารางคิวการแสดง (20–25 ธ.ค. 2026)</span></h3>
                     <p data-i18n="modalScheduleSub" class="text-xs text-th-muted mt-0.5">ผู้จองสามารถกดปุ่ม
-                        "แก้ไขข้อมูล" ในรอบของตนเองโดยใช้เบอร์โทรศัพท์ที่ลงทะเบียนไว้เพื่อยืนยันตัวตน</p>
+                        "แก้ไข / ยกเลิก" ในรอบของตนเองโดยใช้เบอร์โทรศัพท์ที่ลงทะเบียนไว้เพื่อยืนยันตัวตน</p>
                 </div>
                 <button onclick="closeScheduleModal()"
                     class="w-8 h-8 rounded-full bg-th-input border border-th-border text-th-text hover:bg-th-danger hover:text-white transition"><i
@@ -851,14 +851,14 @@
         </div>
     </div>
 
-    <!-- MODAL ให้ผู้จองยืนยันตัวตนด้วยเบอร์โทรศัพท์ และแก้ไขข้อมูลย้อนหลัง -->
+    <!-- MODAL ให้ผู้จองยืนยันตัวตนด้วยเบอร์โทรศัพท์ และแก้ไข/ลบข้อมูลย้อนหลัง -->
     <div id="user-self-edit-modal"
         class="fixed inset-0 z-[65] hidden flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm">
         <div
             class="w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
             <div class="p-4 border-b border-th-border flex justify-between items-center bg-th-input">
                 <h3 class="font-bold text-th-text"><i class="fa-solid fa-user-check text-th-accent mr-2"></i><span
-                        data-i18n="userEditModalTitle">แก้ไขข้อมูลการจองของคุณ</span></h3>
+                        data-i18n="userEditModalTitle">แก้ไข / ยกเลิกการจองของคุณ</span></h3>
                 <button type="button" onclick="closeUserSelfEditModal()"
                     class="text-th-text hover:text-th-danger transition"><i
                         class="fa-solid fa-xmark text-lg"></i></button>
@@ -889,7 +889,7 @@
                 </div>
             </div>
 
-            <!-- ขั้นตอนที่ 2: ฟอร์มแก้ไขข้อมูลของผู้จอง -->
+            <!-- ขั้นตอนที่ 2: ฟอร์มแก้ไขหรือยกเลิกข้อมูลของผู้จอง -->
             <form id="user-self-edit-form" class="p-5 space-y-3 overflow-y-auto max-h-[75vh] hidden">
                 <input type="hidden" id="user-edit-date">
                 <input type="hidden" id="user-edit-zone">
@@ -898,7 +898,7 @@
                 <div
                     class="p-2.5 rounded-lg bg-th-success-bg border border-th-success text-th-success text-xs font-bold flex items-center gap-2">
                     <i class="fa-solid fa-circle-check"></i> <span
-                        data-i18n="verifiedSuccessBadge">ยืนยันเบอร์โทรศัพท์สำเร็จ สามารถแก้ไขข้อมูลด้านล่างได้</span>
+                        data-i18n="verifiedSuccessBadge">ยืนยันเบอร์โทรศัพท์สำเร็จ สามารถแก้ไขหรือยกเลิกการจองด้านล่างได้</span>
                 </div>
 
                 <div>
@@ -937,11 +937,19 @@
                     <textarea id="user-edit-eq" rows="2"
                         class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
                 </div>
-                <div class="pt-3 flex gap-2">
-                    <button type="button" onclick="closeUserSelfEditModal()" data-i18n="btnCancel"
-                        class="flex-1 p-2.5 rounded-lg border border-th-border text-th-text font-bold text-sm bg-th-card">ยกเลิก</button>
-                    <button type="submit" data-i18n="btnSaveChanges"
-                        class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm hover:brightness-110 transition">บันทึกการแก้ไข</button>
+
+                <!-- ปุ่มบันทึกแก้ไข และปุ่มยกเลิกคิว (ลบชื่อออกจากระบบและ Firebase) -->
+                <div class="pt-3 flex flex-col gap-2">
+                    <div class="flex gap-2">
+                        <button type="button" onclick="closeUserSelfEditModal()" data-i18n="btnCancel"
+                            class="flex-1 p-2.5 rounded-lg border border-th-border text-th-text font-bold text-sm bg-th-card">ปิดหน้าต่าง</button>
+                        <button type="submit" data-i18n="btnSaveChanges"
+                            class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm hover:brightness-110 transition">บันทึกการแก้ไข</button>
+                    </div>
+                    <button type="button" id="user-delete-own-btn" onclick="deleteUserOwnBooking()"
+                        class="w-full p-2.5 rounded-lg bg-th-danger text-white font-bold text-xs hover:brightness-110 transition flex items-center justify-center gap-1.5 shadow">
+                        <i class="fa-solid fa-trash-can"></i> <span data-i18n="btnDeleteOwnBooking">ยกเลิกการจองรอบนี้ (ลบชื่อออกจากระบบ)</span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -1009,7 +1017,7 @@
         </div>
     </div>
 
-    <!-- MODAL เพิ่ม/แก้ไขข้อมูลของแอดมิน -->
+    <!-- MODAL เพิ่ม/แก้ไข/ลบข้อมูลของแอดมิน -->
     <div id="admin-edit-modal"
         class="fixed inset-0 z-[60] hidden flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm">
         <div
@@ -1020,7 +1028,8 @@
                 <button onclick="closeAdminEdit()" class="text-th-text hover:text-th-danger transition"><i
                         class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <form id="admin-edit-form" class="p-4 space-y-3 overflow-y-auto max-h-[70vh]">
+            <form id="admin-edit-form" class="p-4 space-y-3 overflow-y-auto max-h-[75vh]">
+                <input type="hidden" id="edit-original-date">
                 <input type="hidden" id="edit-zone">
                 <input type="hidden" id="edit-idx">
                 <div>
@@ -1065,11 +1074,17 @@
                     <textarea id="edit-eq" rows="2"
                         class="w-full p-2.5 rounded-lg bg-th-input border border-th-input-border text-th-text text-sm"></textarea>
                 </div>
-                <div class="pt-3 flex gap-2">
-                    <button type="button" onclick="closeAdminEdit()"
-                        class="flex-1 p-2.5 rounded-lg border border-th-border text-th-text font-bold text-sm bg-th-card hover:bg-th-accent-light transition">ยกเลิก</button>
-                    <button type="submit"
-                        class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm hover:brightness-110 transition">บันทึกข้อมูล</button>
+                <div class="pt-3 flex flex-col gap-2">
+                    <div class="flex gap-2">
+                        <button type="button" onclick="closeAdminEdit()"
+                            class="flex-1 p-2.5 rounded-lg border border-th-border text-th-text font-bold text-sm bg-th-card hover:bg-th-accent-light transition">ยกเลิก</button>
+                        <button type="submit"
+                            class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm hover:brightness-110 transition">บันทึกข้อมูล</button>
+                    </div>
+                    <button type="button" id="admin-modal-delete-btn" onclick="deleteFromAdminEditModal()"
+                        class="w-full p-2.5 rounded-lg bg-th-danger text-white font-bold text-xs hover:brightness-110 transition hidden items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-trash-can"></i> ลบชื่อผู้จองรอบนี้ออกจากระบบและ Firebase
+                    </button>
                 </div>
             </form>
         </div>
@@ -1090,7 +1105,6 @@
                 const linkBtn = document.getElementById('line-external-link');
                 if (linkBtn) linkBtn.href = extUrl;
 
-                // หากผ่านไป 600ms แล้วยังคงค้างอยู่ใน LINE WebView ให้แสดงปุ่มกดเปิดเบราว์เซอร์หลัก
                 setTimeout(() => {
                     const blocker = document.getElementById('line-browser-blocker');
                     if (blocker) blocker.classList.remove('hidden');
@@ -1136,7 +1150,7 @@
                 labelName: '1. ชื่อ-นามสกุล ผู้จอง', phName: 'เช่น คุณสมชาย ใจดี',
                 labelChurch: '2. คริสตจักร / หน่วยงาน', phChurch: 'ระบุชื่อคริสตจักร หรือ หน่วยงาน',
                 labelPhone: '3. เบอร์โทรศัพท์ติดต่อ', phPhone: 'เช่น 081-234-5678',
-                phoneHint: 'เบอร์โทรศัพท์จะใช้เป็นรหัสยืนยันหากท่านต้องการแก้ไขข้อมูลในภายหลัง',
+                phoneHint: 'เบอร์โทรศัพท์จะใช้เป็นรหัสยืนยันหากท่านต้องการแก้ไขหรือยกเลิกการจองในภายหลัง',
                 btnNextStep2: 'ถัดไป: เลือกวันที่ สถานที่ และเวลา',
                 step2Badge: 'ขั้นตอนที่ 2 จาก 5', step2Title: 'เลือกวันที่ สถานที่ และรอบเวลา',
                 step2MultiHint: '(ท่านสามารถคลิกเลือกได้หลายรอบเวลาพร้อมกัน)',
@@ -1160,17 +1174,18 @@
                 ticketPeopleRefLabel: 'จำนวนผู้แสดง / รหัสอ้างอิง', ticketTimeListLabel: 'รายละเอียดสถานที่และเวลาแสดง', ticketPerfLabel: 'รูปแบบการแสดง & อุปกรณ์',
                 btnDownloadAgain: 'โหลดรูปอีกครั้ง', btnFinishHome: 'เสร็จสิ้น · กลับหน้าแรก (เริ่มจองใหม่)',
                 modalScheduleTitle: 'ตรวจสอบตารางคิวการแสดง (20–25 ธ.ค. 2026)',
-                modalScheduleSub: 'แสดงชื่อผู้จองและเบอร์โทรศัพท์ 4 หลักท้าย · กดปุ่ม "แก้ไขข้อมูล" และกรอกเบอร์เต็มเพื่อแก้ไขข้อมูลของท่าน',
-                userEditModalTitle: 'แก้ไขข้อมูลการจองของคุณ',
+                modalScheduleSub: 'แสดงชื่อผู้จองและเบอร์โทรศัพท์ 4 หลักท้าย · กดปุ่ม "แก้ไข / ยกเลิก" และกรอกเบอร์เต็มเพื่อจัดการข้อมูลของท่าน',
+                userEditModalTitle: 'แก้ไข / ยกเลิกการจองของคุณ',
                 userVerifyLabel: 'กรุณากรอกเบอร์โทรศัพท์เต็มที่ใช้จองรอบนี้เพื่อยืนยันตัวตน:',
                 userVerifyError: 'เบอร์โทรศัพท์ไม่ตรงกับข้อมูลที่ลงทะเบียนไว้ กรุณาตรวจสอบอีกครั้ง',
                 btnCancel: 'ยกเลิก', btnVerifyPhone: 'ยืนยันเบอร์โทรศัพท์',
-                verifiedSuccessBadge: 'ยืนยันเบอร์โทรศัพท์สำเร็จ สามารถแก้ไขข้อมูลด้านล่างได้',
+                verifiedSuccessBadge: 'ยืนยันเบอร์โทรศัพท์สำเร็จ สามารถแก้ไขหรือยกเลิกการจองด้านล่างได้',
                 btnSaveChanges: 'บันทึกการแก้ไข',
+                btnDeleteOwnBooking: 'ยกเลิกการจองรอบนี้ (ลบชื่อออกจากระบบ)',
                 adminModalTitle: 'จัดการระบบ (ผู้ดูแลระบบ)',
                 statusFree: 'ว่าง', statusFull: 'เต็ม', statusBooked: 'จองแล้ว', statusSelected: '✓ เลือกแล้ว',
                 selectedCountPrefix: 'เลือกแล้ว', selectedCountSuffix: 'รอบ',
-                editOwnBtn: 'แก้ไขข้อมูล', bookerPrefix: 'ผู้จอง:', phoneLast4Prefix: 'เบอร์:',
+                editOwnBtn: 'แก้ไข / ยกเลิก', bookerPrefix: 'ผู้จอง:', phoneLast4Prefix: 'เบอร์:',
                 peopleUnit: 'คน', showDatePrefix: '📅 วันที่แสดง:',
                 quickTags: ['ร้องเพลงประสานเสียง', 'ดนตรีโฟลคซอง', 'ละครคริสต์มาส', 'เต้นประกอบเพลง (COVER)', 'ดนตรีสากล (Band)'],
                 eqLabels: { mic: '🎤 ไมโครโฟน', chair: '🪑 เก้าอี้', speaker: '🔊 ลำโพง/เปิด Backing Track' }
@@ -1185,7 +1200,7 @@
                 labelName: '1. Full Name', phName: 'e.g. John Doe',
                 labelChurch: '2. Church / Organization', phChurch: 'Enter Church or Group Name',
                 labelPhone: '3. Phone Number', phPhone: 'e.g. 081-234-5678',
-                phoneHint: 'Your phone number is used to verify your identity if you edit your booking later.',
+                phoneHint: 'Your phone number is used to verify your identity if you edit or cancel your booking later.',
                 btnNextStep2: 'Next: Select Date, Venue & Time',
                 step2Badge: 'Step 2 of 5', step2Title: 'Select Date, Venue & Time Slots',
                 step2MultiHint: '(You can select multiple time slots at once)',
@@ -1209,17 +1224,18 @@
                 ticketPeopleRefLabel: 'Performers / Ref Code', ticketTimeListLabel: 'Venue & Time Details', ticketPerfLabel: 'Performance & Equipment',
                 btnDownloadAgain: 'Download Image Again', btnFinishHome: 'Done · Back to Home (New Booking)',
                 modalScheduleTitle: 'Show Schedule (20–25 Dec 2026)',
-                modalScheduleSub: 'Shows booker name & last 4 digits of phone · Click "Edit" and enter your full phone number to modify',
-                userEditModalTitle: 'Edit Your Booking',
+                modalScheduleSub: 'Shows booker name & last 4 digits of phone · Click "Edit / Cancel" and enter your full phone number to modify',
+                userEditModalTitle: 'Edit / Cancel Your Booking',
                 userVerifyLabel: 'Enter the full phone number used for this booking to verify:',
                 userVerifyError: 'Phone number does not match this booking. Please try again.',
                 btnCancel: 'Cancel', btnVerifyPhone: 'Verify Phone',
-                verifiedSuccessBadge: 'Phone verified! You can now update your booking details below.',
+                verifiedSuccessBadge: 'Phone verified! You can now update or cancel your booking below.',
                 btnSaveChanges: 'Save Changes',
+                btnDeleteOwnBooking: 'Cancel This Booking (Delete from System)',
                 adminModalTitle: 'System Management (Admin)',
                 statusFree: 'Available', statusFull: 'Full', statusBooked: 'Booked', statusSelected: '✓ Selected',
                 selectedCountPrefix: 'Selected', selectedCountSuffix: 'slot(s)',
-                editOwnBtn: 'Edit', bookerPrefix: 'Booker:', phoneLast4Prefix: 'Tel:',
+                editOwnBtn: 'Edit / Cancel', bookerPrefix: 'Booker:', phoneLast4Prefix: 'Tel:',
                 peopleUnit: 'people', showDatePrefix: '📅 Show Date:',
                 quickTags: ['Christmas Choir', 'Acoustic Folk', 'Christmas Drama', 'Cover Dance', 'Live Band'],
                 eqLabels: { mic: '🎤 Microphone', chair: '🪑 Chairs', speaker: '🔊 Speaker / Backing Track' }
@@ -1234,7 +1250,7 @@
                 labelName: '1. 预约人姓名', phName: '例如：张伟',
                 labelChurch: '2. 教会 / 机构名称', phChurch: '请输入教会或团体名称',
                 labelPhone: '3. 联系电话', phPhone: '例如：081-234-5678',
-                phoneHint: '电话号码将作为您日后修改预约信息的验证凭据',
+                phoneHint: '电话号码将作为您日后修改或取消预约信息的验证凭据',
                 btnNextStep2: '下一步：选择日期、地点与时间',
                 step2Badge: '第 2 步（共 5 步）', step2Title: '选择演出日期、场地与时间段',
                 step2MultiHint: '（您可以同时点击选择多个时间段）',
@@ -1258,17 +1274,18 @@
                 ticketPeopleRefLabel: '参演人数 / 预约编号', ticketTimeListLabel: '场地与时间详情', ticketPerfLabel: '演出形式与设备',
                 btnDownloadAgain: '重新下载图片', btnFinishHome: '完成 · 返回首页（重新预约）',
                 modalScheduleTitle: '演出排期表 (2026年12月20–25日)',
-                modalScheduleSub: '仅显示预约人姓名及电话后4位 · 点击“修改信息”并输入完整电话号码即可修改',
-                userEditModalTitle: '修改您的预约信息',
+                modalScheduleSub: '仅显示预约人姓名及电话后4位 · 点击“修改/取消”并输入完整电话号码即可操作',
+                userEditModalTitle: '修改 / 取消您的预约',
                 userVerifyLabel: '请输入预约该时段时使用的完整电话号码以验证身份：',
                 userVerifyError: '电话号码与登记信息不符，请重新核对',
                 btnCancel: '取消', btnVerifyPhone: '验证电话号码',
-                verifiedSuccessBadge: '电话验证成功！您可以在下方修改预约信息。',
+                verifiedSuccessBadge: '电话验证成功！您可以在下方修改或取消预约。',
                 btnSaveChanges: '保存修改',
+                btnDeleteOwnBooking: '取消该时段预约（从系统中删除）',
                 adminModalTitle: '系统管理（管理员）',
                 statusFree: '空闲', statusFull: '已满', statusBooked: '已预约', statusSelected: '✓ 已选',
                 selectedCountPrefix: '已选', selectedCountSuffix: '个时段',
-                editOwnBtn: '修改信息', bookerPrefix: '预约人:', phoneLast4Prefix: '电话尾号:',
+                editOwnBtn: '修改 / 取消', bookerPrefix: '预约人:', phoneLast4Prefix: '电话尾号:',
                 peopleUnit: '人', showDatePrefix: '📅 演出日期:',
                 quickTags: ['圣诞合唱团', '民谣弹唱', '圣诞短剧', '舞蹈表演 (COVER)', '乐队演奏 (Band)'],
                 eqLabels: { mic: '🎤 麦克风', chair: '🪑 椅子', speaker: '🔊 音箱 / 伴奏线' }
@@ -1356,22 +1373,40 @@
             return String(keyStr).replace(/_/g, '.');
         }
 
+        // แปลงข้อมูลโซน (ไม่ว่า Firebase จะส่งกลับมาเป็น Array หรือ Object) ให้เป็น Object มาตรฐานเสมอ
+        function normalizeZoneSlots(zoneVal) {
+            const cleanObj = {};
+            if (!zoneVal || typeof zoneVal !== 'object') return cleanObj;
+            Object.keys(zoneVal).forEach(k => {
+                const item = zoneVal[k];
+                if (item && typeof item === 'object' && item.name) {
+                    cleanObj[String(k)] = item;
+                }
+            });
+            return cleanObj;
+        }
+
         function serializeForFirebase(dataObj) {
             const out = {};
             Object.keys(dataObj || {}).forEach(dateKey => {
-                out[encodeFirebaseKey(dateKey)] = dataObj[dateKey];
+                const day = dataObj[dateKey] || {};
+                out[encodeFirebaseKey(dateKey)] = {
+                    indoor: normalizeZoneSlots(day.indoor),
+                    outdoor: normalizeZoneSlots(day.outdoor)
+                };
             });
             return out;
         }
 
         function deserializeFromFirebase(fbVal) {
             const result = createEmptySchedule();
-            if (!fbVal) return result;
+            if (!fbVal || typeof fbVal !== 'object') return result;
             Object.keys(fbVal).forEach(encodedDate => {
                 const normalDate = decodeFirebaseKey(encodedDate);
                 if (!result[normalDate]) result[normalDate] = { indoor: {}, outdoor: {} };
-                result[normalDate].indoor = (fbVal[encodedDate] && fbVal[encodedDate].indoor) ? fbVal[encodedDate].indoor : {};
-                result[normalDate].outdoor = (fbVal[encodedDate] && fbVal[encodedDate].outdoor) ? fbVal[encodedDate].outdoor : {};
+                const dayObj = fbVal[encodedDate] || {};
+                result[normalDate].indoor = normalizeZoneSlots(dayObj.indoor);
+                result[normalDate].outdoor = normalizeZoneSlots(dayObj.outdoor);
             });
             return result;
         }
@@ -1393,7 +1428,9 @@
         function initDatabaseConnection() {
             try {
                 const localRaw = JSON.parse(localStorage.getItem(STORAGE_KEY));
-                if (localRaw) bookingsCache = localRaw;
+                if (localRaw) {
+                    bookingsCache = deserializeFromFirebase(serializeForFirebase(localRaw));
+                }
             } catch (e) { }
 
             try {
@@ -1416,12 +1453,10 @@
                     firebaseDbRef = ref;
                     updateSyncBadge('live');
                     const val = snapshot.val();
-                    if (val) {
-                        bookingsCache = deserializeFromFirebase(val);
-                        localStorage.setItem(STORAGE_KEY, JSON.stringify(bookingsCache));
-                    } else {
-                        ref.set(serializeForFirebase(bookingsCache)).catch(() => { });
-                    }
+                    // ยึดข้อมูลจาก Firebase เป็นหลักเสมอ (ไม่นำ localStorage เก่าไปเขียนทับเวลาลบคิวจนว่าง)
+                    bookingsCache = val ? deserializeFromFirebase(val) : createEmptySchedule();
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(bookingsCache));
+
                     renderAll();
 
                     const adminDash = document.getElementById('admin-dashboard');
@@ -1449,23 +1484,63 @@
             return bookingsCache;
         }
 
+        // บันทึกข้อมูลทั้งตาราง
         async function saveBookings(data) {
+            const normalized = deserializeFromFirebase(serializeForFirebase(data));
+            bookingsCache = normalized;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+
             if (firebaseDbRef) {
                 try {
-                    await firebaseDbRef.set(serializeForFirebase(data));
-                    bookingsCache = data;
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                    await firebaseDbRef.set(serializeForFirebase(normalized));
                     return true;
                 } catch (err) {
                     console.error('Firebase write error:', err);
-                    showAlert('บันทึกฐานข้อมูลออนไลน์ไม่สำเร็จ ข้อมูลยังไม่ถูกลบจากระบบออนไลน์ กรุณาตรวจสอบ Firebase Rules / สิทธิ์ .write', 'error');
+                    showAlert('บันทึกฐานข้อมูลออนไลน์ไม่สำเร็จ กรุณาตรวจสอบ Firebase Rules (.write)', 'error');
                     return false;
                 }
             }
 
-            bookingsCache = data;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
             updateSyncBadge('local');
+            return true;
+        }
+
+        // ฟังก์ชันกลางสำหรับลบรายชื่อออกจากทั้งระบบจองในเครื่อง และลบออกจาก Firebase โดยตรง
+        async function removeBookingRecord(date, zone, idx) {
+            const key = String(idx);
+
+            // 1. ลบในตัวแปร Cache และอัปเดต localStorage ทันที
+            if (bookingsCache[date] && bookingsCache[date][zone]) {
+                delete bookingsCache[date][zone][key];
+            }
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(bookingsCache));
+
+            // เอาออกจากรายการที่กำลังเลือกค้างไว้ (ถ้ามี)
+            appState.selectedSlots = appState.selectedSlots.filter(
+                s => !(s.date === date && s.zone === zone && String(s.idx) === key)
+            );
+
+            // 2. ลบออกจาก Firebase Realtime Database โดยตรง
+            if (firebaseDbRef) {
+                try {
+                    const slotRef = firebaseDbRef
+                        .child(encodeFirebaseKey(date))
+                        .child(zone)
+                        .child(key);
+
+                    await slotRef.remove();
+                } catch (err) {
+                    console.error('Firebase remove error:', err);
+                    showAlert('ลบข้อมูลบน Firebase ไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ตหรือสิทธิ์ Firebase Rules', 'error');
+                    return false;
+                }
+            }
+
+            renderAll();
+            const adminDash = document.getElementById('admin-dashboard');
+            if (adminDash && !adminDash.classList.contains('hidden')) {
+                renderAdminDashboard();
+            }
             return true;
         }
 
@@ -1587,11 +1662,11 @@
 
             let conflict = false;
             appState.selectedSlots.forEach(s => {
-                if (saved[s.date] && saved[s.date][s.zone] && saved[s.date][s.zone][s.idx]) conflict = true;
+                if (saved[s.date] && saved[s.date][s.zone] && saved[s.date][s.zone][String(s.idx)]) conflict = true;
             });
             if (conflict) {
                 showAlert('บางรอบเวลาที่เลือกเพิ่งถูกจองไปแล้ว กรุณาตรวจสอบรอบเวลาใหม่', 'error');
-                appState.selectedSlots = appState.selectedSlots.filter(s => !(saved[s.date] && saved[s.date][s.zone] && saved[s.date][s.zone][s.idx]));
+                appState.selectedSlots = appState.selectedSlots.filter(s => !(saved[s.date] && saved[s.date][s.zone] && saved[s.date][s.zone][String(s.idx)]));
                 goToStep(2); return;
             }
 
@@ -1616,7 +1691,7 @@
 
                 if (!saved[d]) saved[d] = { indoor: {}, outdoor: {} };
                 if (!saved[d][z]) saved[d][z] = {};
-                saved[d][z][idx] = record;
+                saved[d][z][String(idx)] = record;
                 appState.sessionBookings.push(record);
             });
 
@@ -1750,7 +1825,8 @@
                 const avail = document.getElementById(`zone-avail-${z}`);
 
                 const slots = getTimeSlotsForZone(z);
-                const free = slots.length - Object.keys(currentDateData[z] || {}).length;
+                const bookedCount = Object.keys(normalizeZoneSlots(currentDateData[z])).length;
+                const free = slots.length - bookedCount;
                 avail.textContent = free > 0 ? `${t('statusFree')} ${free}` : t('statusFull');
                 avail.className = `text-xs font-bold px-2 py-0.5 rounded ${free > 0 ? 'bg-th-success-bg text-th-success' : 'bg-th-danger-bg text-th-danger'}`;
 
@@ -1764,8 +1840,10 @@
             // Slots Grid
             const grid = document.getElementById('slots-grid');
             grid.replaceChildren();
+            const zoneSlotsObj = normalizeZoneSlots(currentDateData[appState.zone]);
+
             getTimeSlotsForZone(appState.zone).forEach(([start, end], i) => {
-                const b = (currentDateData[appState.zone] || {})[i];
+                const b = zoneSlotsObj[String(i)];
                 const isSel = appState.selectedSlots.some(s => s.date === appState.date && s.zone === appState.zone && s.idx === i);
                 const btn = document.createElement('button');
                 btn.type = 'button'; btn.disabled = !!b;
@@ -1815,7 +1893,7 @@
         function toggleEq(id) { appState.eqIds = appState.eqIds.includes(id) ? appState.eqIds.filter(i => i !== id) : [...appState.eqIds, id]; renderEq(); }
 
         // =========================================================================
-        // 3. PUBLIC SCHEDULE & USER SELF-EDIT (VERIFY BY PHONE)
+        // 3. PUBLIC SCHEDULE & USER SELF-EDIT / CANCEL (VERIFY BY PHONE)
         // =========================================================================
         function openScheduleModal() { renderPublicSchedule(); document.getElementById('schedule-modal').classList.remove('hidden'); }
         function closeScheduleModal() { document.getElementById('schedule-modal').classList.add('hidden'); }
@@ -1826,6 +1904,7 @@
         function renderPublicSchedule() {
             const data = getBookings();
             const container = document.getElementById('user-results');
+            if (!container) return;
             let html = '';
 
             DATES_LIST.forEach(d => {
@@ -1837,8 +1916,10 @@
                     html += `<div class="p-3 rounded-xl border border-th-border bg-th-card mb-2 shadow-sm"><div class="font-bold text-th-text text-xs mb-2">${venueName}</div><div class="space-y-2">`;
 
                     const slots = getTimeSlotsForZone(z);
+                    const zoneObj = normalizeZoneSlots(dayData[z]);
+
                     slots.forEach(([s, e], i) => {
-                        const b = (dayData[z] || {})[i];
+                        const b = zoneObj[String(i)];
                         if (b) {
                             const maskedPhone = maskPhoneLast4(b.phone);
                             html += `<div class="p-2.5 bg-th-accent-light border border-th-border rounded-lg flex flex-wrap justify-between items-center gap-2 text-xs">
@@ -1870,7 +1951,7 @@
 
         function openUserSelfEditModal(date, zone, idx) {
             const data = getBookings();
-            const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            const b = (data[date] && data[date][zone]) ? data[date][zone][String(idx)] : null;
             if (!b) return;
 
             pendingUserEditTarget = { date, zone, idx };
@@ -1897,7 +1978,7 @@
             if (!pendingUserEditTarget) return;
             const { date, zone, idx } = pendingUserEditTarget;
             const data = getBookings();
-            const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            const b = (data[date] && data[date][zone]) ? data[date][zone][String(idx)] : null;
             if (!b) return;
 
             const inputDigits = document.getElementById('user-verify-phone-input').value.trim().replace(/\D/g, '');
@@ -1928,15 +2009,16 @@
             const date = document.getElementById('user-edit-date').value;
             const zone = document.getElementById('user-edit-zone').value;
             const idx = parseInt(document.getElementById('user-edit-idx').value, 10);
+            const key = String(idx);
 
             const newPhone = document.getElementById('user-edit-phone').value.trim().replace(/\D/g, '');
             if (newPhone.length < 9) return;
 
             const data = getBookings();
-            const existing = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            const existing = (data[date] && data[date][zone]) ? data[date][zone][key] : null;
             if (!existing) return;
 
-            data[date][zone][idx] = {
+            data[date][zone][key] = {
                 ...existing,
                 name: document.getElementById('user-edit-name').value.trim(),
                 church: document.getElementById('user-edit-church').value.trim(),
@@ -1949,7 +2031,29 @@
             await saveBookings(data);
             closeUserSelfEditModal();
             renderAll();
+            showAlert('บันทึกการแก้ไขข้อมูลเรียบร้อยแล้ว', 'success');
         };
+
+        // ฟังก์ชันให้ผู้จองลบชื่อตัวเองออกจากระบบจองและ Firebase
+        async function deleteUserOwnBooking() {
+            const date = document.getElementById('user-edit-date').value;
+            const zone = document.getElementById('user-edit-zone').value;
+            const idx = parseInt(document.getElementById('user-edit-idx').value, 10);
+
+            if (!date || !zone || isNaN(idx)) return;
+            if (!confirm(`ยืนยันการยกเลิกคิวและลบชื่อของคุณออกจากวันที่ ${date} รอบนี้ใช่หรือไม่?`)) return;
+
+            const btn = document.getElementById('user-delete-own-btn');
+            if (btn) btn.disabled = true;
+
+            const ok = await removeBookingRecord(date, zone, idx);
+
+            if (btn) btn.disabled = false;
+            if (ok) {
+                closeUserSelfEditModal();
+                showAlert('ยกเลิกการจองและลบข้อมูลออกจากระบบเรียบร้อยแล้ว', 'success');
+            }
+        }
 
         // --- Admin System ---
         function verifyAdmin() {
@@ -1967,10 +2071,11 @@
             const data = getBookings();
             ['indoor', 'outdoor'].forEach(z => {
                 const list = document.getElementById(`modal-list-${z}`);
+                if (!list) return;
                 list.replaceChildren();
 
                 DATES_LIST.forEach(d => {
-                    const dayData = (data[d] || {})[z] || {};
+                    const dayData = normalizeZoneSlots((data[d] || {})[z]);
                     const slots = getTimeSlotsForZone(z);
 
                     let dateHeader = document.createElement('div');
@@ -1979,23 +2084,55 @@
                     list.appendChild(dateHeader);
 
                     slots.forEach(([s, e], i) => {
-                        const b = dayData[i];
+                        const b = dayData[String(i)];
                         const div = document.createElement('div');
                         if (b) {
                             div.className = 'p-2.5 border border-th-border bg-th-card rounded-lg mb-1.5 text-xs';
-                            div.innerHTML = `
-                                <div class="flex justify-between items-start">
-                                    <strong class="text-th-text">${s}-${e} น.</strong>
-                                    <div class="flex gap-1">
-                                        <button onclick="openAdminEdit('${d}', '${z}', ${i})" class="px-2 py-1 bg-blue-500 text-white text-[10px] rounded"><i class="fa-solid fa-pen"></i></button>
-                                        <button onclick="deleteBooking('${d}', '${z}', ${i})" class="px-2 py-1 bg-red-500 text-white text-[10px] rounded"><i class="fa-solid fa-trash"></i></button>
-                                    </div>
-                                </div>
-                                <div class="text-th-text font-semibold mt-0.5">${b.church} (${b.name} / โทร: ${b.phone})</div>
-                            `;
+
+                            const topRow = document.createElement('div');
+                            topRow.className = 'flex justify-between items-start';
+
+                            const timeStrong = document.createElement('strong');
+                            timeStrong.className = 'text-th-text';
+                            timeStrong.textContent = `${s}-${e} น.`;
+
+                            const actionGroup = document.createElement('div');
+                            actionGroup.className = 'flex gap-1';
+
+                            const editBtn = document.createElement('button');
+                            editBtn.type = 'button';
+                            editBtn.className = 'px-2.5 py-1 bg-blue-500 hover:bg-blue-600 text-white text-[10px] rounded font-bold transition';
+                            editBtn.innerHTML = '<i class="fa-solid fa-pen"></i> แก้ไข';
+                            editBtn.onclick = () => openAdminEdit(d, z, i);
+
+                            const delBtn = document.createElement('button');
+                            delBtn.type = 'button';
+                            delBtn.className = 'px-2.5 py-1 bg-red-500 hover:bg-red-600 text-white text-[10px] rounded font-bold transition';
+                            delBtn.innerHTML = '<i class="fa-solid fa-trash"></i> ลบ';
+                            delBtn.onclick = () => deleteBooking(d, z, i, delBtn);
+
+                            actionGroup.appendChild(editBtn);
+                            actionGroup.appendChild(delBtn);
+                            topRow.appendChild(timeStrong);
+                            topRow.appendChild(actionGroup);
+
+                            const infoRow = document.createElement('div');
+                            infoRow.className = 'text-th-text font-semibold mt-1';
+                            infoRow.textContent = `${b.church} (${b.name} / โทร: ${b.phone})`;
+
+                            div.appendChild(topRow);
+                            div.appendChild(infoRow);
                         } else {
                             div.className = 'p-2 border border-th-border flex justify-between items-center text-xs opacity-70 mb-1.5 rounded bg-th-input';
-                            div.innerHTML = `<span>${s}-${e} น. <span class="text-[10px] text-th-success">ว่าง</span></span> <button onclick="openAdminEdit('${d}', '${z}', ${i})" class="px-2 py-0.5 bg-th-success text-pine-950 font-bold text-[10px] rounded"><i class="fa-solid fa-plus"></i> เพิ่ม</button>`;
+                            div.innerHTML = `<span>${s}-${e} น. <span class="text-[10px] text-th-success">ว่าง</span></span>`;
+
+                            const addBtn = document.createElement('button');
+                            addBtn.type = 'button';
+                            addBtn.className = 'px-2 py-0.5 bg-th-success text-pine-950 font-bold text-[10px] rounded';
+                            addBtn.innerHTML = '<i class="fa-solid fa-plus"></i> เพิ่ม';
+                            addBtn.onclick = () => openAdminEdit(d, z, i);
+
+                            div.appendChild(addBtn);
                         }
                         list.appendChild(div);
                     });
@@ -2003,73 +2140,57 @@
             });
         }
 
-        async function deleteBooking(date, zone, idx) {
-            if (!confirm(`ยืนยันลบการจองวันที่ ${date} รอบนี้ใช่หรือไม่?`)) return;
+        // ลบจากปุ่มถังขยะในหน้า Admin Dashboard
+        async function deleteBooking(date, zone, idx, btnEl) {
+            const current = getBookings();
+            const b = (current[date] && current[date][zone]) ? current[date][zone][String(idx)] : null;
+            const targetName = b ? `${b.name} (${b.church})` : 'รายการนี้';
 
-            const key = String(idx);
-            const current = getBookings() || {};
-            const slotData = current[date] && current[date][zone];
+            if (!confirm(`ยืนยันลบชื่อ "${targetName}" ออกจากวันที่ ${date} รอบนี้ใช่หรือไม่?`)) return;
 
-            if (!slotData || !Object.prototype.hasOwnProperty.call(slotData, key) || !slotData[key]) {
-                showAlert('ไม่พบข้อมูลการจองรอบนี้ อาจถูกลบไปแล้วหรือข้อมูลยังไม่อัปเดต', 'error');
-                renderAdminDashboard();
-                return;
+            if (btnEl) {
+                btnEl.disabled = true;
+                btnEl.classList.add('opacity-50', 'pointer-events-none');
             }
 
-            if (!firebaseDbRef) {
-                showAlert('ยังไม่ได้เชื่อมต่อ Firebase จึงยังลบข้อมูลออนไลน์ไม่ได้ กรุณารอให้สถานะเป็น ออนไลน์ (Real-time) แล้วลองใหม่', 'error');
-                updateSyncBadge('local');
-                return;
+            const ok = await removeBookingRecord(date, zone, idx);
+
+            if (btnEl) {
+                btnEl.disabled = false;
+                btnEl.classList.remove('opacity-50', 'pointer-events-none');
             }
 
-            const deleteButton = document.querySelector(`button[onclick="deleteBooking('${date}', '${zone}', ${idx})"]`);
-            if (deleteButton) {
-                deleteButton.disabled = true;
-                deleteButton.classList.add('opacity-50', 'pointer-events-none');
+            if (ok) {
+                showAlert(`ลบข้อมูล "${targetName}" ออกจากระบบและ Firebase เรียบร้อยแล้ว`, 'success');
             }
+        }
 
-            try {
-                const targetRef = firebaseDbRef
-                    .child(encodeFirebaseKey(date))
-                    .child(zone)
-                    .child(key);
+        // ลบจากในหน้าต่างแก้ไขของแอดมิน (Admin Edit Modal)
+        async function deleteFromAdminEditModal() {
+            const origDate = document.getElementById('edit-original-date').value || document.getElementById('edit-date-select').value;
+            const zone = document.getElementById('edit-zone').value;
+            const idx = parseInt(document.getElementById('edit-idx').value, 10);
 
-                await targetRef.remove();
+            if (!origDate || !zone || isNaN(idx)) return;
+            if (!confirm(`ยืนยันลบข้อมูลการจองวันที่ ${origDate} รอบนี้ออกจากระบบและ Firebase ใช่หรือไม่?`)) return;
 
-                const verifySnapshot = await targetRef.once('value');
-                if (verifySnapshot.exists()) {
-                    throw new Error('Firebase ยังพบข้อมูลรายการนี้หลังสั่งลบ');
-                }
-
-                const updated = JSON.parse(JSON.stringify(getBookings() || {}));
-                if (updated[date] && updated[date][zone]) {
-                    delete updated[date][zone][key];
-                }
-                bookingsCache = updated;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-
-                renderAdminDashboard();
-                renderAll();
-                showAlert('ลบข้อมูลจาก Firebase เรียบร้อยแล้ว', 'success');
-            } catch (err) {
-                console.error('Firebase delete error:', err);
-                showAlert(`ลบข้อมูล Firebase ไม่สำเร็จ: ${err && err.message ? err.message : err}`, 'error');
-                renderAdminDashboard();
-            } finally {
-                if (deleteButton) {
-                    deleteButton.disabled = false;
-                    deleteButton.classList.remove('opacity-50', 'pointer-events-none');
-                }
+            const ok = await removeBookingRecord(origDate, zone, idx);
+            if (ok) {
+                closeAdminEdit();
+                showAlert('ลบข้อมูลออกจากระบบและ Firebase เรียบร้อยแล้ว', 'success');
             }
         }
 
         function openAdminEdit(date, zone, idx) {
             const data = getBookings();
-            const b = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            const b = (data[date] && data[date][zone]) ? data[date][zone][String(idx)] : null;
 
+            document.getElementById('edit-original-date').value = date;
             document.getElementById('edit-date-select').value = date;
             document.getElementById('edit-zone').value = zone;
             document.getElementById('edit-idx').value = idx;
+
+            const delModalBtn = document.getElementById('admin-modal-delete-btn');
 
             if (b) {
                 document.getElementById('edit-name').value = b.name || '';
@@ -2078,9 +2199,18 @@
                 document.getElementById('edit-people').value = b.people || '';
                 document.getElementById('edit-desc').value = b.desc || '';
                 document.getElementById('edit-eq').value = b.eq || '';
+                if (delModalBtn) {
+                    delModalBtn.classList.remove('hidden');
+                    delModalBtn.classList.add('flex');
+                }
             } else {
                 document.getElementById('admin-edit-form').reset();
+                document.getElementById('edit-original-date').value = date;
                 document.getElementById('edit-date-select').value = date;
+                if (delModalBtn) {
+                    delModalBtn.classList.add('hidden');
+                    delModalBtn.classList.remove('flex');
+                }
             }
 
             document.getElementById('admin-edit-modal').classList.remove('hidden');
@@ -2090,21 +2220,28 @@
 
         document.getElementById('admin-edit-form').onsubmit = async (e) => {
             e.preventDefault();
+            const origDate = document.getElementById('edit-original-date').value;
             const date = document.getElementById('edit-date-select').value;
             const zone = document.getElementById('edit-zone').value;
             const idx = parseInt(document.getElementById('edit-idx').value, 10);
+            const key = String(idx);
             const data = getBookings();
 
             const slots = getTimeSlotsForZone(zone);
             const slot = slots[idx];
 
-            const existing = (data[date] && data[date][zone]) ? data[date][zone][idx] : null;
+            // หากแอดมินย้ายวัน ให้ลบคิวในวันเดิมออกก่อน
+            if (origDate && origDate !== date && data[origDate] && data[origDate][zone]) {
+                delete data[origDate][zone][key];
+            }
+
+            const existing = (data[date] && data[date][zone]) ? data[date][zone][key] : null;
             const ref = existing ? existing.ref : `SHA26-${zone === 'indoor' ? 'IN' : 'OUT'}${idx + 1}-ADM${Math.floor(10 + Math.random() * 90)}`;
 
             if (!data[date]) data[date] = { indoor: {}, outdoor: {} };
             if (!data[date][zone]) data[date][zone] = {};
 
-            data[date][zone][idx] = {
+            data[date][zone][key] = {
                 ref: ref,
                 name: document.getElementById('edit-name').value.trim(),
                 church: document.getElementById('edit-church').value.trim(),
@@ -2125,11 +2262,20 @@
         };
 
         async function handleResetBookings() {
-            if (confirm("ยืนยันล้างข้อมูลตารางการจองทั้งหมดหรือไม่? (สำหรับผู้ดูแลระบบ)")) {
+            if (confirm("ยืนยันล้างข้อมูลตารางการจองทั้งหมดจากทั้งหน้าเว็บและ Firebase หรือไม่? (สำหรับผู้ดูแลระบบ)")) {
                 const empty = createEmptySchedule();
-                await saveBookings(empty);
+                bookingsCache = empty;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(empty));
+                if (firebaseDbRef) {
+                    try {
+                        await firebaseDbRef.remove();
+                    } catch (e) {
+                        await saveBookings(empty);
+                    }
+                }
                 renderAll();
                 renderAdminDashboard();
+                showAlert('ล้างข้อมูลทั้งหมดเรียบร้อยแล้ว', 'success');
             }
         }
 
@@ -2159,8 +2305,9 @@
                             <tbody>
                     `;
                     const slots = getTimeSlotsForZone(z);
+                    const zoneObj = normalizeZoneSlots((data[d] || {})[z]);
                     slots.forEach(([s, e], i) => {
-                        const b = (data[d] && data[d][z]) ? data[d][z][i] : null;
+                        const b = zoneObj[String(i)];
                         if (b) {
                             printContent += `
                                 <tr>
