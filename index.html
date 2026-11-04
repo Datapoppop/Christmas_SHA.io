@@ -986,10 +986,46 @@
                 </div>
 
                 <div id="admin-dashboard" class="hidden space-y-5">
+                    <!-- แผงควบคุมการเชื่อมต่อ Google Sheets (แบ่งเป็น 6 แผ่นงาน 20-25 ธ.ค. 2026) -->
+                    <div class="p-4 rounded-2xl border border-th-border bg-th-card space-y-3 shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-th-border pb-2.5">
+                            <div>
+                                <h4 class="font-bold text-th-text text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-table text-emerald-400"></i>
+                                    <span>ระบบเชื่อมต่อ Google Sheets (แยก 6 แผ่นงาน: 20–25 ธ.ค. 2026)</span>
+                                </h4>
+                                <p id="gsheet-sync-status" class="text-[11px] text-th-muted mt-0.5">
+                                    ซิงค์ข้อมูลอัตโนมัติทุกครั้งที่มีการจอง แก้ไข หรือลบคิว
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <a id="google-sheet-open-link" href="#" target="_blank" rel="noopener noreferrer"
+                                    class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow">
+                                    <i class="fa-solid fa-up-right-from-square"></i> เปิดดู Google Sheet
+                                </a>
+                                <button type="button" id="manual-gsheet-sync-btn" onclick="syncToGoogleSheet(true)"
+                                    class="px-3.5 py-2 bg-th-accent text-amber-950 rounded-lg text-xs font-bold transition hover:brightness-110 flex items-center gap-1.5 shadow">
+                                    <i class="fa-solid fa-rotate"></i> ซิงค์ลง Sheet ทันที (20–25 ธ.ค.)
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center text-xs">
+                            <label class="text-th-muted font-semibold shrink-0">Apps Script URL:</label>
+                            <input id="gsheet-webapp-url" type="url"
+                                placeholder="วาง Web App URL (https://script.google.com/macros/s/.../exec) เพื่อซิงค์อัตโนมัติ"
+                                class="flex-1 p-2 rounded-lg bg-th-input border border-th-input-border text-th-text focus:outline-none focus:border-th-accent">
+                            <button type="button" onclick="saveGoogleScriptUrl()"
+                                class="px-4 py-2 rounded-lg bg-th-input hover:bg-th-accent-light border border-th-border text-th-text font-bold transition shrink-0">
+                                <i class="fa-solid fa-floppy-disk mr-1 text-th-accent"></i> บันทึกลิงก์ Script
+                            </button>
+                        </div>
+                    </div>
+
                     <div
                         class="flex flex-col sm:flex-row justify-between items-center bg-th-accent-light p-3 rounded-xl border border-th-border gap-3">
                         <span class="font-bold text-th-text">ตารางคิวทั้งหมด (แยกตามวัน 20–25 ธ.ค. 2026)</span>
-                        <div class="flex gap-2 w-full sm:w-auto">
+                        <div class="flex flex-wrap gap-2 w-full sm:w-auto">
                             <button onclick="exportToPDF()"
                                 class="flex-1 sm:flex-none px-4 py-2 bg-th-success text-pine-950 rounded-lg text-xs font-bold transition hover:brightness-110 flex items-center justify-center">
                                 <i class="fa-solid fa-file-pdf mr-1.5"></i> <span>Export PDF</span>
@@ -1123,7 +1159,7 @@
         }
 
         // =========================================================================
-        // 🟢 FIREBASE CONFIG (โปรเจกต์ christmas-sharing2026-c026e)
+        // 🟢 FIREBASE & GOOGLE SHEETS CONFIG
         // =========================================================================
         const firebaseConfig = {
             apiKey: "AIzaSyDflgRrg2XWZ-MdfIDTfQlCoJNnHHjDxBw",
@@ -1135,6 +1171,15 @@
             appId: "1:461385882687:web:67050f313f38a7657aac8a"
         };
         const FALLBACK_US_DATABASE_URL = "https://christmas-sharing2026-c026e-default-rtdb.firebaseio.com";
+
+        // ลิงก์ไปยังไฟล์ Google Sheet สำหรับเปิดดูตารางคิว 20-25 ธ.ค. 2026
+        const GOOGLE_SHEET_VIEW_URL = "https://docs.google.com/spreadsheets/d/1OyXXcMsbrx2O3XIzgvDp7mLaFGBXu2Y81EGLj57IxR0/edit?usp=sharing";
+        // หากมี Web App URL จาก Google Apps Script แล้ว สามารถนำมาวางในเครื่องหมายคำพูดด้านล่างนี้ได้เลย
+        const DEFAULT_GOOGLE_SCRIPT_URL = "";
+        const GSHEET_SCRIPT_STORAGE_KEY = "sha2026-gsheet-script-url";
+
+        let googleScriptWebAppUrl = localStorage.getItem(GSHEET_SCRIPT_STORAGE_KEY) || DEFAULT_GOOGLE_SCRIPT_URL;
+        let firebaseSettingsRef = null;
 
         // =========================================================================
         // 1. MULTI-LANGUAGE DICTIONARY (TH / EN / ZH)
@@ -1328,7 +1373,7 @@
         }
 
         // =========================================================================
-        // 2. DATA & FIREBASE REALTIME DATABASE INTEGRATION
+        // 2. DATA, FIREBASE & GOOGLE SHEETS (6 TABS: 20-25 DEC) INTEGRATION
         // =========================================================================
         const DATES_LIST = ['20 ธ.ค. 2026', '21 ธ.ค. 2026', '22 ธ.ค. 2026', '23 ธ.ค. 2026', '24 ธ.ค. 2026', '25 ธ.ค. 2026'];
         const INDOOR_TIME_SLOTS = [
@@ -1373,7 +1418,6 @@
             return String(keyStr).replace(/_/g, '.');
         }
 
-        // แปลงข้อมูลโซน (ไม่ว่า Firebase จะส่งกลับมาเป็น Array หรือ Object) ให้เป็น Object มาตรฐานเสมอ
         function normalizeZoneSlots(zoneVal) {
             const cleanObj = {};
             if (!zoneVal || typeof zoneVal !== 'object') return cleanObj;
@@ -1426,6 +1470,12 @@
         }
 
         function initDatabaseConnection() {
+            const openSheetBtn = document.getElementById('google-sheet-open-link');
+            if (openSheetBtn) openSheetBtn.href = GOOGLE_SHEET_VIEW_URL;
+
+            const scriptInput = document.getElementById('gsheet-webapp-url');
+            if (scriptInput && googleScriptWebAppUrl) scriptInput.value = googleScriptWebAppUrl;
+
             try {
                 const localRaw = JSON.parse(localStorage.getItem(STORAGE_KEY));
                 if (localRaw) {
@@ -1448,12 +1498,24 @@
             try {
                 const db = firebase.app().database(dbUrl);
                 const ref = db.ref('bookings_2026');
+                const settingsRef = db.ref('settings_2026/googleScriptUrl');
+
+                // ซิงค์ Web App URL ของ Google Sheet ผ่าน Firebase เพื่อให้ทุกเครื่องใช้ URL เดียวกันได้อัตโนมัติ
+                settingsRef.on('value', (snap) => {
+                    firebaseSettingsRef = settingsRef;
+                    const remoteUrl = snap.val();
+                    if (remoteUrl && typeof remoteUrl === 'string') {
+                        googleScriptWebAppUrl = remoteUrl.trim();
+                        localStorage.setItem(GSHEET_SCRIPT_STORAGE_KEY, googleScriptWebAppUrl);
+                        const inputEl = document.getElementById('gsheet-webapp-url');
+                        if (inputEl) inputEl.value = googleScriptWebAppUrl;
+                    }
+                });
 
                 ref.on('value', (snapshot) => {
                     firebaseDbRef = ref;
                     updateSyncBadge('live');
                     const val = snapshot.val();
-                    // ยึดข้อมูลจาก Firebase เป็นหลักเสมอ (ไม่นำ localStorage เก่าไปเขียนทับเวลาลบคิวจนว่าง)
                     bookingsCache = val ? deserializeFromFirebase(val) : createEmptySchedule();
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(bookingsCache));
 
@@ -1480,11 +1542,97 @@
             }
         }
 
+        // บันทึกลิงก์ Google Apps Script Web App URL
+        async function saveGoogleScriptUrl() {
+            const inputEl = document.getElementById('gsheet-webapp-url');
+            if (!inputEl) return;
+            const url = inputEl.value.trim();
+            googleScriptWebAppUrl = url;
+            localStorage.setItem(GSHEET_SCRIPT_STORAGE_KEY, url);
+
+            if (firebaseSettingsRef) {
+                try {
+                    await firebaseSettingsRef.set(url);
+                } catch (e) {
+                    console.warn('Could not save script URL to Firebase:', e);
+                }
+            }
+
+            if (url) {
+                showAlert('บันทึกลิงก์ Google Sheet Script สำเร็จ และกำลังซิงค์ข้อมูลทั้ง 6 แผ่นงาน...', 'success');
+                await syncToGoogleSheet(true);
+            } else {
+                showAlert('ล้างลิงก์ Google Sheet Script แล้ว', 'success');
+            }
+        }
+
+        // ฟังก์ชันส่งข้อมูลตารางคิวทั้ง 6 วัน (20–25 ธ.ค. 2026) ไปอัปเดตแยกแผ่นงานใน Google Sheets
+        async function syncToGoogleSheet(isManual = false) {
+            const targetUrl = (googleScriptWebAppUrl || DEFAULT_GOOGLE_SCRIPT_URL || '').trim();
+            const statusEl = document.getElementById('gsheet-sync-status');
+            const manualBtn = document.getElementById('manual-gsheet-sync-btn');
+
+            if (!targetUrl) {
+                if (isManual) {
+                    showAlert('กรุณาวางลิงก์ Apps Script Web App URL ในช่องตั้งค่าก่อนกดซิงค์', 'error');
+                }
+                return false;
+            }
+
+            if (statusEl) {
+                statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-th-accent mr-1"></i> กำลังซิงค์ข้อมูลทั้ง 6 แผ่นงาน (20–25 ธ.ค. 2026) ไปยัง Google Sheet...';
+            }
+            if (isManual && manualBtn) {
+                manualBtn.disabled = true;
+                manualBtn.classList.add('opacity-60');
+            }
+
+            try {
+                const payload = {
+                    action: 'syncAllDates',
+                    spreadsheetUrl: GOOGLE_SHEET_VIEW_URL,
+                    dates: DATES_LIST,
+                    bookings: getBookings(),
+                    timestamp: new Date().toISOString()
+                };
+
+                await fetch(targetUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+
+                const nowStr = new Date().toLocaleTimeString('th-TH');
+                if (statusEl) {
+                    statusEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> ซิงค์ลง Google Sheet (แผ่นงาน 20–25 ธ.ค. 2026) ล่าสุดเมื่อ ${nowStr}`;
+                }
+                if (isManual) {
+                    showAlert('ซิงค์ข้อมูลไปยัง Google Sheet ทั้ง 6 แผ่นงาน (20–25 ธ.ค.) เรียบร้อยแล้ว!', 'success');
+                }
+                return true;
+            } catch (err) {
+                console.error('Google Sheet Sync Error:', err);
+                if (statusEl) {
+                    statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-th-danger mr-1"></i> ซิงค์ไปที่ Google Sheet ไม่สำเร็จ กรุณาตรวจสอบ Web App URL';
+                }
+                if (isManual) {
+                    showAlert('ไม่สามารถเชื่อมต่อ Google Sheet ได้ กรุณาตรวจสอบ Web App URL', 'error');
+                }
+                return false;
+            } finally {
+                if (isManual && manualBtn) {
+                    manualBtn.disabled = false;
+                    manualBtn.classList.remove('opacity-60');
+                }
+            }
+        }
+
         function getBookings() {
             return bookingsCache;
         }
 
-        // บันทึกข้อมูลทั้งตาราง
+        // บันทึกข้อมูลทั้งตาราง + ซิงค์ลง Google Sheet อัตโนมัติ
         async function saveBookings(data) {
             const normalized = deserializeFromFirebase(serializeForFirebase(data));
             bookingsCache = normalized;
@@ -1493,6 +1641,7 @@
             if (firebaseDbRef) {
                 try {
                     await firebaseDbRef.set(serializeForFirebase(normalized));
+                    syncToGoogleSheet(false);
                     return true;
                 } catch (err) {
                     console.error('Firebase write error:', err);
@@ -1502,10 +1651,11 @@
             }
 
             updateSyncBadge('local');
+            syncToGoogleSheet(false);
             return true;
         }
 
-        // ฟังก์ชันกลางสำหรับลบรายชื่อออกจากทั้งระบบจองในเครื่อง และลบออกจาก Firebase โดยตรง
+        // ฟังก์ชันกลางสำหรับลบรายชื่อออกจากทั้งระบบจองในเครื่อง, Firebase และอัปเดต Google Sheet
         async function removeBookingRecord(date, zone, idx) {
             const key = String(idx);
 
@@ -1515,7 +1665,6 @@
             }
             localStorage.setItem(STORAGE_KEY, JSON.stringify(bookingsCache));
 
-            // เอาออกจากรายการที่กำลังเลือกค้างไว้ (ถ้ามี)
             appState.selectedSlots = appState.selectedSlots.filter(
                 s => !(s.date === date && s.zone === zone && String(s.idx) === key)
             );
@@ -1535,6 +1684,9 @@
                     return false;
                 }
             }
+
+            // 3. ซิงค์ข้อมูลที่ถูกลบไปยัง Google Sheet (แผ่นงานวันที่ 20-25 ธ.ค.) ทันที
+            syncToGoogleSheet(false);
 
             renderAll();
             const adminDash = document.getElementById('admin-dashboard');
@@ -2034,7 +2186,6 @@
             showAlert('บันทึกการแก้ไขข้อมูลเรียบร้อยแล้ว', 'success');
         };
 
-        // ฟังก์ชันให้ผู้จองลบชื่อตัวเองออกจากระบบจองและ Firebase
         async function deleteUserOwnBooking() {
             const date = document.getElementById('user-edit-date').value;
             const zone = document.getElementById('user-edit-zone').value;
@@ -2140,7 +2291,6 @@
             });
         }
 
-        // ลบจากปุ่มถังขยะในหน้า Admin Dashboard
         async function deleteBooking(date, zone, idx, btnEl) {
             const current = getBookings();
             const b = (current[date] && current[date][zone]) ? current[date][zone][String(idx)] : null;
@@ -2161,11 +2311,10 @@
             }
 
             if (ok) {
-                showAlert(`ลบข้อมูล "${targetName}" ออกจากระบบและ Firebase เรียบร้อยแล้ว`, 'success');
+                showAlert(`ลบข้อมูล "${targetName}" ออกจากระบบ, Firebase และซิงค์ Google Sheet เรียบร้อยแล้ว`, 'success');
             }
         }
 
-        // ลบจากในหน้าต่างแก้ไขของแอดมิน (Admin Edit Modal)
         async function deleteFromAdminEditModal() {
             const origDate = document.getElementById('edit-original-date').value || document.getElementById('edit-date-select').value;
             const zone = document.getElementById('edit-zone').value;
@@ -2177,7 +2326,7 @@
             const ok = await removeBookingRecord(origDate, zone, idx);
             if (ok) {
                 closeAdminEdit();
-                showAlert('ลบข้อมูลออกจากระบบและ Firebase เรียบร้อยแล้ว', 'success');
+                showAlert('ลบข้อมูลออกจากระบบ, Firebase และอัปเดต Google Sheet เรียบร้อยแล้ว', 'success');
             }
         }
 
@@ -2230,7 +2379,6 @@
             const slots = getTimeSlotsForZone(zone);
             const slot = slots[idx];
 
-            // หากแอดมินย้ายวัน ให้ลบคิวในวันเดิมออกก่อน
             if (origDate && origDate !== date && data[origDate] && data[origDate][zone]) {
                 delete data[origDate][zone][key];
             }
@@ -2262,7 +2410,7 @@
         };
 
         async function handleResetBookings() {
-            if (confirm("ยืนยันล้างข้อมูลตารางการจองทั้งหมดจากทั้งหน้าเว็บและ Firebase หรือไม่? (สำหรับผู้ดูแลระบบ)")) {
+            if (confirm("ยืนยันล้างข้อมูลตารางการจองทั้งหมดจากทั้งหน้าเว็บ, Firebase และ Google Sheet หรือไม่? (สำหรับผู้ดูแลระบบ)")) {
                 const empty = createEmptySchedule();
                 bookingsCache = empty;
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(empty));
@@ -2273,6 +2421,7 @@
                         await saveBookings(empty);
                     }
                 }
+                syncToGoogleSheet(false);
                 renderAll();
                 renderAdminDashboard();
                 showAlert('ล้างข้อมูลทั้งหมดเรียบร้อยแล้ว', 'success');
