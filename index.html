@@ -6,6 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Christmas of SHAring 2026 | จองรอบการแสดง โรงพยาบาลกรุงเทพคริสเตียน</title>
 
+    <!-- บังคับออกจาก LINE In-App Browser เข้าสู่เบราว์เซอร์หลักทันที -->
+    <script>
+        (function () {
+            var ua = navigator.userAgent || navigator.vendor || window.opera;
+            var isLine = /Line\//i.test(ua);
+
+            if (isLine) {
+                var currentUrl = window.location.href;
+                if (currentUrl.indexOf('openExternalBrowser=1') === -1) {
+                    var separator = currentUrl.indexOf('?') === -1 ? '?' : '&';
+                    var hashIndex = currentUrl.indexOf('#');
+                    var redirectUrl = '';
+
+                    if (hashIndex !== -1) {
+                        redirectUrl = currentUrl.slice(0, hashIndex) + separator + 'openExternalBrowser=1' + currentUrl.slice(hashIndex);
+                    } else {
+                        redirectUrl = currentUrl + separator + 'openExternalBrowser=1';
+                    }
+
+                    window.location.replace(redirectUrl);
+                }
+            }
+        })();
+    </script>
+
     <!-- ตั้งค่าโทนสีเริ่มต้นเป็นสีเขียว (pine) ทันทีที่เปิดหน้าเว็บ -->
     <script>
         (function () {
@@ -271,6 +296,37 @@
 </head>
 
 <body class="py-6 px-3 sm:py-10 sm:px-6">
+
+    <!-- หน้าจอแจ้งเตือนกรณีติดอยู่ใน LINE In-App Browser แล้วไม่เด้งออกอัตโนมัติ -->
+    <div id="line-browser-blocker"
+        class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+        <div
+            class="w-full max-w-md rounded-3xl p-6 text-center festive-panel border-2 border-th-accent shadow-2xl space-y-4">
+            <div
+                class="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-400 text-emerald-400 text-3xl flex items-center justify-center mx-auto shadow-lg">
+                <i class="fa-brands fa-line"></i>
+            </div>
+            <h3 class="text-xl font-extrabold text-th-text">กรุณาเปิดในเบราว์เซอร์หลัก</h3>
+            <p class="text-xs sm:text-sm text-th-muted leading-relaxed">
+                เพื่อป้องกันปัญหาการดาวน์โหลดรูปภาพบัตรคิวไม่สำเร็จ ระบบกำลังพาท่านไปยังเบราว์เซอร์หลัก (Safari / Chrome)
+                หากหน้าจอไม่เปลี่ยนอัตโนมัติ กรุณากดปุ่มด้านล่าง
+            </p>
+            <div class="space-y-2.5 pt-2">
+                <a id="line-external-link" href="#"
+                    class="w-full py-3.5 px-5 rounded-xl bg-grad-btn text-amber-950 font-bold text-sm shadow-lg hover:brightness-110 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-up-right-from-square"></i> เปิดในเบราว์เซอร์ทันที
+                </a>
+                <button type="button" onclick="copyUrlForExternalBrowser()"
+                    class="w-full py-3 px-4 rounded-xl bg-th-input border border-th-border text-th-text font-bold text-xs hover:bg-th-accent-light transition flex items-center justify-center gap-2">
+                    <i class="fa-regular fa-copy text-th-accent"></i> <span id="copy-url-btn-text">คัดลอกลิงก์ไปเปิดใน Safari / Chrome</span>
+                </button>
+                <button type="button" onclick="document.getElementById('line-browser-blocker').classList.add('hidden')"
+                    class="text-[11px] text-th-muted underline opacity-75 hover:opacity-100 pt-1 block mx-auto">
+                    ใช้งานต่อใน LINE (อาจดาวน์โหลดรูปบัตรคิวไม่ได้)
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- แถบควบคุมมุมขวาบน -->
     <div class="fixed top-3 right-3 sm:top-5 sm:right-5 z-50 flex flex-col items-end gap-2">
@@ -1021,6 +1077,38 @@
 
     <script>
         // =========================================================================
+        // 0. ฟังก์ชันตรวจสอบและจัดการกรณีติดอยู่ใน LINE In-App Browser
+        // =========================================================================
+        function checkLineInAppBrowser() {
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
+            if (/Line\//i.test(ua)) {
+                const currentUrl = window.location.href;
+                const cleanUrl = currentUrl.replace(/([?&])openExternalBrowser=1(&|$)/, '$1').replace(/[?&]$/, '');
+                const sep = cleanUrl.indexOf('?') === -1 ? '?' : '&';
+                const extUrl = cleanUrl + sep + 'openExternalBrowser=1';
+
+                const linkBtn = document.getElementById('line-external-link');
+                if (linkBtn) linkBtn.href = extUrl;
+
+                // หากผ่านไป 600ms แล้วยังคงค้างอยู่ใน LINE WebView ให้แสดงปุ่มกดเปิดเบราว์เซอร์หลัก
+                setTimeout(() => {
+                    const blocker = document.getElementById('line-browser-blocker');
+                    if (blocker) blocker.classList.remove('hidden');
+                }, 600);
+            }
+        }
+
+        function copyUrlForExternalBrowser() {
+            const cleanUrl = window.location.href.replace(/([?&])openExternalBrowser=1(&|$)/, '$1').replace(/[?&]$/, '');
+            navigator.clipboard.writeText(cleanUrl).then(() => {
+                const btnText = document.getElementById('copy-url-btn-text');
+                if (btnText) btnText.textContent = 'คัดลอกลิงก์สำเร็จ! นำไปวางใน Safari / Chrome ได้เลย';
+            }).catch(() => {
+                prompt('คัดลอกลิงก์ด้านล่างเพื่อนำไปเปิดในเบราว์เซอร์หลัก:', cleanUrl);
+            });
+        }
+
+        // =========================================================================
         // 🟢 FIREBASE CONFIG (โปรเจกต์ christmas-sharing2026-c026e)
         // =========================================================================
         const firebaseConfig = {
@@ -1362,7 +1450,6 @@
         }
 
         async function saveBookings(data) {
-            // บันทึกในเครื่องก่อน และคืนค่า true/false เพื่อให้ผู้เรียกตรวจสอบผลได้
             if (firebaseDbRef) {
                 try {
                     await firebaseDbRef.set(serializeForFirebase(data));
@@ -1376,7 +1463,6 @@
                 }
             }
 
-            // ไม่มีการเชื่อมต่อ Firebase: เก็บเฉพาะใน browser นี้เท่านั้น
             bookingsCache = data;
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
             updateSyncBadge('local');
@@ -1593,7 +1679,6 @@
 
             ticket.classList.add('no-anim');
             try {
-                // รอ Font และ layout ให้พร้อมก่อนจับภาพ ลดปัญหาภาพว่าง/ตัวหนังสือไม่ครบ
                 if (document.fonts && document.fonts.ready) await document.fonts.ready;
                 await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
@@ -1931,7 +2016,6 @@
                 return;
             }
 
-            // ต้องเชื่อมต่อ Firebase จริงก่อน จึงอนุญาตให้ลบจากหน้าแอดมิน
             if (!firebaseDbRef) {
                 showAlert('ยังไม่ได้เชื่อมต่อ Firebase จึงยังลบข้อมูลออนไลน์ไม่ได้ กรุณารอให้สถานะเป็น ออนไลน์ (Real-time) แล้วลองใหม่', 'error');
                 updateSyncBadge('local');
@@ -1945,7 +2029,6 @@
             }
 
             try {
-                // Firebase ใช้ชื่อวันที่ที่ encode แล้ว และลบเฉพาะ date/zone/slot นี้
                 const targetRef = firebaseDbRef
                     .child(encodeFirebaseKey(date))
                     .child(zone)
@@ -1953,13 +2036,11 @@
 
                 await targetRef.remove();
 
-                // ตรวจยืนยันจาก Firebase ว่ารายการเป้าหมายหายไปจริง
                 const verifySnapshot = await targetRef.once('value');
                 if (verifySnapshot.exists()) {
                     throw new Error('Firebase ยังพบข้อมูลรายการนี้หลังสั่งลบ');
                 }
 
-                // ปรับ cache หลัง Firebase ยืนยันแล้วเท่านั้น
                 const updated = JSON.parse(JSON.stringify(getBookings() || {}));
                 if (updated[date] && updated[date][zone]) {
                     delete updated[date][zone][key];
@@ -2171,6 +2252,7 @@
         }
 
         window.onload = () => {
+            checkLineInAppBrowser();
             initSnowfall();
             initDatabaseConnection();
             setLanguage(currentLang);
