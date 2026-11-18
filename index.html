@@ -359,17 +359,17 @@
         </section>
     </main>
 
-    <!-- MODAL ตรวจสอบคิว (Public) -->
+    <!-- MODAL ตรวจสอบคิว (Public) แบบดีไซน์ใหม่ -->
     <div id="schedule-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-        <div class="w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
-            <div class="flex items-center justify-between p-4 border-b border-th-border bg-th-panel">
+        <div class="w-full max-w-5xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
+            <div class="flex items-center justify-between p-4 sm:p-5 border-b border-th-border bg-th-panel">
                 <div>
                     <h3 class="font-bold text-lg text-th-text"><i class="fa-solid fa-calendar-check text-th-accent mr-2"></i><span data-i18n="modalScheduleTitle">ตรวจสอบตารางคิวการแสดง</span></h3>
-                    <p data-i18n="modalScheduleSub" class="text-xs text-th-muted">แสดงชื่อผู้จองและเบอร์โทรศัพท์ 4 หลักท้าย · กดปุ่มแก้ไขและกรอกเบอร์เต็มเพื่อจัดการข้อมูล</p>
+                    <p data-i18n="modalScheduleSub" class="text-xs text-th-muted mt-0.5">แสดงชื่อผู้จองและเบอร์โทรศัพท์ 4 หลักท้าย · กดปุ่มแก้ไขและกรอกเบอร์เต็มเพื่อจัดการข้อมูล</p>
                 </div>
                 <button onclick="closeScheduleModal()" class="w-8 h-8 rounded-full bg-th-input border border-th-border hover:bg-th-danger hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-4 overflow-y-auto flex-1 bg-th-panel/80"><div id="user-results" class="space-y-4"></div></div>
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 bg-th-panel/80"><div id="user-results"></div></div>
         </div>
     </div>
 
@@ -905,29 +905,92 @@
         }
 
         // ==========================
-        // User Self-Edit Logic
+        // UI ตารางคิวแบบใหม่ (Glassmorphism + 2 คอลัมน์)[span_0](start_span)[span_0](end_span)
         // ==========================
         function renderPublicSchedule() {
             const data = getBookings();
+            const container = document.getElementById('user-results');
+            if (!container) return;
             let html = '';
+
             DATES_LIST.forEach(d => {
-                html += `<div class="mb-6"><h4 class="font-bold text-th-accent text-base mb-2 border-b pb-1">📅 ${d}</h4>`;
+                const dayData = data[d] || { indoor: {}, outdoor: {} };
+                
+                let dateHtml = `
+                <div class="mb-8">
+                    <div class="flex items-center gap-2.5 mb-4 border-b border-th-border/60 pb-2">
+                        <div class="w-9 h-9 rounded-xl bg-th-accent/20 text-th-accent flex items-center justify-center shadow-sm border border-th-accent/30">
+                            <i class="fa-regular fa-calendar-check text-lg"></i>
+                        </div>
+                        <h4 class="font-extrabold text-th-text text-lg tracking-wide">${d}</h4>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                `;
+
                 ['indoor', 'outdoor'].forEach(z => {
-                    html += `<div class="p-3 rounded-xl border bg-th-card mb-2"><div class="font-bold text-xs mb-2">${z==='indoor'?'🏥 '+t('venueIndoorTitle'):'🎄 '+t('venueOutdoorTitle')}</div><div class="space-y-2">`;
-                    getTimeSlotsForZone(z).forEach(([s, e], i) => {
-                        const b = data[d]?.[z]?.[String(i)];
+                    const venueName = z === 'indoor' ? t('venueIndoorTitle') : t('venueOutdoorTitle');
+                    const venueSub = z === 'indoor' ? t('venueIndoorSub') : t('venueOutdoorSub');
+                    const venueIcon = z === 'indoor' ? '🏥' : '🎄';
+                    const slots = getTimeSlotsForZone(z);
+                    const zoneObj = normalizeZoneSlots(dayData[z]);
+                    
+                    let slotsHtml = '';
+                    let hasBookings = false;
+
+                    slots.forEach(([s, e], i) => {
+                        const b = zoneObj[String(i)];
                         if (b) {
-                            html += `<div class="p-2.5 bg-th-accent-light border rounded-lg flex justify-between items-center text-xs">
-                                <div><strong>${s}-${e}</strong> · ${t('bookerPrefix')} <b>${b.name}</b> <span class="text-th-muted">(${t('phoneLast4Prefix')} ${maskPhoneLast4(b.phone)})</span></div>
-                                <div class="flex gap-1.5"><button type="button" onclick="openUserSelfEditModal('${d}','${z}',${i})" class="px-2.5 py-1 rounded bg-th-accent text-amber-950 font-bold hover:brightness-110 shadow-sm"><i class="fa-solid fa-pen-to-square"></i> ${t('editOwnBtn')}</button></div>
+                            hasBookings = true;
+                            const maskedPhone = maskPhoneLast4(b.phone);
+                            slotsHtml += `
+                            <div class="relative overflow-hidden bg-th-card border border-th-border/60 rounded-xl p-3 shadow-sm hover:border-th-accent/80 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 group">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-th-danger"></div>
+                                <div class="pl-2.5">
+                                    <div class="text-th-danger text-[11px] font-bold mb-0.5 flex items-center gap-1.5">
+                                        <i class="fa-regular fa-clock"></i> ${s}-${e} น.
+                                    </div>
+                                    <div class="font-bold text-th-text text-sm">${b.name}</div>
+                                    <div class="text-[11px] text-th-muted mt-0.5 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-phone opacity-70"></i> ${maskedPhone}
+                                    </div>
+                                </div>
+                                <button type="button" onclick="openUserSelfEditModal('${d}', '${z}', ${i})" class="shrink-0 px-3.5 py-1.5 rounded-lg bg-th-accent/10 text-th-accent border border-th-accent/40 hover:bg-th-accent hover:text-amber-950 font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                                    <i class="fa-solid fa-pen-to-square"></i> ${t('editOwnBtn')}
+                                </button>
                             </div>`;
                         }
                     });
-                    html += `</div></div>`;
+
+                    if (!hasBookings) {
+                        slotsHtml = `
+                        <div class="flex flex-col items-center justify-center py-6 px-4 text-center border-2 border-dashed border-th-border/40 rounded-xl bg-th-input/20">
+                            <i class="fa-regular fa-calendar-xmark text-2xl text-th-muted mb-2 opacity-40"></i>
+                            <span class="text-xs text-th-muted font-medium opacity-70">ยังไม่มีคิวการแสดง<br>เปิดรับการจอง</span>
+                        </div>`;
+                    }
+
+                    dateHtml += `
+                    <div class="bg-th-input/40 rounded-2xl p-4 border border-th-border/40 backdrop-blur-sm shadow-inner">
+                        <div class="flex items-center gap-3 mb-3.5">
+                            <div class="w-8 h-8 rounded-lg bg-th-input border border-th-border/50 text-th-accent flex items-center justify-center shadow-sm text-base">
+                                ${venueIcon}
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-sm text-th-text leading-tight">${venueName}</h5>
+                                <p class="text-[10px] text-th-muted mt-0.5">${venueSub}</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2.5">
+                            ${slotsHtml}
+                        </div>
+                    </div>`;
                 });
-                html += `</div>`;
+
+                dateHtml += `</div></div>`;
+                html += dateHtml;
             });
-            document.getElementById('user-results').innerHTML = html;
+
+            container.innerHTML = html;
         }
 
         function openScheduleModal() { renderPublicSchedule(); document.getElementById('schedule-modal').classList.remove('hidden'); }
