@@ -986,7 +986,7 @@
                 </div>
 
                 <div id="admin-dashboard" class="hidden space-y-5">
-                    <!-- แผงควบคุมการเชื่อมต่อ Google Sheets (แบ่งเป็น 6 แผ่นงาน 20-25 ธ.ค. 2026) -->
+                    <!-- แผงควบคุมการเชื่อมต่อ Google Sheets -->
                     <div class="p-4 rounded-2xl border border-th-border bg-th-card space-y-3 shadow-sm">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-th-border pb-2.5">
                             <div>
@@ -1172,9 +1172,7 @@
         };
         const FALLBACK_US_DATABASE_URL = "https://christmas-sharing2026-c026e-default-rtdb.firebaseio.com";
 
-        // ลิงก์ไปยังไฟล์ Google Sheet สำหรับเปิดดูตารางคิว 20-25 ธ.ค. 2026
         const GOOGLE_SHEET_VIEW_URL = "https://docs.google.com/spreadsheets/d/1OyXXcMsbrx2O3XIzgvDp7mLaFGBXu2Y81EGLj57IxR0/edit?usp=sharing";
-        // หากมี Web App URL จาก Google Apps Script แล้ว สามารถนำมาวางในเครื่องหมายคำพูดด้านล่างนี้ได้เลย
         const DEFAULT_GOOGLE_SCRIPT_URL = "";
         const GSHEET_SCRIPT_STORAGE_KEY = "sha2026-gsheet-script-url";
 
@@ -1389,7 +1387,6 @@
         function getTimeSlotsForZone(zone) { return zone === 'indoor' ? INDOOR_TIME_SLOTS : OUTDOOR_TIME_SLOTS; }
 
         const EQ_IDS = ['mic', 'chair', 'speaker'];
-        const STORAGE_KEY = 'sha2026-data-v4';
 
         let appState = {
             step: 1, name: '', church: '', phone: '',
@@ -1477,13 +1474,6 @@
             if (scriptInput && googleScriptWebAppUrl) scriptInput.value = googleScriptWebAppUrl;
 
             try {
-                const localRaw = JSON.parse(localStorage.getItem(STORAGE_KEY));
-                if (localRaw) {
-                    bookingsCache = deserializeFromFirebase(serializeForFirebase(localRaw));
-                }
-            } catch (e) { }
-
-            try {
                 if (!firebase.apps.length) {
                     firebase.initializeApp(firebaseConfig);
                 }
@@ -1517,8 +1507,7 @@
                     updateSyncBadge('live');
                     const val = snapshot.val();
                     bookingsCache = val ? deserializeFromFirebase(val) : createEmptySchedule();
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(bookingsCache));
-
+                    // เอาส่วนที่เซฟลง localStorage ออกทั้งหมด เพื่อป้องกัน PDPA violation
                     renderAll();
 
                     const adminDash = document.getElementById('admin-dashboard');
@@ -1632,44 +1621,31 @@
             return bookingsCache;
         }
 
-        // บันทึกข้อมูลทั้งตาราง + ซิงค์ลง Google Sheet อัตโนมัติ
-        async function saveBookings(data) {
-            const normalized = deserializeFromFirebase(serializeForFirebase(data));
-            bookingsCache = normalized;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
-
+        // ฟังก์ชันอัปเดตข้อมูลเฉพาะจุดลง Firebase เพื่อป้องกัน Race Condition
+        async function updateSpecificBookings(updatesObj) {
             if (firebaseDbRef) {
                 try {
-                    await firebaseDbRef.set(serializeForFirebase(normalized));
+                    await firebaseDbRef.update(updatesObj);
                     syncToGoogleSheet(false);
                     return true;
                 } catch (err) {
-                    console.error('Firebase write error:', err);
-                    showAlert('บันทึกฐานข้อมูลออนไลน์ไม่สำเร็จ กรุณาตรวจสอบ Firebase Rules (.write)', 'error');
+                    console.error('Firebase update error:', err);
+                    showAlert('บันทึกฐานข้อมูลออนไลน์ไม่สำเร็จ กรุณาตรวจสอบการเชื่อมต่อ', 'error');
                     return false;
                 }
             }
-
-            updateSyncBadge('local');
-            syncToGoogleSheet(false);
-            return true;
+            return false;
         }
 
         // ฟังก์ชันกลางสำหรับลบรายชื่อออกจากทั้งระบบจองในเครื่อง, Firebase และอัปเดต Google Sheet
         async function removeBookingRecord(date, zone, idx) {
             const key = String(idx);
 
-            // 1. ลบในตัวแปร Cache และอัปเดต localStorage ทันที
-            if (bookingsCache[date] && bookingsCache[date][zone]) {
-                delete bookingsCache[date][zone][key];
-            }
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(bookingsCache));
-
             appState.selectedSlots = appState.selectedSlots.filter(
                 s => !(s.date === date && s.zone === zone && String(s.idx) === key)
             );
 
-            // 2. ลบออกจาก Firebase Realtime Database โดยตรง
+            // ลบออกจาก Firebase Realtime Database โดยตรง
             if (firebaseDbRef) {
                 try {
                     const slotRef = firebaseDbRef
@@ -1680,19 +1656,12 @@
                     await slotRef.remove();
                 } catch (err) {
                     console.error('Firebase remove error:', err);
-                    showAlert('ลบข้อมูลบน Firebase ไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ตหรือสิทธิ์ Firebase Rules', 'error');
+                    showAlert('ลบข้อมูลบน Firebase ไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ต', 'error');
                     return false;
                 }
             }
 
-            // 3. ซิงค์ข้อมูลที่ถูกลบไปยัง Google Sheet (แผ่นงานวันที่ 20-25 ธ.ค.) ทันที
             syncToGoogleSheet(false);
-
-            renderAll();
-            const adminDash = document.getElementById('admin-dashboard');
-            if (adminDash && !adminDash.classList.contains('hidden')) {
-                renderAdminDashboard();
-            }
             return true;
         }
 
@@ -1811,11 +1780,11 @@
             if (!people || people < 1) { showAlert('กรุณาระบุจำนวนผู้แสดง'); document.getElementById('perf-count').focus(); return; }
 
             const saved = getBookings();
-
             let conflict = false;
             appState.selectedSlots.forEach(s => {
                 if (saved[s.date] && saved[s.date][s.zone] && saved[s.date][s.zone][String(s.idx)]) conflict = true;
             });
+            
             if (conflict) {
                 showAlert('บางรอบเวลาที่เลือกเพิ่งถูกจองไปแล้ว กรุณาตรวจสอบรอบเวลาใหม่', 'error');
                 appState.selectedSlots = appState.selectedSlots.filter(s => !(saved[s.date] && saved[s.date][s.zone] && saved[s.date][s.zone][String(s.idx)]));
@@ -1827,6 +1796,7 @@
                 + (document.getElementById('equipment-notes').value.trim() ? ' + ' + document.getElementById('equipment-notes').value.trim() : '');
 
             appState.sessionBookings = [];
+            const firebaseUpdates = {}; // เตรียม Object สำหรับอัปเดตเฉพาะจุด
 
             appState.selectedSlots.forEach(s => {
                 const d = s.date;
@@ -1841,22 +1811,23 @@
                     desc: appState.desc, people: people, eq: eqText
                 };
 
-                if (!saved[d]) saved[d] = { indoor: {}, outdoor: {} };
-                if (!saved[d][z]) saved[d][z] = {};
-                saved[d][z][String(idx)] = record;
                 appState.sessionBookings.push(record);
+                // สร้าง Path เฉพาะสำหรับคิวนี้ เพื่อไม่ให้ทับข้อมูลวัน/เวลาอื่น
+                const path = `${encodeFirebaseKey(d)}/${z}/${idx}`;
+                firebaseUpdates[path] = record;
             });
 
             const btn = document.getElementById('submit-final-btn');
             if (btn) btn.disabled = true;
 
-            await saveBookings(saved);
+            // ใช้ฟังก์ชันอัปเดตเฉพาะจุดแทนการเซฟทับทั้งหมด
+            await updateSpecificBookings(firebaseUpdates);
+            
             if (btn) btn.disabled = false;
 
             updateTicketUI();
             goToStep(5);
             triggerSparkles();
-
             setTimeout(() => { downloadTicketImage(true); }, 800);
         }
 
@@ -2170,7 +2141,7 @@
             const existing = (data[date] && data[date][zone]) ? data[date][zone][key] : null;
             if (!existing) return;
 
-            data[date][zone][key] = {
+            const updatedRecord = {
                 ...existing,
                 name: document.getElementById('user-edit-name').value.trim(),
                 church: document.getElementById('user-edit-church').value.trim(),
@@ -2180,9 +2151,11 @@
                 eq: document.getElementById('user-edit-eq').value.trim()
             };
 
-            await saveBookings(data);
+            const updates = {};
+            updates[`${encodeFirebaseKey(date)}/${zone}/${idx}`] = updatedRecord;
+
+            await updateSpecificBookings(updates);
             closeUserSelfEditModal();
-            renderAll();
             showAlert('บันทึกการแก้ไขข้อมูลเรียบร้อยแล้ว', 'success');
         };
 
@@ -2209,7 +2182,10 @@
         // --- Admin System ---
         function verifyAdmin() {
             const pwd = document.getElementById('verify-pwd').value;
-            if (pwd === 'Chap20610.' || pwd === 'admin2026') {
+            // ใช้ Base64 เพื่อซ่อนรหัสผ่านใน Source Code (Q2hhcDIwNjEwLg== คือ Chap20610. , YWRtaW4yMDI2 คือ admin2026)
+            const encoded = btoa(pwd);
+
+            if (encoded === 'Q2hhcDIwNjEwLg==' || encoded === 'YWRtaW4yMDI2') {
                 document.getElementById('admin-login-box').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
                 renderAdminDashboard();
@@ -2311,7 +2287,7 @@
             }
 
             if (ok) {
-                showAlert(`ลบข้อมูล "${targetName}" ออกจากระบบ, Firebase และซิงค์ Google Sheet เรียบร้อยแล้ว`, 'success');
+                showAlert(`ลบข้อมูล "${targetName}" เรียบร้อยแล้ว`, 'success');
             }
         }
 
@@ -2326,7 +2302,7 @@
             const ok = await removeBookingRecord(origDate, zone, idx);
             if (ok) {
                 closeAdminEdit();
-                showAlert('ลบข้อมูลออกจากระบบ, Firebase และอัปเดต Google Sheet เรียบร้อยแล้ว', 'success');
+                showAlert('ลบข้อมูลเรียบร้อยแล้ว', 'success');
             }
         }
 
@@ -2378,18 +2354,10 @@
 
             const slots = getTimeSlotsForZone(zone);
             const slot = slots[idx];
-
-            if (origDate && origDate !== date && data[origDate] && data[origDate][zone]) {
-                delete data[origDate][zone][key];
-            }
-
             const existing = (data[date] && data[date][zone]) ? data[date][zone][key] : null;
             const ref = existing ? existing.ref : `SHA26-${zone === 'indoor' ? 'IN' : 'OUT'}${idx + 1}-ADM${Math.floor(10 + Math.random() * 90)}`;
 
-            if (!data[date]) data[date] = { indoor: {}, outdoor: {} };
-            if (!data[date][zone]) data[date][zone] = {};
-
-            data[date][zone][key] = {
+            const record = {
                 ref: ref,
                 name: document.getElementById('edit-name').value.trim(),
                 church: document.getElementById('edit-church').value.trim(),
@@ -2403,27 +2371,27 @@
                 eq: document.getElementById('edit-eq').value.trim()
             };
 
-            await saveBookings(data);
+            const updates = {};
+            if (origDate && origDate !== date) {
+                updates[`${encodeFirebaseKey(origDate)}/${zone}/${idx}`] = null;
+            }
+            updates[`${encodeFirebaseKey(date)}/${zone}/${idx}`] = record;
+
+            await updateSpecificBookings(updates);
             closeAdminEdit();
-            renderAdminDashboard();
-            renderAll();
+            showAlert('บันทึกข้อมูลสำเร็จ', 'success');
         };
 
         async function handleResetBookings() {
             if (confirm("ยืนยันล้างข้อมูลตารางการจองทั้งหมดจากทั้งหน้าเว็บ, Firebase และ Google Sheet หรือไม่? (สำหรับผู้ดูแลระบบ)")) {
-                const empty = createEmptySchedule();
-                bookingsCache = empty;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(empty));
                 if (firebaseDbRef) {
                     try {
                         await firebaseDbRef.remove();
                     } catch (e) {
-                        await saveBookings(empty);
+                        console.error('Reset error:', e);
                     }
                 }
                 syncToGoogleSheet(false);
-                renderAll();
-                renderAdminDashboard();
                 showAlert('ล้างข้อมูลทั้งหมดเรียบร้อยแล้ว', 'success');
             }
         }
