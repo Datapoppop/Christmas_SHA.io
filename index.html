@@ -359,17 +359,20 @@
         </section>
     </main>
 
-    <!-- MODAL ตรวจสอบคิว (Public) แบบดีไซน์ใหม่ -->
-    <div id="schedule-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-        <div class="w-full max-w-5xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border">
-            <div class="flex items-center justify-between p-4 sm:p-5 border-b border-th-border bg-th-panel">
+    <!-- MODAL ตรวจสอบคิว (Public) แบบดีไซน์ใหม่ (Glassmorphism + Card) -->
+    <div id="schedule-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-md">
+        <div class="w-full max-w-5xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl modal-bg border border-th-border/40">
+            <div class="flex items-center justify-between p-5 border-b border-th-border/30 bg-th-panel/90 backdrop-blur-lg">
                 <div>
-                    <h3 class="font-bold text-lg text-th-text"><i class="fa-solid fa-calendar-check text-th-accent mr-2"></i><span data-i18n="modalScheduleTitle">ตรวจสอบตารางคิวการแสดง</span></h3>
-                    <p data-i18n="modalScheduleSub" class="text-xs text-th-muted mt-0.5">แสดงชื่อผู้จองและเบอร์โทรศัพท์ 4 หลักท้าย · กดปุ่มแก้ไขและกรอกเบอร์เต็มเพื่อจัดการข้อมูล</p>
+                    <h3 class="font-extrabold text-xl text-th-text flex items-center gap-2.5"><i class="fa-solid fa-calendar-check text-th-accent text-2xl"></i> <span data-i18n="modalScheduleTitle">ตรวจสอบตารางคิวการแสดง</span></h3>
+                    <p data-i18n="modalScheduleSub" class="text-[11px] sm:text-xs text-th-muted mt-1 font-medium">แสดงชื่อผู้จองและเบอร์โทรศัพท์ 4 หลักท้าย · กดปุ่มแก้ไขและกรอกเบอร์เต็มเพื่อจัดการข้อมูล</p>
                 </div>
-                <button onclick="closeScheduleModal()" class="w-8 h-8 rounded-full bg-th-input border border-th-border hover:bg-th-danger hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeScheduleModal()" class="w-10 h-10 rounded-full bg-th-input/50 border border-th-border/50 text-th-text hover:bg-th-danger hover:border-th-danger hover:text-white transition-all flex items-center justify-center shadow-sm"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <div class="p-4 sm:p-6 overflow-y-auto flex-1 bg-th-panel/80"><div id="user-results"></div></div>
+            <!-- พื้นที่แสดงข้อมูลคิว -->
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 bg-gradient-to-b from-th-panel/80 to-th-input/90 relative">
+                <div id="user-results" class="relative z-10"></div>
+            </div>
         </div>
     </div>
 
@@ -403,7 +406,7 @@
                 <div class="pt-3 flex flex-col gap-2">
                     <button type="button" onclick="downloadTicketFromModal('user')" class="w-full p-2.5 rounded-lg bg-th-accent-light border border-th-accent text-amber-950 font-bold text-sm hover:brightness-105 transition flex items-center justify-center gap-1.5 shadow mb-1"><i class="fa-solid fa-download"></i> ดึงรูปภาพบัตรคิว (Ticket)</button>
                     <div class="flex gap-2"><button type="button" onclick="closeUserSelfEditModal()" data-i18n="btnCancel" class="flex-1 p-2.5 rounded-lg border bg-th-card font-bold text-sm">ปิดหน้าต่าง</button><button type="submit" data-i18n="btnSaveChanges" class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm">บันทึกการแก้ไข</button></div>
-                    <button type="button" onclick="deleteUserOwnBooking()" class="w-full p-2.5 rounded-lg bg-th-danger text-white font-bold text-xs"><i class="fa-solid fa-trash-can"></i> <span data-i18n="btnDeleteOwnBooking">ยกเลิกการจองรอบนี้ (ลบชื่อออกจากระบบ)</span></button>
+                    <button type="button" onclick="deleteUserOwnBooking()" class="w-full p-2.5 rounded-lg bg-th-danger text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm hover:brightness-110"><i class="fa-solid fa-trash-can"></i> <span data-i18n="btnDeleteOwnBooking">ยกเลิกการจองรอบนี้ (ลบชื่อออกจากระบบ)</span></button>
                 </div>
             </form>
         </div>
@@ -464,7 +467,7 @@
                 <div class="pt-3 flex flex-col gap-2">
                     <button type="button" id="admin-modal-dl-btn" onclick="downloadTicketFromModal('admin')" class="w-full p-2.5 rounded-lg bg-th-accent-light border border-th-accent text-amber-950 font-bold text-sm hover:brightness-105 transition hidden items-center justify-center gap-1.5 shadow mb-1"><i class="fa-solid fa-download"></i> ดึงรูปภาพบัตรคิว (Ticket)</button>
                     <div class="flex gap-2"><button type="button" onclick="closeAdminEdit()" class="flex-1 p-2.5 rounded-lg border bg-th-card font-bold text-sm">ยกเลิก</button><button type="submit" class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm">บันทึกข้อมูล</button></div>
-                    <button type="button" id="admin-modal-delete-btn" onclick="deleteFromAdminEditModal()" class="w-full p-2.5 rounded-lg bg-th-danger text-white font-bold text-xs hidden items-center justify-center gap-1.5"><i class="fa-solid fa-trash-can"></i> ลบผู้จองรอบนี้ออกจากระบบ</button>
+                    <button type="button" id="admin-modal-delete-btn" onclick="deleteFromAdminEditModal()" class="w-full p-2.5 rounded-lg bg-th-danger text-white font-bold text-xs hidden items-center justify-center gap-1.5 shadow-sm hover:brightness-110"><i class="fa-solid fa-trash-can"></i> ลบผู้จองรอบนี้ออกจากระบบ</button>
                 </div>
             </form>
         </div>
@@ -491,7 +494,7 @@
                 btnCancel: 'ยกเลิก', btnVerifyPhone: 'ยืนยันเบอร์โทรศัพท์', verifiedSuccessBadge: 'ยืนยันเบอร์โทรศัพท์สำเร็จ สามารถแก้ไขหรือยกเลิกการจองด้านล่างได้', btnSaveChanges: 'บันทึกการแก้ไข',
                 btnDeleteOwnBooking: 'ยกเลิกการจองรอบนี้ (ลบชื่อออกจากระบบ)', adminModalTitle: 'จัดการระบบ (ผู้ดูแลระบบ)',
                 statusFree: 'ว่าง', statusFull: 'เต็ม', statusBooked: 'จองแล้ว', statusSelected: '✓ เลือกแล้ว', selectedCountPrefix: 'เลือกแล้ว', selectedCountSuffix: 'รอบ',
-                editOwnBtn: 'แก้ไข', bookerPrefix: 'ผู้จอง:', phoneLast4Prefix: 'โทร:', peopleUnit: 'คน', showDatePrefix: '📅 วันที่แสดง:',
+                editOwnBtn: 'แก้ไขคิวนี้', bookerPrefix: 'ผู้จอง:', phoneLast4Prefix: 'โทร:', peopleUnit: 'คน', showDatePrefix: '📅 วันที่แสดง:',
                 quickTags: ['ร้องเพลงประสานเสียง', 'ดนตรีโฟลคซอง', 'ละครคริสต์มาส', 'เต้นประกอบเพลง (COVER)', 'ดนตรีสากล (Band)'], eqLabels: { mic: '🎤 ไมโครโฟน', chair: '🪑 เก้าอี้', speaker: '🔊 ลำโพง/เปิด Backing Track' }
             },
             en: {
@@ -512,7 +515,7 @@
                 btnCancel: 'Cancel', btnVerifyPhone: 'Verify Phone', verifiedSuccessBadge: 'Phone verified! You can now update or cancel your booking below.', btnSaveChanges: 'Save Changes',
                 btnDeleteOwnBooking: 'Cancel This Booking', adminModalTitle: 'System Management (Admin)',
                 statusFree: 'Available', statusFull: 'Full', statusBooked: 'Booked', statusSelected: '✓ Selected', selectedCountPrefix: 'Selected', selectedCountSuffix: 'slot(s)',
-                editOwnBtn: 'Edit', bookerPrefix: 'Booker:', phoneLast4Prefix: 'Tel:', peopleUnit: 'people', showDatePrefix: '📅 Show Date:',
+                editOwnBtn: 'Edit Slot', bookerPrefix: 'Booker:', phoneLast4Prefix: 'Tel:', peopleUnit: 'people', showDatePrefix: '📅 Show Date:',
                 quickTags: ['Christmas Choir', 'Acoustic Folk', 'Christmas Drama', 'Cover Dance', 'Live Band'], eqLabels: { mic: '🎤 Microphone', chair: '🪑 Chairs', speaker: '🔊 Speaker / Backing Track' }
             },
             zh: {
@@ -632,22 +635,12 @@
         async function removeBookingRecord(date, zone, idx) {
             const key = String(idx);
             appState.selectedSlots = appState.selectedSlots.filter(s => !(s.date === date && s.zone === zone && String(s.idx) === key));
-            
-            if (bookingsCache[date] && bookingsCache[date][zone]) {
-                delete bookingsCache[date][zone][key];
-            }
-
+            if (bookingsCache[date] && bookingsCache[date][zone]) delete bookingsCache[date][zone][key];
             if (firebaseDbRef) {
-                try {
-                    await firebaseDbRef.child(encodeFirebaseKey(date)).child(zone).child(key).remove();
-                } catch (err) {
-                    showAlert('ลบข้อมูลบน Firebase ไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ต', 'error');
-                    return false;
-                }
+                try { await firebaseDbRef.child(encodeFirebaseKey(date)).child(zone).child(key).remove(); } 
+                catch (err) { showAlert('ลบข้อมูลบน Firebase ไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ต', 'error'); return false; }
             }
-            
-            syncToGoogleSheet(false);
-            renderAll();
+            syncToGoogleSheet(false); renderAll();
             const adminDash = document.getElementById('admin-dashboard');
             if (adminDash && !adminDash.classList.contains('hidden')) renderAdminDashboard();
             return true;
@@ -905,7 +898,7 @@
         }
 
         // ==========================
-        // UI ตารางคิวแบบใหม่ (Glassmorphism + 2 คอลัมน์)[span_0](start_span)[span_0](end_span)
+        // UI ตารางคิวแบบใหม่ (Glassmorphism + 2 คอลัมน์)
         // ==========================
         function renderPublicSchedule() {
             const data = getBookings();
@@ -917,14 +910,20 @@
                 const dayData = data[d] || { indoor: {}, outdoor: {} };
                 
                 let dateHtml = `
-                <div class="mb-8">
-                    <div class="flex items-center gap-2.5 mb-4 border-b border-th-border/60 pb-2">
-                        <div class="w-9 h-9 rounded-xl bg-th-accent/20 text-th-accent flex items-center justify-center shadow-sm border border-th-accent/30">
-                            <i class="fa-regular fa-calendar-check text-lg"></i>
+                <div class="mb-8 bg-th-panel rounded-3xl p-4 sm:p-6 border border-th-border/40 shadow-xl relative overflow-hidden">
+                    <div class="absolute -top-12 -right-12 w-40 h-40 bg-th-accent/10 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="flex items-center gap-3 mb-5 border-b border-th-border/50 pb-3 relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-th-accent to-amber-600 text-amber-950 flex items-center justify-center shadow-lg">
+                            <i class="fa-regular fa-calendar-check text-2xl"></i>
                         </div>
-                        <h4 class="font-extrabold text-th-text text-lg tracking-wide">${d}</h4>
+                        <div>
+                            <h4 class="font-extrabold text-th-text text-xl tracking-wide leading-tight">${d}</h4>
+                            <p class="text-xs text-th-muted mt-0.5">ตารางคิวการแสดงประจำวัน</p>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 relative z-10">
                 `;
 
                 ['indoor', 'outdoor'].forEach(z => {
@@ -943,44 +942,45 @@
                             hasBookings = true;
                             const maskedPhone = maskPhoneLast4(b.phone);
                             slotsHtml += `
-                            <div class="relative overflow-hidden bg-th-card border border-th-border/60 rounded-xl p-3 shadow-sm hover:border-th-accent/80 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 group">
-                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-th-danger"></div>
-                                <div class="pl-2.5">
-                                    <div class="text-th-danger text-[11px] font-bold mb-0.5 flex items-center gap-1.5">
-                                        <i class="fa-regular fa-clock"></i> ${s}-${e} น.
+                            <div class="group relative overflow-hidden bg-th-card border border-th-border/60 rounded-2xl p-3 shadow-sm hover:shadow-lg hover:border-th-accent transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-th-danger group-hover:bg-th-accent transition-colors"></div>
+                                <div class="pl-2.5 flex-1">
+                                    <div class="flex items-center gap-2 mb-1.5">
+                                        <span class="bg-th-danger-bg text-th-danger text-[10px] px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1 shadow-sm"><i class="fa-regular fa-clock"></i> ${s}-${e} น.</span>
                                     </div>
-                                    <div class="font-bold text-th-text text-sm">${b.name}</div>
-                                    <div class="text-[11px] text-th-muted mt-0.5 flex items-center gap-1.5">
-                                        <i class="fa-solid fa-phone opacity-70"></i> ${maskedPhone}
+                                    <div class="font-bold text-th-text text-sm sm:text-base leading-tight">${b.name}</div>
+                                    <div class="text-[11px] sm:text-xs text-th-muted mt-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-phone-flip opacity-70 text-th-accent"></i> ${t('bookerPrefix')} ${maskedPhone}
                                     </div>
                                 </div>
-                                <button type="button" onclick="openUserSelfEditModal('${d}', '${z}', ${i})" class="shrink-0 px-3.5 py-1.5 rounded-lg bg-th-accent/10 text-th-accent border border-th-accent/40 hover:bg-th-accent hover:text-amber-950 font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                                <button type="button" onclick="openUserSelfEditModal('${d}', '${z}', ${i})" class="shrink-0 w-full sm:w-auto px-4 py-2.5 rounded-xl bg-th-input border border-th-border/50 text-th-accent hover:bg-th-accent hover:text-amber-950 font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
                                     <i class="fa-solid fa-pen-to-square"></i> ${t('editOwnBtn')}
                                 </button>
+                            </div>`;
+                        } else {
+                            slotsHtml += `
+                            <div class="flex items-center justify-between p-3 rounded-2xl border border-dashed border-th-border/30 bg-th-input/20 opacity-75 hover:opacity-100 transition-opacity">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-6 h-6 rounded-full bg-th-input flex items-center justify-center text-th-muted"><i class="fa-regular fa-clock text-[10px]"></i></div>
+                                    <span class="text-xs text-th-muted font-medium">${s}-${e} น.</span>
+                                </div>
+                                <span class="text-[10px] px-2.5 py-0.5 rounded-full bg-th-success-bg text-th-success font-bold tracking-wide">${t('statusFree')}</span>
                             </div>`;
                         }
                     });
 
-                    if (!hasBookings) {
-                        slotsHtml = `
-                        <div class="flex flex-col items-center justify-center py-6 px-4 text-center border-2 border-dashed border-th-border/40 rounded-xl bg-th-input/20">
-                            <i class="fa-regular fa-calendar-xmark text-2xl text-th-muted mb-2 opacity-40"></i>
-                            <span class="text-xs text-th-muted font-medium opacity-70">ยังไม่มีคิวการแสดง<br>เปิดรับการจอง</span>
-                        </div>`;
-                    }
-
                     dateHtml += `
-                    <div class="bg-th-input/40 rounded-2xl p-4 border border-th-border/40 backdrop-blur-sm shadow-inner">
-                        <div class="flex items-center gap-3 mb-3.5">
-                            <div class="w-8 h-8 rounded-lg bg-th-input border border-th-border/50 text-th-accent flex items-center justify-center shadow-sm text-base">
+                    <div class="flex flex-col h-full">
+                        <div class="flex items-center gap-3 mb-3.5 px-2">
+                            <div class="w-10 h-10 rounded-full bg-th-input border border-th-border/50 text-th-accent flex items-center justify-center shadow-inner text-lg">
                                 ${venueIcon}
                             </div>
                             <div>
-                                <h5 class="font-bold text-sm text-th-text leading-tight">${venueName}</h5>
-                                <p class="text-[10px] text-th-muted mt-0.5">${venueSub}</p>
+                                <h5 class="font-bold text-sm sm:text-base text-th-text leading-tight">${venueName}</h5>
+                                <p class="text-[10px] sm:text-xs text-th-muted mt-0.5">${venueSub}</p>
                             </div>
                         </div>
-                        <div class="space-y-2.5">
+                        <div class="space-y-2.5 bg-black/10 p-2 sm:p-3 rounded-3xl border border-white/5 flex-1">
                             ${slotsHtml}
                         </div>
                     </div>`;
