@@ -272,10 +272,44 @@
                             <label data-i18n="labelQuickTags" class="block text-sm font-bold text-th-muted mb-2">ตัวอย่าง (คลิกเพื่อเพิ่มข้อความ):</label>
                             <div id="performance-tags-container" class="flex flex-wrap gap-2"></div>
                         </div>
-                        <div class="mb-6">
+                        <div class="mb-5">
                             <label class="block text-sm font-bold text-th-text mb-2"><span data-i18n="labelPerfDesc">รายละเอียดรูปแบบการแสดงคร่าวๆ</span> <span class="text-th-danger">*</span></label>
                             <textarea id="performance-desc" rows="4" required data-i18n-placeholder="phPerfDesc" placeholder="เช่น ร้องเพลงประสานเสียง 5 เพลง, ดนตรีอะคูสติก..." class="w-full p-4 rounded-xl bg-th-input border border-th-input-border focus:border-th-accent focus:outline-none"></textarea>
                         </div>
+
+                        <!-- แนบเอกสารรายละเอียดการแสดงเพิ่มเติม (ไม่บังคับ) -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-th-text mb-2">
+                                <i class="fa-solid fa-paperclip text-th-accent mr-1"></i>
+                                <span data-i18n="labelAttachFile">แนบเอกสารรายละเอียดการแสดงเพิ่มเติม (ไม่บังคับ)</span>
+                            </label>
+                            <input type="file" id="perf-file-input" class="hidden" accept=".pdf,.doc,.docx,image/*" onchange="handleFileSelect(event)">
+                            <div id="perf-file-dropzone" onclick="document.getElementById('perf-file-input').click()" class="cursor-pointer p-4 rounded-xl border-2 border-dashed border-th-input-border bg-th-input/60 hover:border-th-accent hover:bg-th-accent-light/20 transition flex flex-col sm:flex-row items-center justify-between gap-3">
+                                <div class="flex items-center gap-3 text-center sm:text-left">
+                                    <div class="w-10 h-10 rounded-xl bg-th-accent-light text-th-accent flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-file-arrow-up text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div data-i18n="attachChooseBtn" class="text-sm font-bold text-th-text">คลิกเพื่อเลือกไฟล์เอกสาร (ไม่บังคับ)</div>
+                                        <div data-i18n="attachFileHint" class="text-[11px] text-th-muted">รองรับ PDF, รูปภาพ (JPG/PNG), Word (DOC/DOCX) ขนาดไม่เกิน 3 MB</div>
+                                    </div>
+                                </div>
+                                <span class="px-3.5 py-1.5 rounded-lg bg-th-card border border-th-border text-xs font-bold text-th-accent shrink-0">Browse</span>
+                            </div>
+                            <div id="perf-file-preview" class="hidden mt-2 p-3 rounded-xl bg-th-accent-light border border-th-accent/60 flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <i class="fa-solid fa-file-lines text-th-accent text-lg shrink-0"></i>
+                                    <div class="min-w-0">
+                                        <div id="perf-file-name" class="text-xs sm:text-sm font-bold text-th-text truncate"></div>
+                                        <div id="perf-file-size" class="text-[11px] text-th-muted"></div>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="clearSelectedFile()" class="px-3 py-1.5 rounded-lg bg-th-danger text-white text-xs font-bold shrink-0 hover:brightness-110 transition">
+                                    <i class="fa-solid fa-xmark mr-1"></i><span data-i18n="attachRemoveBtn">ลบไฟล์</span>
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="flex justify-between gap-4 border-t border-th-border pt-4">
                             <button type="button" onclick="goToStep(2)" class="w-full px-5 py-3.5 rounded-xl bg-th-input border border-th-border font-bold flex justify-center items-center gap-2"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="btnBack">ย้อนกลับ</span></button>
                             <button type="button" onclick="handleStep3Next()" class="w-full px-7 py-3.5 rounded-xl bg-grad-btn text-amber-950 font-bold shadow-lg flex justify-center items-center gap-2"><span data-i18n="btnNextStep4">ถัดไป: จำนวนคน</span> <i class="fa-solid fa-arrow-right"></i></button>
@@ -308,6 +342,7 @@
                                 <div><span data-i18n="reviewBookerLabel" class="text-th-muted block text-xs">ผู้จอง:</span> <strong id="review-booker" class="text-th-accent"></strong></div>
                                 <div><span data-i18n="reviewPeopleLabel" class="text-th-muted block text-xs">จำนวนผู้แสดง:</span> <strong id="review-people"></strong></div>
                                 <div class="col-span-2 mt-2"><span data-i18n="reviewTimeLabel" class="text-th-muted block text-xs">วันที่และรอบเวลาที่เลือกทั้งหมด:</span><div id="review-time" class="bg-th-input p-2 rounded mt-1 font-bold"></div></div>
+                                <div id="review-attach-row" class="col-span-2 mt-1 hidden"><span data-i18n="reviewAttachLabel" class="text-th-muted block text-xs">เอกสารแนบ:</span><div id="review-attach" class="text-xs font-bold text-th-accent mt-0.5 truncate"></div></div>
                             </div>
                         </div>
                         <div class="flex justify-between gap-4 pt-4 border-t border-th-border">
@@ -341,6 +376,7 @@
                                 <div class="col-span-1"><div data-i18n="ticketPeopleRefLabel" class="text-xs opacity-70">จำนวนคน / รหัสอ้างอิง</div><div><span id="ticket-people" class="font-bold"></span> · <span id="ticket-ref" class="text-xs opacity-80"></span></div></div>
                                 <div class="col-span-2"><div data-i18n="ticketTimeListLabel" class="text-xs opacity-70 mb-1">รายละเอียดสถานที่และเวลา</div><div id="ticket-time-list" class="text-sm font-bold text-th-accent bg-black/25 p-3 rounded-xl border border-th-border"></div></div>
                                 <div class="col-span-2"><div data-i18n="ticketPerfLabel" class="text-xs opacity-70">รูปแบบการแสดง & อุปกรณ์</div><div id="ticket-performance" class="text-sm"></div></div>
+                                <div id="ticket-attach-row" class="col-span-2 hidden"><div data-i18n="reviewAttachLabel" class="text-xs opacity-70">เอกสารแนบ</div><div id="ticket-attach-name" class="text-xs font-bold text-th-accent truncate"></div></div>
                                 <!-- เวลาที่ทำการจอง (Timestamp) -->
                                 <div class="col-span-2 mt-2 pt-3 border-t border-th-text/20 text-center">
                                     <div class="text-xs opacity-70"><i class="fa-regular fa-clock"></i> ทำรายการจองเมื่อเวลา</div>
@@ -402,6 +438,16 @@
                 <div><label data-i18n="labelPeopleCount" class="block text-xs font-bold mb-1">จำนวนคน</label><input id="user-edit-people" type="number" required class="w-full p-2.5 rounded-lg bg-th-input border text-sm"></div>
                 <div><label data-i18n="labelPerfDesc" class="block text-xs font-bold mb-1">รูปแบบการแสดง</label><textarea id="user-edit-desc" rows="2" required class="w-full p-2.5 rounded-lg bg-th-input border text-sm"></textarea></div>
                 <div><label data-i18n="labelEquipment" class="block text-xs font-bold mb-1">อุปกรณ์ / หมายเหตุ</label><textarea id="user-edit-eq" rows="2" class="w-full p-2.5 rounded-lg bg-th-input border text-sm"></textarea></div>
+
+                <!-- เอกสารแนบ (User Edit) -->
+                <div class="p-3 rounded-xl bg-th-card border border-th-border/60 space-y-2">
+                    <label class="block text-xs font-bold"><i class="fa-solid fa-paperclip text-th-accent mr-1"></i> <span data-i18n="labelAttachFile">แนบเอกสารรายละเอียดการแสดงเพิ่มเติม (ไม่บังคับ)</span></label>
+                    <div id="user-edit-attach-current" class="hidden flex items-center justify-between gap-2 text-xs bg-th-input p-2 rounded-lg">
+                        <span id="user-edit-attach-name" class="truncate text-th-accent font-semibold"></span>
+                        <button type="button" id="user-edit-attach-dl-btn" class="px-2.5 py-1 rounded bg-th-accent text-amber-950 font-bold shrink-0"><i class="fa-solid fa-download mr-1"></i>โหลด</button>
+                    </div>
+                    <input type="file" id="user-edit-file-input" accept=".pdf,.doc,.docx,image/*" onchange="handleUserEditFileSelect(event)" class="w-full text-xs text-th-muted file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-th-accent-light file:text-th-accent hover:file:brightness-110">
+                </div>
                 
                 <div class="pt-3 flex flex-col gap-2">
                     <button type="button" onclick="downloadTicketFromModal('user')" class="w-full p-2.5 rounded-lg bg-th-accent-light border border-th-accent text-amber-950 font-bold text-sm hover:brightness-105 transition flex items-center justify-center gap-1.5 shadow mb-1"><i class="fa-solid fa-download"></i> ดึงรูปภาพบัตรคิว (Ticket)</button>
@@ -464,6 +510,16 @@
                 <div><label class="block text-xs font-bold mb-1">จำนวนคน</label><input id="edit-people" type="number" required class="w-full p-2.5 rounded-lg bg-th-input border text-sm"></div>
                 <div><label class="block text-xs font-bold mb-1">รูปแบบการแสดง</label><textarea id="edit-desc" rows="2" required class="w-full p-2.5 rounded-lg bg-th-input border text-sm"></textarea></div>
                 <div><label class="block text-xs font-bold mb-1">อุปกรณ์/หมายเหตุ</label><textarea id="edit-eq" rows="2" class="w-full p-2.5 rounded-lg bg-th-input border text-sm"></textarea></div>
+
+                <!-- เอกสารแนบ (Admin View/Download) -->
+                <div id="admin-edit-attach-box" class="hidden p-2.5 rounded-xl bg-th-accent-light border border-th-accent/50 flex items-center justify-between gap-2 text-xs">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i class="fa-solid fa-paperclip text-th-accent shrink-0"></i>
+                        <span id="admin-edit-attach-name" class="truncate font-bold text-th-text"></span>
+                    </div>
+                    <button type="button" id="admin-edit-attach-dl-btn" class="px-3 py-1.5 rounded-lg bg-th-accent text-amber-950 font-bold shrink-0 hover:brightness-110"><i class="fa-solid fa-download mr-1"></i>ดาวน์โหลดเอกสาร</button>
+                </div>
+
                 <div class="pt-3 flex flex-col gap-2">
                     <button type="button" id="admin-modal-dl-btn" onclick="downloadTicketFromModal('admin')" class="w-full p-2.5 rounded-lg bg-th-accent-light border border-th-accent text-amber-950 font-bold text-sm hover:brightness-105 transition hidden items-center justify-center gap-1.5 shadow mb-1"><i class="fa-solid fa-download"></i> ดึงรูปภาพบัตรคิว (Ticket)</button>
                     <div class="flex gap-2"><button type="button" onclick="closeAdminEdit()" class="flex-1 p-2.5 rounded-lg border bg-th-card font-bold text-sm">ยกเลิก</button><button type="submit" class="flex-1 p-2.5 rounded-lg bg-th-success text-pine-950 font-bold text-sm">บันทึกข้อมูล</button></div>
@@ -486,6 +542,7 @@
                 labelSelectDate: '1. เลือกวันที่ (20 - 25 ธ.ค. 2026)', labelSelectVenue: '2. เลือกสถานที่จัดการแสดง', venueIndoorTitle: 'อาคารหมอแวลล์ (ภายในอาคาร)', venueIndoorSub: 'รพ.กรุงเทพคริสเตียน',
                 venueOutdoorTitle: 'หน้า รพ. (ภายนอกอาคาร)', venueOutdoorSub: 'ลานด้านหน้าติดถนนสีลม', labelSelectSlot: '3. เลือกรอบเวลา', btnBack: 'ย้อนกลับ', btnNextStep3: 'ถัดไป: รูปแบบการแสดง',
                 step3Badge: 'ขั้นตอนที่ 3 จาก 5', step3Title: 'รูปแบบการแสดง', labelQuickTags: 'ตัวอย่าง (คลิกเพื่อเพิ่มข้อความ):', labelPerfDesc: 'รายละเอียดรูปแบบการแสดงคร่าวๆ', phPerfDesc: 'เช่น ร้องเพลงประสานเสียง 5 เพลง, ดนตรีอะคูสติก...',
+                labelAttachFile: 'แนบเอกสารรายละเอียดการแสดงเพิ่มเติม (ไม่บังคับ)', attachChooseBtn: 'คลิกเพื่อเลือกไฟล์เอกสาร (ไม่บังคับ)', attachFileHint: 'รองรับ PDF, รูปภาพ (JPG/PNG), Word (DOC/DOCX) ขนาดไม่เกิน 3 MB', attachRemoveBtn: 'ลบไฟล์', reviewAttachLabel: 'เอกสารแนบ:',
                 btnNextStep4: 'ถัดไป: จำนวนคน', step4Badge: 'ขั้นตอนที่ 4 จาก 5', step4Title: 'จำนวนผู้แสดงและอุปกรณ์', labelPeopleCount: '1. จำนวนผู้แสดง (คน)', phPeopleCount: 'พิมพ์จำนวนคน (เช่น 12)',
                 labelEquipment: '2. เลือกอุปกรณ์ที่ต้องการใช้ (ถ้ามี):', phEqNotes: 'หมายเหตุเพิ่มเติม...', reviewHeading: 'ตรวจสอบข้อมูลก่อนยืนยัน', reviewBookerLabel: 'ผู้จอง:', reviewPeopleLabel: 'จำนวนผู้แสดง:', reviewTimeLabel: 'วันที่และรอบเวลาที่เลือกทั้งหมด:',
                 btnConfirmBooking: 'ยืนยันการจองทั้งหมด', step5Title: 'จองรอบเวลาสำเร็จ!', ticketChurchLabel: 'หน่วยงาน / คริสตจักร', ticketBookerLabel: 'ผู้จอง / เบอร์โทร', ticketPeopleRefLabel: 'จำนวนผู้แสดง / รหัสอ้างอิง', ticketTimeListLabel: 'รายละเอียดสถานที่และเวลาแสดง', ticketPerfLabel: 'รูปแบบการแสดง & อุปกรณ์',
@@ -507,6 +564,7 @@
                 labelSelectDate: '1. Select Show Date (20 - 25 Dec 2026)', labelSelectVenue: '2. Select Performance Venue', venueIndoorTitle: 'Dr. Well Building (Indoor)', venueIndoorSub: 'Bangkok Christian Hospital',
                 venueOutdoorTitle: 'Hospital Front Yard (Outdoor)', venueOutdoorSub: 'Silom Road Front Area', labelSelectSlot: '3. Select Time Slots', btnBack: 'Back', btnNextStep3: 'Next: Performance Details',
                 step3Badge: 'Step 3 of 5', step3Title: 'Performance Style', labelQuickTags: 'Quick Tags (Click to add):', labelPerfDesc: 'Brief Performance Description', phPerfDesc: 'e.g. Christmas Choir 5 songs, Acoustic band...',
+                labelAttachFile: 'Attach Additional Performance Document (Optional)', attachChooseBtn: 'Click to Choose File (Optional)', attachFileHint: 'Supports PDF, Images (JPG/PNG), Word (DOC/DOCX), max 3 MB', attachRemoveBtn: 'Remove', reviewAttachLabel: 'Attachment:',
                 btnNextStep4: 'Next: Team Size', step4Badge: 'Step 4 of 5', step4Title: 'Performers & Equipment', labelPeopleCount: '1. Number of Performers', phPeopleCount: 'Enter number of people (e.g. 12)',
                 labelEquipment: '2. Equipment Needed (Optional):', phEqNotes: 'Additional notes...', reviewHeading: 'Review Before Confirming', reviewBookerLabel: 'Booker:', reviewPeopleLabel: 'Performers:', reviewTimeLabel: 'Selected Date & Time Slots:',
                 btnConfirmBooking: 'Confirm All Bookings', step5Title: 'Booking Confirmed!', ticketChurchLabel: 'Church / Organization', ticketBookerLabel: 'Booker / Phone', ticketPeopleRefLabel: 'Performers / Ref Code', ticketTimeListLabel: 'Venue & Time Details', ticketPerfLabel: 'Performance & Equipment',
@@ -528,6 +586,7 @@
                 labelSelectDate: '1. 选择演出日期 (2026年12月20日 - 25日)', labelSelectVenue: '2. 选择演出场地', venueIndoorTitle: 'Dr. Well 大楼（室内）', venueIndoorSub: '曼谷基督教医院',
                 venueOutdoorTitle: '医院前广场（室外）', venueOutdoorSub: '是隆路医院正门前', labelSelectSlot: '3. 点击选择时间段', btnBack: '返回', btnNextStep3: '下一步：演出形式',
                 step3Badge: '第 3 步（共 5 步）', step3Title: '演出形式说明', labelQuickTags: '快捷标签（点击添加）：', labelPerfDesc: '演出形式简介', phPerfDesc: '例如：圣诞合唱5首歌曲、木吉他弹唱...',
+                labelAttachFile: '附加演出详情文档（可选）', attachChooseBtn: '点击选择文件（可选）', attachFileHint: '支持 PDF、图片 (JPG/PNG)、Word (DOC/DOCX)，最大 3 MB', attachRemoveBtn: '移除', reviewAttachLabel: '附件：',
                 btnNextStep4: '下一步：演出人数', step4Badge: '第 4 步（共 5 步）', step4Title: '演出人数与设备需求', labelPeopleCount: '1. 参演人数（人）', phPeopleCount: '请输入人数（如 12）',
                 labelEquipment: '2. 需要准备的设备（可选）：', phEqNotes: '其他备注说明...', reviewHeading: '确认前核对信息', reviewBookerLabel: '预约人：', reviewPeopleLabel: '参演人数：', reviewTimeLabel: '已选日期与时间段：',
                 btnConfirmBooking: '确认所有预约', step5Title: '预约成功！', ticketChurchLabel: '教会 / 机构', ticketBookerLabel: '预约人 / 电话', ticketPeopleRefLabel: '参演人数 / 预约编号', ticketTimeListLabel: '场地与时间详情', ticketPerfLabel: '演出形式与设备',
@@ -570,9 +629,11 @@
         const INDOOR_TIME_SLOTS = [['09.00', '09.30'], ['09.30', '10.00'], ['10.00', '10.30'], ['10.30', '11.00'], ['11.00', '11.30'], ['11.30', '12.00'], ['13.00', '13.30'], ['13.30', '14.00'], ['14.00', '14.30'], ['14.30', '15.00']];
         const OUTDOOR_TIME_SLOTS = [['17.00', '17.30'], ['17.30', '18.00'], ['18.00', '18.30'], ['18.30', '19.00'], ['19.00', '19.30'], ['19.30', '20.00']];
         const EQ_IDS = ['mic', 'chair', 'speaker'];
+        const MAX_ATTACH_SIZE = 3 * 1024 * 1024; // 3 MB
 
-        let appState = { step: 1, name: '', church: '', phone: '', date: '25 ธ.ค. 2026', zone: 'indoor', selectedSlots: [], desc: '', people: '', eqIds: ['mic'], eqNotes: '', sessionBookings: [] };
-        let firebaseDbRef = null, firebaseSettingsRef = null, pendingUserEditTarget = null;
+        let appState = { step: 1, name: '', church: '', phone: '', date: '25 ธ.ค. 2026', zone: 'indoor', selectedSlots: [], desc: '', people: '', eqIds: ['mic'], eqNotes: '', attachment: null, sessionBookings: [] };
+        let pendingUserEditAttachment = null;
+        let firebaseDbRef = null, firebaseSettingsRef = null, firebaseAttachmentsRef = null, pendingUserEditTarget = null;
         let bookingsCache = createEmptySchedule();
 
         function createEmptySchedule() { let initial = {}; DATES_LIST.forEach(d => { initial[d] = { indoor: {}, outdoor: {} }; }); return initial; }
@@ -581,6 +642,8 @@
         function normalizeZoneSlots(z) { const c = {}; if(!z || typeof z!=='object') return c; Object.keys(z).forEach(k => { if(z[k] && z[k].name) c[String(k)] = z[k]; }); return c; }
         function getTimeSlotsForZone(z) { return z === 'indoor' ? INDOOR_TIME_SLOTS : OUTDOOR_TIME_SLOTS; }
         function getThaiTimestamp() { return new Date().toLocaleString('th-TH', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' น.'; }
+        function escapeHtml(str) { return String(str || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); }
+        function formatBytes(bytes) { if (!bytes) return '0 B'; const kb = bytes / 1024; return kb >= 1024 ? `${(kb / 1024).toFixed(2)} MB` : `${kb.toFixed(1)} KB`; }
 
         function deserializeFromFirebase(fbVal) {
             const res = createEmptySchedule();
@@ -602,6 +665,7 @@
                 const db = firebase.app().database();
                 firebaseDbRef = db.ref('bookings_2026');
                 firebaseSettingsRef = db.ref('settings_2026/googleScriptUrl');
+                firebaseAttachmentsRef = db.ref('attachments_2026');
                 
                 firebaseSettingsRef.on('value', (s) => {
                     if (s.val() && typeof s.val()==='string') {
@@ -623,6 +687,92 @@
             }
         }
 
+        // ==========================
+        // Attachment Helpers (Optional)
+        // ==========================
+        function readFileAsAttachment(file) {
+            return new Promise((resolve, reject) => {
+                if (file.size > MAX_ATTACH_SIZE) {
+                    reject(new Error('ขนาดไฟล์ต้องไม่เกิน 3 MB'));
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = () => resolve({ name: file.name, type: file.type || 'application/octet-stream', size: file.size, dataUrl: reader.result });
+                reader.onerror = () => reject(new Error('ไม่สามารถอ่านไฟล์ได้'));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function handleFileSelect(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            try {
+                const att = await readFileAsAttachment(file);
+                appState.attachment = att;
+                document.getElementById('perf-file-name').textContent = att.name;
+                document.getElementById('perf-file-size').textContent = formatBytes(att.size);
+                document.getElementById('perf-file-preview').classList.remove('hidden');
+                document.getElementById('perf-file-dropzone').classList.add('hidden');
+            } catch (err) {
+                showAlert(err.message, 'error');
+                event.target.value = '';
+            }
+        }
+
+        function clearSelectedFile() {
+            appState.attachment = null;
+            const input = document.getElementById('perf-file-input');
+            if (input) input.value = '';
+            const preview = document.getElementById('perf-file-preview');
+            const dropzone = document.getElementById('perf-file-dropzone');
+            if (preview) preview.classList.add('hidden');
+            if (dropzone) dropzone.classList.remove('hidden');
+        }
+
+        async function handleUserEditFileSelect(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) { pendingUserEditAttachment = null; return; }
+            try {
+                pendingUserEditAttachment = await readFileAsAttachment(file);
+            } catch (err) {
+                showAlert(err.message, 'error');
+                event.target.value = '';
+                pendingUserEditAttachment = null;
+            }
+        }
+
+        async function uploadAttachmentToFirebase(att) {
+            if (!att || !firebaseAttachmentsRef) return null;
+            const attId = `ATT-${Date.now()}-${Math.floor(100 + Math.random() * 900)}`;
+            await firebaseAttachmentsRef.child(attId).set({
+                name: att.name,
+                type: att.type,
+                size: att.size,
+                dataUrl: att.dataUrl,
+                uploadedAt: getThaiTimestamp()
+            });
+            return attId;
+        }
+
+        async function downloadAttachment(attId) {
+            if (!attId || !firebaseAttachmentsRef) return showAlert('ไม่พบเอกสารแนบ', 'error');
+            try {
+                showAlert('กำลังดาวน์โหลดเอกสารแนบ...', 'success');
+                const snap = await firebaseAttachmentsRef.child(attId).once('value');
+                const fileData = snap.val();
+                if (!fileData || !fileData.dataUrl) return showAlert('ไม่พบข้อมูลไฟล์ในระบบ', 'error');
+                const a = document.createElement('a');
+                a.href = fileData.dataUrl;
+                a.download = fileData.name || 'attachment';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            } catch (err) {
+                console.error('Download attachment error:', err);
+                showAlert('ดาวน์โหลดเอกสารไม่สำเร็จ', 'error');
+            }
+        }
+
         function getBookings() { return bookingsCache; }
         
         async function updateSpecificBookings(updatesObj) {
@@ -634,12 +784,31 @@
         
         async function removeBookingRecord(date, zone, idx) {
             const key = String(idx);
+            const removedRecord = bookingsCache[date]?.[zone]?.[key];
+            const removedAttId = removedRecord?.attachmentId || null;
+
             appState.selectedSlots = appState.selectedSlots.filter(s => !(s.date === date && s.zone === zone && String(s.idx) === key));
             if (bookingsCache[date] && bookingsCache[date][zone]) delete bookingsCache[date][zone][key];
             if (firebaseDbRef) {
                 try { await firebaseDbRef.child(encodeFirebaseKey(date)).child(zone).child(key).remove(); } 
                 catch (err) { showAlert('ลบข้อมูลบน Firebase ไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ต', 'error'); return false; }
             }
+
+            // ลบไฟล์แนบออกจาก attachments_2026 หากไม่มีคิวอื่นใช้งานไฟล์นี้อยู่
+            if (removedAttId && firebaseAttachmentsRef) {
+                let stillUsed = false;
+                Object.values(bookingsCache).forEach(day => {
+                    ['indoor', 'outdoor'].forEach(z => {
+                        Object.values(day[z] || {}).forEach(rec => {
+                            if (rec && rec.attachmentId === removedAttId) stillUsed = true;
+                        });
+                    });
+                });
+                if (!stillUsed) {
+                    firebaseAttachmentsRef.child(removedAttId).remove().catch(() => {});
+                }
+            }
+
             syncToGoogleSheet(false); renderAll();
             const adminDash = document.getElementById('admin-dashboard');
             if (adminDash && !adminDash.classList.contains('hidden')) renderAdminDashboard();
@@ -764,6 +933,21 @@
             const eqLabelsDict = t('eqLabels');
             const eqText = EQ_IDS.filter(id => appState.eqIds.includes(id)).map(id => eqLabelsDict[id].substring(3)).join(', ') + (document.getElementById('equipment-notes').value.trim() ? ' + ' + document.getElementById('equipment-notes').value.trim() : '');
             
+            document.getElementById('submit-final-btn').disabled = true;
+
+            // อัปโหลดไฟล์แนบ (ถ้ามี) แยกไว้ที่ attachments_2026
+            let attachmentId = null;
+            let attachmentName = '';
+            if (appState.attachment) {
+                try {
+                    attachmentId = await uploadAttachmentToFirebase(appState.attachment);
+                    attachmentName = appState.attachment.name;
+                } catch (err) {
+                    console.error('Attachment upload failed:', err);
+                    showAlert('อัปโหลดเอกสารแนบไม่สำเร็จ แต่ระบบจะดำเนินการจองให้ต่อ', 'error');
+                }
+            }
+
             appState.sessionBookings = [];
             const firebaseUpdates = {}; 
             const submitTimestamp = getThaiTimestamp();
@@ -777,11 +961,14 @@
                     desc: appState.desc, people: people, eq: eqText,
                     timestamp: submitTimestamp
                 };
+                if (attachmentId) {
+                    record.attachmentId = attachmentId;
+                    record.attachmentName = attachmentName;
+                }
                 appState.sessionBookings.push(record);
                 firebaseUpdates[`${encodeFirebaseKey(s.date)}/${s.zone}/${s.idx}`] = record;
             });
 
-            document.getElementById('submit-final-btn').disabled = true;
             await updateSpecificBookings(firebaseUpdates);
             document.getElementById('submit-final-btn').disabled = false;
 
@@ -803,6 +990,15 @@
             document.getElementById('ticket-performance').textContent = `${b[0].desc} (${b[0].eq || '-'})`;
             document.getElementById('ticket-timestamp').textContent = b[0].timestamp || getThaiTimestamp();
             document.getElementById('ticket-time-list').innerHTML = b.map(x => `<div class="mb-1">📅 ${x.date} | ${x.zone==='indoor'?'🏥 '+t('venueIndoorTitle'):'🎄 '+t('venueOutdoorTitle')} : ${x.time}</div>`).join('');
+
+            const attachRow = document.getElementById('ticket-attach-row');
+            const attachNameEl = document.getElementById('ticket-attach-name');
+            if (b[0].attachmentName) {
+                attachNameEl.textContent = `📎 ${b[0].attachmentName}`;
+                attachRow.classList.remove('hidden');
+            } else {
+                attachRow.classList.add('hidden');
+            }
         }
 
         async function downloadTicketImage(auto = false) {
@@ -841,6 +1037,15 @@
             document.getElementById('ticket-performance').textContent = `${b.desc} (${b.eq || '-'})`;
             document.getElementById('ticket-timestamp').textContent = b.timestamp || '-';
             document.getElementById('ticket-time-list').innerHTML = `<div class="mb-1">📅 ${b.date} | ${b.zone==='indoor'?'🏥 '+t('venueIndoorTitle'):'🎄 '+t('venueOutdoorTitle')} : ${b.time}</div>`;
+
+            const attachRow = document.getElementById('ticket-attach-row');
+            const attachNameEl = document.getElementById('ticket-attach-name');
+            if (b.attachmentName) {
+                attachNameEl.textContent = `📎 ${b.attachmentName}`;
+                attachRow.classList.remove('hidden');
+            } else {
+                attachRow.classList.add('hidden');
+            }
 
             step5.style.cssText = 'display: block !important; position: absolute !important; left: -9999px !important; top: 0 !important; opacity: 1 !important;';
             ticket.classList.add('no-anim');
@@ -894,6 +1099,18 @@
             document.getElementById('review-booker').textContent = appState.name || '-';
             document.getElementById('review-people').textContent = document.getElementById('perf-count').value ? `${document.getElementById('perf-count').value} ${t('peopleUnit')}` : '-';
             document.getElementById('review-time').innerHTML = appState.selectedSlots.map(s => `<strong>📅 ${s.date}</strong> | ${s.zone==='indoor'?'🏥 '+t('venueIndoorTitle'):'🎄 '+t('venueOutdoorTitle')}: ${getTimeSlotsForZone(s.zone)[s.idx].join('-')}`).join('<br>') || '-';
+
+            const revAttachRow = document.getElementById('review-attach-row');
+            const revAttachEl = document.getElementById('review-attach');
+            if (revAttachRow && revAttachEl) {
+                if (appState.attachment) {
+                    revAttachEl.textContent = `📎 ${appState.attachment.name} (${formatBytes(appState.attachment.size)})`;
+                    revAttachRow.classList.remove('hidden');
+                } else {
+                    revAttachRow.classList.add('hidden');
+                }
+            }
+
             if (document.getElementById('user-results')) renderPublicSchedule();
         }
 
@@ -934,12 +1151,10 @@
                     const zoneObj = normalizeZoneSlots(dayData[z]);
                     
                     let slotsHtml = '';
-                    let hasBookings = false;
 
                     slots.forEach(([s, e], i) => {
                         const b = zoneObj[String(i)];
                         if (b) {
-                            hasBookings = true;
                             const maskedPhone = maskPhoneLast4(b.phone);
                             slotsHtml += `
                             <div class="group relative overflow-hidden bg-th-card border border-th-border/60 rounded-2xl p-3 shadow-sm hover:shadow-lg hover:border-th-accent transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -998,6 +1213,7 @@
         function openUserSelfEditModal(d, z, i) {
             const b = getBookings()[d]?.[z]?.[String(i)]; if(!b) return;
             pendingUserEditTarget = { date: d, zone: z, idx: i };
+            pendingUserEditAttachment = null;
             document.getElementById('user-verify-slot-info').textContent = `📅 ${d} | ${z==='indoor'?t('venueIndoorTitle'):t('venueOutdoorTitle')} (${b.time})`;
             document.getElementById('user-verify-booker-hint').textContent = `${t('bookerPrefix')} ${b.name} (${t('phoneLast4Prefix')} ${maskPhoneLast4(b.phone)})`;
             document.getElementById('user-verify-phone-input').value = '';
@@ -1006,7 +1222,7 @@
             document.getElementById('user-self-edit-form').classList.add('hidden');
             document.getElementById('user-self-edit-modal').classList.remove('hidden');
         }
-        function closeUserSelfEditModal() { document.getElementById('user-self-edit-modal').classList.add('hidden'); pendingUserEditTarget = null; }
+        function closeUserSelfEditModal() { document.getElementById('user-self-edit-modal').classList.add('hidden'); pendingUserEditTarget = null; pendingUserEditAttachment = null; }
         
         function confirmUserPhoneVerification() {
             const b = getBookings()[pendingUserEditTarget.date]?.[pendingUserEditTarget.zone]?.[pendingUserEditTarget.idx];
@@ -1022,6 +1238,17 @@
             document.getElementById('user-edit-name').value = b.name; document.getElementById('user-edit-church').value = b.church;
             document.getElementById('user-edit-phone').value = b.phone; document.getElementById('user-edit-people').value = b.people;
             document.getElementById('user-edit-desc').value = b.desc; document.getElementById('user-edit-eq').value = b.eq || '';
+
+            // แสดงไฟล์แนบเดิม (ถ้ามี)
+            document.getElementById('user-edit-file-input').value = '';
+            const curAttBox = document.getElementById('user-edit-attach-current');
+            if (b.attachmentId && b.attachmentName) {
+                document.getElementById('user-edit-attach-name').textContent = `📎 ${b.attachmentName}`;
+                document.getElementById('user-edit-attach-dl-btn').onclick = () => downloadAttachment(b.attachmentId);
+                curAttBox.classList.remove('hidden');
+            } else {
+                curAttBox.classList.add('hidden');
+            }
         }
 
         document.getElementById('user-self-edit-form').onsubmit = async (e) => {
@@ -1031,6 +1258,18 @@
             b.name = document.getElementById('user-edit-name').value; b.church = document.getElementById('user-edit-church').value;
             b.phone = document.getElementById('user-edit-phone').value.replace(/\D/g, ''); b.people = document.getElementById('user-edit-people').value;
             b.desc = document.getElementById('user-edit-desc').value; b.eq = document.getElementById('user-edit-eq').value;
+
+            if (pendingUserEditAttachment) {
+                try {
+                    const newAttId = await uploadAttachmentToFirebase(pendingUserEditAttachment);
+                    if (newAttId) {
+                        b.attachmentId = newAttId;
+                        b.attachmentName = pendingUserEditAttachment.name;
+                    }
+                } catch (err) {
+                    showAlert('อัปโหลดเอกสารแนบใหม่ไม่สำเร็จ', 'error');
+                }
+            }
             
             const updates = {}; updates[`${encodeFirebaseKey(d)}/${z}/${i}`] = b;
             await updateSpecificBookings(updates);
@@ -1064,9 +1303,12 @@
                         const b = data[d]?.[z]?.[String(i)];
                         const div = document.createElement('div');
                         if (b) {
+                            const attachHtml = (b.attachmentId && b.attachmentName)
+                                ? `<div class="mt-1.5"><button type="button" onclick="downloadAttachment('${b.attachmentId}')" class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-th-accent-light border border-th-accent/50 text-th-accent text-[10px] font-bold hover:brightness-110"><i class="fa-solid fa-paperclip"></i> ${escapeHtml(b.attachmentName)}</button></div>`
+                                : '';
                             div.className = 'p-2.5 border bg-th-card rounded-lg mb-1.5 text-xs';
                             div.innerHTML = `<div class="flex justify-between items-start"><strong class="text-th-text">${s}-${e} น.</strong><div class="flex gap-1"><button onclick="openAdminEdit('${d}','${z}',${i})" class="px-2.5 py-1 bg-blue-500 text-white text-[10px] rounded font-bold">แก้ไข</button><button onclick="deleteBooking('${d}','${z}',${i}, this)" class="px-2.5 py-1 bg-red-500 text-white text-[10px] rounded font-bold">ลบ</button></div></div>
-                                             <div class="text-th-text font-semibold mt-1">${b.church} (${b.name} / โทร: ${b.phone})<br><span class="text-[10px] text-th-muted font-normal"><i class="fa-regular fa-clock"></i> ทำรายการ: ${b.timestamp || '-'}</span></div>`;
+                                             <div class="text-th-text font-semibold mt-1">${escapeHtml(b.church)} (${escapeHtml(b.name)} / โทร: ${escapeHtml(b.phone)})<br><span class="text-[10px] text-th-muted font-normal"><i class="fa-regular fa-clock"></i> ทำรายการ: ${b.timestamp || '-'}</span>${attachHtml}</div>`;
                         } else {
                             div.className = 'p-2 border flex justify-between items-center text-xs opacity-70 mb-1.5 rounded bg-th-input';
                             div.innerHTML = `<span>${s}-${e} น. <span class="text-[10px] text-th-success">ว่าง</span></span><button onclick="openAdminEdit('${d}','${z}',${i})" class="px-2 py-0.5 bg-th-success text-pine-950 font-bold text-[10px] rounded">เพิ่ม</button>`;
@@ -1096,14 +1338,22 @@
             document.getElementById('edit-zone').value = z; document.getElementById('edit-idx').value = i;
             
             const btnDel = document.getElementById('admin-modal-delete-btn'), btnDl = document.getElementById('admin-modal-dl-btn'), tsBox = document.getElementById('admin-edit-timestamp-display');
+            const attBox = document.getElementById('admin-edit-attach-box');
             if (b) {
                 document.getElementById('edit-name').value = b.name; document.getElementById('edit-church').value = b.church; document.getElementById('edit-phone').value = b.phone;
                 document.getElementById('edit-people').value = b.people; document.getElementById('edit-desc').value = b.desc; document.getElementById('edit-eq').value = b.eq||'';
                 btnDel.classList.remove('hidden'); btnDel.classList.add('flex'); btnDl.classList.remove('hidden'); btnDl.classList.add('flex');
                 if(b.timestamp) { document.getElementById('admin-edit-timestamp-val').textContent = b.timestamp; tsBox.classList.remove('hidden'); } else tsBox.classList.add('hidden');
+                if (b.attachmentId && b.attachmentName) {
+                    document.getElementById('admin-edit-attach-name').textContent = b.attachmentName;
+                    document.getElementById('admin-edit-attach-dl-btn').onclick = () => downloadAttachment(b.attachmentId);
+                    attBox.classList.remove('hidden');
+                } else {
+                    attBox.classList.add('hidden');
+                }
             } else {
                 document.getElementById('admin-edit-form').reset(); document.getElementById('edit-original-date').value = d; document.getElementById('edit-date-select').value = d;
-                btnDel.classList.add('hidden'); btnDl.classList.add('hidden'); tsBox.classList.add('hidden');
+                btnDel.classList.add('hidden'); btnDl.classList.add('hidden'); tsBox.classList.add('hidden'); attBox.classList.add('hidden');
             }
             document.getElementById('admin-edit-modal').classList.remove('hidden');
         }
@@ -1112,7 +1362,7 @@
         document.getElementById('admin-edit-form').onsubmit = async (e) => {
             e.preventDefault();
             const origD = document.getElementById('edit-original-date').value, d = document.getElementById('edit-date-select').value, z = document.getElementById('edit-zone').value, i = document.getElementById('edit-idx').value;
-            const b = getBookings()[d]?.[z]?.[i];
+            const b = getBookings()[origD]?.[z]?.[i] || getBookings()[d]?.[z]?.[i];
             
             const record = {
                 ref: b?.ref || `SHA26-${z==='indoor'?'IN':'OUT'}${parseInt(i)+1}-ADM${Math.floor(10+Math.random()*90)}`,
@@ -1121,11 +1371,21 @@
                 people: document.getElementById('edit-people').value, eq: document.getElementById('edit-eq').value,
                 timestamp: b?.timestamp || getThaiTimestamp()
             };
+            if (b?.attachmentId) {
+                record.attachmentId = b.attachmentId;
+                record.attachmentName = b.attachmentName || '';
+            }
             const updates = {}; if (origD && origD !== d) updates[`${encodeFirebaseKey(origD)}/${z}/${i}`] = null;
             updates[`${encodeFirebaseKey(d)}/${z}/${i}`] = record;
             await updateSpecificBookings(updates); closeAdminEdit(); showAlert('บันทึกสำเร็จ', 'success');
         };
-        async function handleResetBookings() { if (confirm("ยืนยันล้างข้อมูลตารางการจองทั้งหมดหรือไม่?")) { if (firebaseDbRef) await firebaseDbRef.remove(); syncToGoogleSheet(false); showAlert('ล้างข้อมูลทั้งหมดแล้ว', 'success'); } }
+        async function handleResetBookings() {
+            if (confirm("ยืนยันล้างข้อมูลตารางการจองทั้งหมดหรือไม่?")) {
+                if (firebaseDbRef) await firebaseDbRef.remove();
+                if (firebaseAttachmentsRef) await firebaseAttachmentsRef.remove();
+                syncToGoogleSheet(false); showAlert('ล้างข้อมูลทั้งหมดแล้ว', 'success');
+            }
+        }
         
         // =======================
         // FX & Startup
@@ -1142,7 +1402,15 @@
             for(let i=0;i<80;i++) particles.push({x:cv.width/2,y:cv.height*0.3,vx:(Math.random()-0.5)*15,vy:(Math.random()-0.7)*15,s:Math.random()*5+2,c:colors[Math.floor(Math.random()*colors.length)],a:1});
             function animate(){ ctx.clearRect(0,0,cv.width,cv.height); let alive=false; for(let p of particles){ if(p.a<=0)continue; alive=true; p.x+=p.vx; p.y+=p.vy; p.vy+=0.2; p.a*=0.95; ctx.globalAlpha=p.a; ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill(); } if(alive) requestAnimationFrame(animate); else ctx.clearRect(0,0,cv.width,cv.height); } animate();
         }
-        function resetForNewPerson() { appState={...appState, step:1, name:'', church:'', phone:'', selectedSlots:[], desc:'', people:'', eqIds:['mic'], eqNotes:'', sessionBookings:[]}; document.getElementById('step1-form').reset(); document.getElementById('performance-desc').value=''; document.getElementById('perf-count').value=''; document.getElementById('equipment-notes').value=''; renderEq(); goToStep(1); }
+        function resetForNewPerson() {
+            appState={...appState, step:1, name:'', church:'', phone:'', selectedSlots:[], desc:'', people:'', eqIds:['mic'], eqNotes:'', attachment:null, sessionBookings:[]};
+            document.getElementById('step1-form').reset();
+            document.getElementById('performance-desc').value='';
+            document.getElementById('perf-count').value='';
+            document.getElementById('equipment-notes').value='';
+            clearSelectedFile();
+            renderEq(); goToStep(1);
+        }
         
         window.onload = () => { initSnowfall(); initDatabaseConnection(); setLanguage(currentLang); updateStepper(); };
     </script>
